@@ -1,0 +1,131 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String               @id @default(cuid())
+  name          String
+  email         String               @unique
+  mobile        String?
+  passwordHash  String?
+  role          String               @default("USER") // USER, ADMIN, VERIFIED_OFFICER
+  state         String?
+  gender        String?              // Male, Female, Transgender, Other
+  age           Int?
+  occupation    String?              // Student, Farmer, Self-Employed, Daily Wage, Unemployed, Salaried, Senior Citizen, Homemaker
+  income        Float?               // Annual income in INR
+  category      String?              // General, OBC, SC, ST, EWS, Minority, Divyangjan
+  education     String?              // Below 10th, 10th Pass, 12th Pass, Graduate, Post Graduate, ITI/Diploma
+  isActive      Boolean              @default(true)
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+
+  bookmarks     Bookmark[]
+  applications  ApplicationTracker[]
+  notifications Notification[]
+  createdSchemes Scheme[]            @relation("CreatedByAdmin")
+}
+
+model Category {
+  id             String    @id @default(cuid())
+  nameEn         String
+  nameHi         String
+  icon           String    // e.g. 'GraduationCap', 'Sprout', 'HeartPulse', 'Home', etc.
+  slug           String    @unique
+  descriptionEn  String?
+  descriptionHi  String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  schemes        Scheme[]
+}
+
+model Scheme {
+  id                 String               @id @default(cuid())
+  categoryId         String
+  category           Category             @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  titleEn            String
+  titleHi            String
+  descriptionEn      String
+  descriptionHi      String
+  benefitsEn         String
+  benefitsHi         String
+  benefitType        String               @default("Financial") // Financial, Educational, Health, Housing, Livelihood, Social Security
+  benefitAmount      String?              // e.g. "₹6,000 / year", "₹5,00,000 health cover", "100% tuition fee"
+  eligibilityJson    String               // Stringified JSON: { minAge, maxAge, gender, maxIncome, states: [], occupations: [], categories: [], education: [] }
+  documentsRequired  String               // Stringified JSON array of required documents
+  applicationProcess String               // Stringified JSON array of steps: [{ step: 1, titleEn, titleHi, descEn, descHi }]
+  officialLink       String               // Strictly redirects to official govt portal (*.gov.in / *.nic.in)
+  departmentEn       String               // e.g. "Ministry of Agriculture & Farmers Welfare"
+  departmentHi       String
+  level              String               @default("Central") // Central or State
+  openDate           DateTime?
+  closeDate          DateTime?
+  status             String               @default("PUBLISHED") // DRAFT, VERIFIED, PUBLISHED, CLOSED
+  viewsCount         Int                  @default(0)
+  createdByAdminId   String?
+  createdBy          User?                @relation("CreatedByAdmin", fields: [createdByAdminId], references: [id])
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+
+  bookmarks          Bookmark[]
+  applications       ApplicationTracker[]
+}
+
+model Bookmark {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  schemeId  String
+  scheme    Scheme   @relation(fields: [schemeId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, schemeId])
+}
+
+model ApplicationTracker {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  schemeId    String
+  scheme      Scheme   @relation(fields: [schemeId], references: [id], onDelete: Cascade)
+  status      String   @default("APPLIED") // APPLIED, IN_PROGRESS, APPROVED, REJECTED
+  notes       String?
+  appliedDate DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, schemeId])
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String   // SCHEME_MATCH, DEADLINE, STATUS_UPDATE, SYSTEM
+  titleEn   String
+  titleHi   String
+  messageEn String
+  messageHi String
+  link      String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model OtpVerification {
+  id         String   @id @default(cuid())
+  identifier String   // email or mobile number
+  otpHash    String   // bcrypt hashed 6-digit OTP
+  type       String   // EMAIL | MOBILE
+  expiresAt  DateTime
+  attempts   Int      @default(0)
+  verified   Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  @@index([identifier])
+}
+
