@@ -3,6 +3,8 @@ import prisma from '@/lib/prisma';
 import { evaluateEligibility } from '@/lib/eligibilityEngine';
 import { EligibilityCheckInput } from '@/types';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: Request) {
   try {
     const input: EligibilityCheckInput = await request.json();

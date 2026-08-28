@@ -4,6 +4,8 @@ import bcrypt from 'bcryptjs';
 import prisma from '@/lib/prisma';
 import { sendOtpEmail } from '@/lib/resend';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
@@ -94,7 +96,7 @@ export async function POST(req: NextRequest) {
   } catch (err: any) {
     console.error('Error in send-email OTP route:', err);
     return NextResponse.json(
-      { error: 'An unexpected error occurred while sending the OTP.' },
+      { error: err?.message || 'An unexpected error occurred while sending the OTP.' },
       { status: 500 }
     );
   }
