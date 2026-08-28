@@ -76,15 +76,15 @@ export default function HomePage() {
     router.push(`/schemes?${params.toString()}`);
   };
 
-  // Quick Filter Pills
+  // Quick Filter Pills (Exact sequence: Students, Farmers, Women, Healthcare, Employment, Senior Citizens, Divyangjan)
   const quickFilterPills = [
-    { labelEn: 'Students', labelHi: 'छात्र', slug: 'students', icon: '👨‍🎓' },
+    { labelEn: 'Students', labelHi: 'छात्र', slug: 'students', icon: '🎓' },
     { labelEn: 'Farmers', labelHi: 'किसान', slug: 'farmers', icon: '🌾' },
-    { labelEn: 'Healthcare', labelHi: 'स्वास्थ्य', slug: 'health', icon: '🏥' },
     { labelEn: 'Women', labelHi: 'महिलाएं', slug: 'women', icon: '👩' },
-    { labelEn: 'Senior Citizens', labelHi: 'वरिष्ठ नागरिक', slug: 'senior-citizens', icon: '👴' },
-    { labelEn: 'Divyangjan', labelHi: 'दिव्यांगजन', slug: 'divyangjan', icon: '♿' },
+    { labelEn: 'Healthcare', labelHi: 'स्वास्थ्य', slug: 'health', icon: '🏥' },
     { labelEn: 'Employment', labelHi: 'रोजगार', slug: 'employment', icon: '💼' },
+    { labelEn: 'Senior Citizens', labelHi: 'वरिष्ठ नागरिक', slug: 'seniors', icon: '👴' },
+    { labelEn: 'Divyangjan', labelHi: 'दिव्यांगजन', slug: 'divyangjan', icon: '♿' },
   ];
 
   return (
@@ -206,21 +206,23 @@ export default function HomePage() {
               </span>
             </div>
 
-            {/* Quick Explore Pills */}
-            <div className="flex flex-wrap items-center gap-2 pt-2">
-              <span className="text-xs text-slate-400 font-semibold mr-1">
+            {/* Quick Explore Pills in a single clean row on desktop, wrapping gracefully on mobile */}
+            <div className="flex flex-wrap items-center gap-2 pt-2.5">
+              <span className="text-xs text-slate-300 font-bold shrink-0 mr-0.5">
                 {language === 'en' ? 'Quick Explore:' : 'त्वरित खोजें:'}
               </span>
-              {quickFilterPills.map((pill) => (
-                <Link
-                  key={pill.slug}
-                  href={`/schemes?category=${pill.slug}`}
-                  className="inline-flex items-center space-x-1 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-semibold text-slate-200 hover:text-white backdrop-blur-sm transition-all hover:scale-105"
-                >
-                  <span>{pill.icon}</span>
-                  <span>{language === 'hi' ? pill.labelHi : pill.labelEn}</span>
-                </Link>
-              ))}
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                {quickFilterPills.map((pill) => (
+                  <Link
+                    key={pill.slug}
+                    href={`/schemes?category=${pill.slug}`}
+                    className="inline-flex items-center space-x-1.5 h-8 px-3.5 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/25 border border-white/15 text-xs font-semibold text-slate-200 hover:text-white backdrop-blur-sm transition-all hover:scale-105 shadow-soft-sm shrink-0 select-none"
+                  >
+                    <span className="text-xs">{pill.icon}</span>
+                    <span>{language === 'hi' ? pill.labelHi : pill.labelEn}</span>
+                  </Link>
+                ))}
+              </div>
             </div>
           </div>
 
