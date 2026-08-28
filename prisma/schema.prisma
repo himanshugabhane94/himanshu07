@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -51,17 +51,17 @@ model Scheme {
   category           Category             @relation(fields: [categoryId], references: [id], onDelete: Cascade)
   titleEn            String
   titleHi            String
-  descriptionEn      String
-  descriptionHi      String
-  benefitsEn         String
-  benefitsHi         String
+  descriptionEn      String               @db.Text
+  descriptionHi      String               @db.Text
+  benefitsEn         String               @db.Text
+  benefitsHi         String               @db.Text
   benefitType        String               @default("Financial") // Financial, Educational, Health, Housing, Livelihood, Social Security
-  benefitAmount      String?              // e.g. "₹6,000 / year", "₹5,00,000 health cover", "100% tuition fee"
-  eligibilityJson    String               // Stringified JSON: { minAge, maxAge, gender, maxIncome, states: [], occupations: [], categories: [], education: [] }
-  documentsRequired  String               // Stringified JSON array of required documents
-  applicationProcess String               // Stringified JSON array of steps: [{ step: 1, titleEn, titleHi, descEn, descHi }]
-  officialLink       String               // Strictly redirects to official govt portal (*.gov.in / *.nic.in)
-  departmentEn       String               // e.g. "Ministry of Agriculture & Farmers Welfare"
+  benefitAmount      String?
+  eligibilityJson    String               @db.Text // Stringified JSON: { minAge, maxAge, gender, maxIncome, states: [], occupations: [], categories: [], education: [] }
+  documentsRequired  String               @db.Text // Stringified JSON array
+  applicationProcess String               @db.Text // Stringified JSON array of steps
+  officialLink       String
+  departmentEn       String
   departmentHi       String
   level              String               @default("Central") // Central or State
   openDate           DateTime?
@@ -95,7 +95,7 @@ model ApplicationTracker {
   schemeId    String
   scheme      Scheme   @relation(fields: [schemeId], references: [id], onDelete: Cascade)
   status      String   @default("APPLIED") // APPLIED, IN_PROGRESS, APPROVED, REJECTED
-  notes       String?
+  notes       String?  @db.Text
   appliedDate DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -109,8 +109,8 @@ model Notification {
   type      String   // SCHEME_MATCH, DEADLINE, STATUS_UPDATE, SYSTEM
   titleEn   String
   titleHi   String
-  messageEn String
-  messageHi String
+  messageEn String   @db.Text
+  messageHi String   @db.Text
   link      String?
   read      Boolean  @default(false)
   createdAt DateTime @default(now())
