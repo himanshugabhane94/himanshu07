@@ -48,15 +48,15 @@ export async function GET(request: Request) {
       where.benefitType = benefitType;
     }
 
-    // Search query (Postgres / SQLite compatible title, description, department search)
+    // Search query (Postgres case-insensitive search)
     if (search) {
       where.OR = [
-        { titleEn: { contains: search } },
-        { titleHi: { contains: search } },
-        { descriptionEn: { contains: search } },
-        { descriptionHi: { contains: search } },
-        { departmentEn: { contains: search } },
-        { departmentHi: { contains: search } },
+        { titleEn: { contains: search, mode: 'insensitive' } },
+        { titleHi: { contains: search, mode: 'insensitive' } },
+        { descriptionEn: { contains: search, mode: 'insensitive' } },
+        { descriptionHi: { contains: search, mode: 'insensitive' } },
+        { departmentEn: { contains: search, mode: 'insensitive' } },
+        { departmentHi: { contains: search, mode: 'insensitive' } },
       ];
     }
 

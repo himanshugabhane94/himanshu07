@@ -13,6 +13,9 @@ export async function GET() {
     }
 
     const userId = (session.user as any).id;
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
     const user = await prisma.user.findUnique({
       where: { id: userId },
       select: {

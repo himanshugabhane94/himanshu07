@@ -22,10 +22,10 @@ export async function GET(request: Request) {
     }
     if (search) {
       where.OR = [
-        { name: { contains: search } },
-        { email: { contains: search } },
-        { mobile: { contains: search } },
-        { state: { contains: search } },
+        { name: { contains: search, mode: 'insensitive' } },
+        { email: { contains: search, mode: 'insensitive' } },
+        { mobile: { contains: search, mode: 'insensitive' } },
+        { state: { contains: search, mode: 'insensitive' } },
       ];
     }
 

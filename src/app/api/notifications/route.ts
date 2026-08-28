@@ -13,6 +13,9 @@ export async function GET() {
     }
 
     const userId = (session.user as any).id;
+    if (!userId) {
+      return NextResponse.json({ notifications: [], unreadCount: 0 });
+    }
 
     const notifications = await prisma.notification.findMany({
       where: { userId },

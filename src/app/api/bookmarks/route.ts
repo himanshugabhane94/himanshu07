@@ -13,6 +13,9 @@ export async function GET() {
     }
 
     const userId = (session.user as any).id;
+    if (!userId) {
+      return NextResponse.json({ bookmarks: [] });
+    }
 
     const bookmarks = await prisma.bookmark.findMany({
       where: { userId },

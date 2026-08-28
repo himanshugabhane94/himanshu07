@@ -41,11 +41,13 @@ function SchemesContent() {
     totalPages: 1,
   });
   const [loading, setLoading] = useState(true);
+  const [apiError, setApiError] = useState<string | null>(null);
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [sortBy, setSortBy] = useState('popular');
 
   const fetchSchemes = async () => {
     setLoading(true);
+    setApiError(null);
     try {
       const params = new URLSearchParams();
       if (search.trim()) params.set('search', search.trim());
@@ -59,6 +61,11 @@ function SchemesContent() {
 
       const res = await fetch(`/api/schemes?${params.toString()}`);
       const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error || 'Server error occurred while loading schemes.');
+      }
+
       if (data.schemes) {
         let list = data.schemes;
         // Client-side sort
@@ -78,8 +85,9 @@ function SchemesContent() {
           setPagination(data.pagination);
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to load schemes:', err);
+      setApiError(err?.message || 'Unable to connect to database. Please check your connection.');
     } finally {
       setLoading(false);
     }
@@ -228,6 +236,24 @@ function SchemesContent() {
                 {[1, 2, 3, 4, 5, 6].map((i) => (
                   <div key={i} className="h-72 rounded-2xl bg-white border border-slate-200 animate-pulse p-6" />
                 ))}
+              </div>
+            ) : apiError ? (
+              <div className="bg-white rounded-3xl border border-rose-200 p-12 text-center shadow-soft-sm">
+                <div className="w-14 h-14 rounded-2xl bg-rose-50 border border-rose-200 text-rose-600 flex items-center justify-center mx-auto mb-4">
+                  <AlertCircle className="w-7 h-7" />
+                </div>
+                <h3 className="text-lg font-bold text-govNavy-900 mb-1">
+                  Unable to load schemes
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-500 max-w-md mx-auto mb-5 leading-relaxed">
+                  We encountered an issue connecting to the official schemes registry. Please try again.
+                </p>
+                <button
+                  onClick={() => fetchSchemes()}
+                  className="px-5 py-2.5 bg-govNavy-900 hover:bg-govNavy-800 text-white text-xs font-bold rounded-xl shadow-soft-sm transition-smooth"
+                >
+                  Retry Loading Schemes
+                </button>
               </div>
             ) : schemes.length === 0 ? (
               <div className="bg-white rounded-3xl border border-slate-200/90 p-12 text-center shadow-soft-sm">
