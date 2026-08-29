@@ -11,6 +11,7 @@
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "seed": "ts-node prisma/seed.ts",
+    "import:schemes": "ts-node scripts/bulk-import-schemes.ts",
     "db:postgres": "node scripts/switch-db.js postgres",
     "db:sqlite": "node scripts/switch-db.js sqlite"
   },
