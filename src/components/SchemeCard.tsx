@@ -24,6 +24,7 @@ import {
   Users,
   Calendar,
   IndianRupee,
+  AlertTriangle,
 } from 'lucide-react';
 
 interface SchemeCardProps {
@@ -121,6 +122,16 @@ export default function SchemeCard({
     ? `< ₹${(criteria.maxIncome / 100000).toFixed(1)}L/yr`
     : 'No Income Cap';
 
+  // Last Verified Trust Badge (90-day threshold)
+  const updatedDate = new Date(scheme.updatedAt || scheme.createdAt || Date.now());
+  const diffDays = Math.floor((Date.now() - updatedDate.getTime()) / (1000 * 60 * 60 * 24));
+  const isVerifiedRecent = diffDays <= 90;
+  const formattedVerifiedDate = updatedDate.toLocaleDateString('en-IN', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric',
+  });
+
   return (
     <div className="group relative bg-white rounded-2xl border border-slate-200/90 hover:border-govNavy-300 shadow-soft-sm hover:shadow-soft-md transition-all duration-300 hover:-translate-y-1 flex flex-col justify-between overflow-hidden">
       {/* Card Body */}
@@ -210,7 +221,7 @@ export default function SchemeCard({
           </div>
         )}
 
-        {/* Eligibility Criteria Tags (Age, Gender, Income limit, Docs) */}
+        {/* Eligibility Criteria Tags (Age, Gender, Income limit, Docs, and Last Verified Badge) */}
         <div className="flex flex-wrap items-center gap-1.5 text-[11px] font-medium text-slate-600">
           <span className="inline-flex items-center px-2.5 py-1 rounded-lg bg-slate-50 border border-slate-200/80 text-slate-700">
             <Calendar className="w-3 h-3 mr-1 text-slate-400" />
@@ -228,6 +239,25 @@ export default function SchemeCard({
             <FileText className="w-3 h-3 mr-1" />
             {docsCount} Docs
           </span>
+
+          {/* Last Verified Trust Badge */}
+          {isVerifiedRecent ? (
+            <span
+              title={`Verified on ${formattedVerifiedDate} against official ministry guidelines`}
+              className="inline-flex items-center px-2 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold"
+            >
+              <BadgeCheck className="w-3 h-3 mr-1 text-emerald-600 shrink-0" />
+              ✓ {language === 'hi' ? `सत्यापित: ${formattedVerifiedDate}` : `Verified on ${formattedVerifiedDate}`}
+            </span>
+          ) : (
+            <span
+              title="This scheme has not been reviewed in over 90 days. Verification in progress."
+              className="inline-flex items-center px-2 py-1 rounded-lg bg-amber-50 text-amber-800 border border-amber-300 text-[10px] font-bold"
+            >
+              <AlertTriangle className="w-3 h-3 mr-1 text-amber-600 shrink-0" />
+              ⚠ {language === 'hi' ? 'समीक्षा आवश्यक' : 'Recheck needed'}
+            </span>
+          )}
         </div>
       </div>
 

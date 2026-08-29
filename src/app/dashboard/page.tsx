@@ -8,6 +8,7 @@ import { useLanguage } from '@/context/LanguageContext';
 import { INDIAN_STATES, CASTE_CATEGORIES, OCCUPATIONS, EDUCATION_LEVELS } from '@/lib/indianStates';
 import SchemeCard from '@/components/SchemeCard';
 import { SchemeItem, ApplicationTrackerItem, NotificationItem } from '@/types';
+import { calculateTotalBenefits } from '@/lib/benefitCalculator';
 import {
   LayoutDashboard,
   Bookmark,
@@ -20,9 +21,15 @@ import {
   CheckCircle2,
   Clock,
   AlertCircle,
+  AlertTriangle,
   Save,
   ChevronRight,
+  ChevronDown,
+  ChevronUp,
   TrendingUp,
+  IndianRupee,
+  Calendar,
+  BadgeCheck,
 } from 'lucide-react';
 
 function DashboardContent() {
@@ -36,6 +43,8 @@ function DashboardContent() {
   const [bookmarks, setBookmarks] = useState<SchemeItem[]>([]);
   const [trackers, setTrackers] = useState<ApplicationTrackerItem[]>([]);
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
+  const [deadlines, setDeadlines] = useState<any[]>([]);
+  const [showBenefitBreakdown, setShowBenefitBreakdown] = useState(false);
   const [loading, setLoading] = useState(true);
 
   // Profile Form state
@@ -114,6 +123,13 @@ function DashboardContent() {
       if (notifRes.ok) {
         const notifData = await notifRes.json();
         setNotifications(notifData.notifications || []);
+      }
+
+      // 6. Fetch Upcoming Deadlines / Reminders
+      const remRes = await fetch('/api/reminders');
+      if (remRes.ok) {
+        const remData = await remRes.json();
+        setDeadlines(remData.deadlines || []);
       }
     } catch (err) {
       console.error('Failed to load dashboard:', err);
@@ -214,11 +230,13 @@ function DashboardContent() {
     { id: 'profile', label: t('tabProfile'), icon: User },
   ];
 
+  const benefitSummary = calculateTotalBenefits(recommendations);
+
   return (
     <div className="bg-slate-50 min-h-screen py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
         {/* Welcome Header */}
-        <div className="bg-gradient-to-r from-govNavy-950 via-govNavy-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-soft-sm mb-8 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div className="bg-gradient-to-r from-govNavy-950 via-govNavy-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-soft-sm mb-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
             <span className="text-xs font-bold text-govEmerald-400 uppercase tracking-wider block">
               {t('officialPortalBadge')}
@@ -242,41 +260,204 @@ function DashboardContent() {
           </div>
         </div>
 
+        {/* 1. TOTAL BENEFIT CALCULATOR CARD */}
+        <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-7 shadow-soft-sm mb-8 relative overflow-hidden">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+            <div className="space-y-2">
+              <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-saffron-50 border border-saffron-200 text-saffron-900 text-xs font-bold shadow-soft-sm">
+                <IndianRupee className="w-3.5 h-3.5 text-saffron-600" />
+                <span>{language === 'hi' ? 'कुल अनुमानित कल्याणकारी लाभ' : 'Total Estimated Benefit Potential'}</span>
+              </div>
+              <h2 className="text-xl sm:text-2xl font-black text-govNavy-900 tracking-tight">
+                {language === 'hi' ? 'आपके लिए कुल अनुमानित लाभ' : 'Your Total Estimated Welfare Benefit'}
+              </h2>
+              <p className="text-xs sm:text-sm text-slate-500 max-w-2xl leading-relaxed">
+                {language === 'hi'
+                  ? `आपकी प्रोफ़ाइल के अनुसार आप ${benefitSummary.formattedTotal} तक के वार्षिक लाभ और सरकारी सहायता के लिए पात्र हो सकते हैं।`
+                  : `Based on your profile, you could be eligible for up to ${benefitSummary.formattedTotal} in welfare grants, scholarships, and healthcare benefits.`}
+              </p>
+            </div>
+
+            {/* Big Prominent Benefit Number */}
+            <div className="p-5 sm:p-6 rounded-2xl bg-gradient-to-br from-govNavy-950 to-govNavy-900 text-white text-center sm:text-right border border-govNavy-800 shadow-soft-md shrink-0 flex flex-col justify-center">
+              <span className="text-xs font-bold text-slate-300 uppercase tracking-wider block mb-1">
+                {language === 'hi' ? 'अनुमानित कुल लाभ' : 'Estimated Annual Potential'}
+              </span>
+              <div className="text-3xl sm:text-4xl font-black text-saffron-400 tracking-tight leading-none">
+                {benefitSummary.formattedTotal}
+              </div>
+              <span className="text-[11px] text-slate-300 mt-1 font-medium">
+                {benefitSummary.schemeCount} {language === 'hi' ? 'पात्र योजनाओं में' : 'contributing schemes'}
+              </span>
+            </div>
+          </div>
+
+          {/* Breakdown Toggle Button */}
+          {benefitSummary.breakdown.length > 0 && (
+            <div className="mt-5 pt-5 border-t border-slate-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+              <p className="text-[11px] text-slate-400 italic">
+                *Disclaimer: Approximate figure based on official maximum limits. Actual entitlement is subject to government verification and scheme rules.
+              </p>
+              <button
+                onClick={() => setShowBenefitBreakdown(!showBenefitBreakdown)}
+                className="inline-flex items-center space-x-1.5 text-xs font-bold text-govNavy-900 hover:text-govNavy-700 transition-smooth shrink-0"
+              >
+                <span>{showBenefitBreakdown ? (language === 'hi' ? 'विवरण छुपाएं' : 'Hide Scheme Breakdown') : (language === 'hi' ? 'योजनावार विवरण देखें' : 'View Scheme Breakdown')}</span>
+                {showBenefitBreakdown ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+              </button>
+            </div>
+          )}
+
+          {/* Collapsible Scheme Breakdown List */}
+          {showBenefitBreakdown && benefitSummary.breakdown.length > 0 && (
+            <div className="mt-4 pt-4 border-t border-slate-100 grid grid-cols-1 md:grid-cols-2 gap-3 animate-fadeIn">
+              {benefitSummary.breakdown.map((item) => (
+                <div
+                  key={item.id}
+                  className="p-3.5 rounded-xl bg-slate-50 border border-slate-200/80 flex items-center justify-between gap-3"
+                >
+                  <div className="min-w-0 flex-1">
+                    <Link
+                      href={`/schemes/${item.id}`}
+                      className="text-xs font-bold text-govNavy-900 hover:text-govNavy-700 truncate block"
+                    >
+                      {language === 'hi' && item.titleHi ? item.titleHi : item.titleEn}
+                    </Link>
+                    <span className="text-[10px] font-semibold text-slate-500">
+                      {item.benefitType}
+                    </span>
+                  </div>
+                  <span className="px-2.5 py-1 rounded-lg bg-govEmerald-50 text-govEmerald-800 border border-govEmerald-200 text-xs font-bold shrink-0">
+                    {item.amountFormatted}
+                  </span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
         {/* Dashboard Layout: Tabs Sidebar + Content */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          {/* Navigation Tabs (Horizontal on mobile, Vertical on desktop) */}
-          <div className="lg:col-span-3 bg-white p-2 rounded-2xl border border-slate-200/90 shadow-soft-sm flex lg:flex-col overflow-x-auto lg:overflow-visible gap-1 sticky top-24">
-            {tabs.map((tab) => {
-              const Icon = tab.icon;
-              const isActive = activeTab === tab.id;
-              return (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id)}
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap lg:whitespace-normal ${
-                    isActive
-                      ? 'bg-govNavy-900 text-white shadow-soft-sm'
-                      : 'text-slate-700 hover:bg-slate-50 hover:text-govNavy-900'
-                  }`}
-                >
-                  <div className="flex items-center space-x-2.5">
-                    <Icon className={`w-4 h-4 ${isActive ? 'text-govEmerald-400' : 'text-slate-500'}`} />
-                    <span>{tab.label}</span>
-                  </div>
-                  {tab.badge !== undefined && tab.badge > 0 && (
-                    <span
-                      className={`ml-2 px-2 py-0.5 rounded-full text-[10px] font-black ${
-                        isActive
-                          ? 'bg-govEmerald-500 text-white'
-                          : 'bg-slate-100 text-slate-700'
-                      }`}
-                    >
-                      {tab.badge}
-                    </span>
-                  )}
-                </button>
-              );
-            })}
+          {/* Navigation Tabs + Deadlines Widget (Horizontal on mobile, Vertical on desktop) */}
+          <div className="lg:col-span-3 space-y-6">
+            <div className="bg-white p-2 rounded-2xl border border-slate-200/90 shadow-soft-sm flex lg:flex-col overflow-x-auto lg:overflow-visible gap-1 sticky top-24">
+              {tabs.map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => setActiveTab(tab.id)}
+                    className={`flex items-center justify-between px-4 py-3 rounded-xl text-xs sm:text-sm font-bold transition-all whitespace-nowrap lg:whitespace-normal ${
+                      isActive
+                        ? 'bg-govNavy-900 text-white shadow-soft-sm'
+                        : 'text-slate-700 hover:bg-slate-50 hover:text-govNavy-900'
+                    }`}
+                  >
+                    <div className="flex items-center space-x-2.5">
+                      <Icon className={`w-4 h-4 ${isActive ? 'text-govEmerald-400' : 'text-slate-500'}`} />
+                      <span>{tab.label}</span>
+                    </div>
+                    {tab.badge !== undefined && tab.badge > 0 && (
+                      <span
+                        className={`ml-2 px-2 py-0.5 rounded-full text-[10px] font-black ${
+                          isActive
+                            ? 'bg-govEmerald-500 text-white'
+                            : 'bg-slate-100 text-slate-700'
+                        }`}
+                      >
+                        {tab.badge}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* 2. UPCOMING DEADLINES WIDGET (Next 30 Days) */}
+            <div className="bg-white rounded-2xl border border-slate-200/90 p-5 shadow-soft-sm">
+              <div className="flex items-center justify-between mb-3.5">
+                <div className="flex items-center space-x-2">
+                  <Calendar className="w-4 h-4 text-govNavy-900" />
+                  <h3 className="text-xs font-bold text-govNavy-900 uppercase tracking-wider">
+                    {language === 'hi' ? 'आगामी अंतिम तिथियां' : 'Upcoming Deadlines'}
+                  </h3>
+                </div>
+                <span className="px-2 py-0.5 rounded-full bg-govNavy-50 text-govNavy-800 text-[10px] font-bold">
+                  {deadlines.length} {language === 'hi' ? 'सक्रिय' : 'Active'}
+                </span>
+              </div>
+
+              {deadlines.length === 0 ? (
+                <p className="text-xs text-slate-500 py-3 text-center">
+                  {language === 'hi'
+                    ? 'अगले 30 दिनों में कोई योजना बंद नहीं हो रही है।'
+                    : 'No bookmarked schemes closing in the next 30 days.'}
+                </p>
+              ) : (
+                <div className="space-y-2.5">
+                  {deadlines.map((dl) => {
+                    const isUrgent = dl.daysLeft <= 3;
+                    return (
+                      <div
+                        key={dl.id}
+                        className={`p-3 rounded-xl border transition-all ${
+                          dl.daysLeft <= 1
+                            ? 'bg-rose-50 border-rose-200'
+                            : dl.daysLeft <= 3
+                            ? 'bg-amber-50 border-amber-200'
+                            : 'bg-slate-50 border-slate-200'
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-2 mb-1">
+                          <Link
+                            href={`/schemes/${dl.id}`}
+                            className="text-xs font-bold text-govNavy-900 hover:text-govNavy-700 line-clamp-1 flex-1"
+                          >
+                            {language === 'hi' && dl.titleHi ? dl.titleHi : dl.titleEn}
+                          </Link>
+                          <span
+                            className={`px-2 py-0.5 rounded-full text-[10px] font-extrabold shrink-0 ${
+                              dl.daysLeft <= 1
+                                ? 'bg-rose-600 text-white animate-pulse'
+                                : dl.daysLeft <= 3
+                                ? 'bg-amber-600 text-white'
+                                : 'bg-govNavy-900 text-white'
+                            }`}
+                          >
+                            {dl.daysLeft} {dl.daysLeft === 1 ? 'day' : 'days'} left
+                          </span>
+                        </div>
+
+                        <p className="text-[11px] text-slate-500 mb-2">
+                          Closes on {dl.closeDateFormatted}
+                        </p>
+
+                        <div className="flex items-center space-x-2">
+                          <Link
+                            href={`/schemes/${dl.id}`}
+                            className="text-[11px] font-bold text-govNavy-900 hover:underline"
+                          >
+                            Details &rarr;
+                          </Link>
+                          {dl.officialLink && (
+                            <a
+                              href={dl.officialLink}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[11px] font-bold text-saffron-600 hover:underline inline-flex items-center space-x-0.5"
+                            >
+                              <span>Apply</span>
+                              <ExternalLink className="w-3 h-3" />
+                            </a>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Tab Content Panel */}

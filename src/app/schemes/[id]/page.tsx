@@ -181,13 +181,43 @@ export default function SchemeDetailPage() {
         {/* Scheme Header Card */}
         <div className="bg-white rounded-3xl border border-slate-200/90 p-6 sm:p-8 shadow-soft-sm mb-8">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-            <div className="flex items-center space-x-2">
+            <div className="flex flex-wrap items-center gap-2">
               <span className="px-3 py-1 rounded-full bg-govNavy-50 text-govNavy-900 border border-govNavy-100 text-xs font-bold uppercase tracking-wider">
                 {categoryName}
               </span>
               <span className="px-2.5 py-1 rounded-full bg-govEmerald-50 text-govEmerald-800 border border-govEmerald-200 text-xs font-semibold">
                 🟢 {scheme.status}
               </span>
+
+              {/* Last Verified Trust Badge (90-day threshold) */}
+              {(() => {
+                const updatedDate = new Date(scheme.updatedAt || scheme.createdAt || Date.now());
+                const diffDays = Math.floor((Date.now() - updatedDate.getTime()) / (1000 * 60 * 60 * 24));
+                const isVerifiedRecent = diffDays <= 90;
+                const formattedVerifiedDate = updatedDate.toLocaleDateString('en-IN', {
+                  day: 'numeric',
+                  month: 'short',
+                  year: 'numeric',
+                });
+
+                return isVerifiedRecent ? (
+                  <span
+                    title={`Scheme verified against official gazette on ${formattedVerifiedDate}`}
+                    className="px-3 py-1 rounded-full bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold flex items-center space-x-1"
+                  >
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                    <span>{language === 'hi' ? `✓ सत्यापित: ${formattedVerifiedDate}` : `✓ Verified on ${formattedVerifiedDate}`}</span>
+                  </span>
+                ) : (
+                  <span
+                    title="This scheme was last updated over 90 days ago. Verification check pending."
+                    className="px-3 py-1 rounded-full bg-amber-50 text-amber-800 border border-amber-300 text-xs font-bold flex items-center space-x-1"
+                  >
+                    <AlertTriangle className="w-3.5 h-3.5 text-amber-600 shrink-0" />
+                    <span>{language === 'hi' ? '⚠ समीक्षा आवश्यक (90+ दिन)' : '⚠ Recheck needed (90+ days)'}</span>
+                  </span>
+                );
+              })()}
             </div>
 
             {/* Actions: Save, Share, Print */}
