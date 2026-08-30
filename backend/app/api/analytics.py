@@ -79,3 +79,22 @@ def execute_natural_language_query(
     )
 
     return result
+
+@router.get("/mo-pattern/{person_id}")
+def get_suspect_mo_pattern(person_id: str):
+    """
+    Serial Offender Pattern Detector:
+    Aggregates behavioral signatures across cases, computes explainable similarity scores
+    against unsolved cold cases, and generates investigative leads.
+    """
+    from app.services.mo_service import serial_pattern_detector
+    return serial_pattern_detector.aggregate_person_mo(person_id=person_id)
+
+@router.get("/mo-clusters")
+def get_mo_clusters(case_type: Optional[str] = Query(None, description="Optional case type filter")):
+    """
+    Returns global behavioral MO clusters across all cases to spot unrecognized serial offender rings.
+    """
+    from app.services.mo_service import serial_pattern_detector
+    return serial_pattern_detector.get_mo_clusters(case_type=case_type)
+

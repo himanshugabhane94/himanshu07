@@ -1,9 +1,9 @@
 from typing import List, Dict, Any
-from app.models.schemas import Node, Edge, Case, NodeType, EdgeType, RiskLevel
+from app.models.schemas import Node, Edge, Case, NodeType, EdgeType, RiskLevel, ModusOperandi
 from app.services.graph_engine import graph_engine
 from app.services.blockchain_service import blockchain_service
 
-# Pre-defined Master Cases with Multi-Jurisdiction Metadata across 9 Diverse Crime Categories
+# Pre-defined Master Cases with Multi-Jurisdiction Metadata across 9 Diverse Crime Categories + Unsolved Cold Cases
 DEMO_CASES: List[Case] = [
     Case(
         id="CASE-HAWALA-2024",
@@ -18,6 +18,15 @@ DEMO_CASES: List[Case] = [
         date_filed="2024-01-10",
         case_type="Cross-Border Hawala & Money Laundering",
         crime_category="Hawala/Financial",
+        modus_operandi=ModusOperandi(
+            time_of_day="daytime",
+            operating_method="syndicate_cell",
+            mobility_type="used_vehicle",
+            location_type="commercial",
+            weapon_category="none",
+            target_selection="high_net_worth",
+            signatures=["mule_account_burst", "bogus_invoicing_front", "usdt_trc20_cold_storage"]
+        ),
         created_at="2024-01-10T10:00:00Z",
         ipc_sections=["IPC 120B (Criminal Conspiracy)", "IPC 420 (Cheating)", "PMLA Sec 3 & 4 (Money Laundering)", "FEMA Sec 13"],
         tags=["Hawala", "Cryptocurrency", "Shell Companies", "High Value", "Cross-Border"],
@@ -37,6 +46,15 @@ DEMO_CASES: List[Case] = [
         date_filed="2024-02-01",
         case_type="Inter-State Narcotics Trafficking",
         crime_category="Narcotics",
+        modus_operandi=ModusOperandi(
+            time_of_day="dawn",
+            operating_method="syndicate_cell",
+            mobility_type="freight_transit",
+            location_type="highway_transit",
+            weapon_category="firearm",
+            target_selection="opportunistic",
+            signatures=["altered_fuel_tank", "thuraya_satellite_ping", "dead_drop_gps"]
+        ),
         created_at="2024-02-01T14:30:00Z",
         ipc_sections=["NDPS Act Sec 21 (Commercial Quantity)", "NDPS Act Sec 29 (Abetment & Conspiracy)", "IPC 468 (Forgery)"],
         tags=["Narcotics", "Border Infiltration", "Logistics Fleet", "Burner SIMs"],
@@ -56,6 +74,15 @@ DEMO_CASES: List[Case] = [
         date_filed="2024-01-05",
         case_type="Counter-Terror & Cyber Subversion",
         crime_category="Counter-Terrorism",
+        modus_operandi=ModusOperandi(
+            time_of_day="midnight",
+            operating_method="lone_operator",
+            mobility_type="two_wheeler",
+            location_type="isolated_area",
+            weapon_category="cyber_spoofing",
+            target_selection="targeted",
+            signatures=["tor_hidden_service", "chipmixer_coinjoin", "physical_dead_drop"]
+        ),
         created_at="2024-01-05T08:15:00Z",
         ipc_sections=["UAPA Sec 18 (Terrorist Conspiracy)", "UAPA Sec 20 (Member of Terror Org)", "IT Act Sec 66F (Cyber Terrorism)"],
         tags=["Counter-Terror", "Sleeper Cells", "Dark Web", "Encrypted Comms"],
@@ -75,6 +102,15 @@ DEMO_CASES: List[Case] = [
         date_filed="2024-02-10",
         case_type="Armed Kidnapping & Extortion",
         crime_category="Kidnapping",
+        modus_operandi=ModusOperandi(
+            time_of_day="night",
+            operating_method="group_of_3+",
+            mobility_type="used_vehicle",
+            location_type="highway_transit",
+            weapon_category="firearm",
+            target_selection="targeted",
+            signatures=["highway_abduction", "tampered_scorpio_chassis", "ransom_call_from_moving_vehicle"]
+        ),
         created_at="2024-02-10T11:00:00Z",
         ipc_sections=["IPC 364A (Kidnapping for Ransom)", "IPC 386 (Extortion by Grievous Hurt)", "Arms Act Sec 25"],
         tags=["Kidnapping", "Ransom", "Inter-State Gang", "Highway Tracking", "Armed Gang"],
@@ -94,6 +130,15 @@ DEMO_CASES: List[Case] = [
         date_filed="2024-02-18",
         case_type="Targeted Homicide & Contract Killing",
         crime_category="Murder",
+        modus_operandi=ModusOperandi(
+            time_of_day="evening",
+            operating_method="duo_partnership",
+            mobility_type="two_wheeler",
+            location_type="residential",
+            weapon_category="firearm",
+            target_selection="targeted",
+            signatures=["contract_advance_cash", "point_blank_discharge", "two_wheeler_getaway"]
+        ),
         created_at="2024-02-18T20:30:00Z",
         ipc_sections=["IPC 302 (Murder)", "IPC 120B (Criminal Conspiracy)", "Arms Act Sec 27"],
         tags=["Homicide", "Contract Killing", "Firearm Forensics", "Financial Motive"],
@@ -113,6 +158,15 @@ DEMO_CASES: List[Case] = [
         date_filed="2024-01-25",
         case_type="Sensitive Metro Incident Surveillance",
         crime_category="SexualAssault",
+        modus_operandi=ModusOperandi(
+            time_of_day="night",
+            operating_method="lone_operator",
+            mobility_type="commercial_taxi",
+            location_type="highway_transit",
+            weapon_category="blunt_force",
+            target_selection="vulnerable_commuter",
+            signatures=["forged_taxi_permit", "anpr_toll_avoidance", "night_commuter_intercept"]
+        ),
         created_at="2024-01-25T09:00:00Z",
         ipc_sections=["IPC 354A (Assault & Outraging Modesty)", "IPC 376 r/w 511", "Motor Vehicles Act Sec 192"],
         tags=["Surveillance", "ANPR Tracking", "GPS Telematics", "Forensic Chain"],
@@ -132,6 +186,15 @@ DEMO_CASES: List[Case] = [
         date_filed="2024-02-04",
         case_type="Digital Coercion & Cyberstalking",
         crime_category="Harassment",
+        modus_operandi=ModusOperandi(
+            time_of_day="night",
+            operating_method="lone_operator",
+            mobility_type="commercial_taxi",
+            location_type="digital_cyberspace",
+            weapon_category="cyber_spoofing",
+            target_selection="vulnerable_commuter",
+            signatures=["virtual_sip_relay", "spoofed_did", "proton_threat_dispatch"]
+        ),
         created_at="2024-02-04T15:00:00Z",
         ipc_sections=["IPC 354D (Stalking)", "IPC 506 (Criminal Intimidation)", "IT Act Sec 66E & 67"],
         tags=["Cyberstalking", "VoIP Spoofing", "Virtual Numbers", "Digital Forensics"],
@@ -151,6 +214,15 @@ DEMO_CASES: List[Case] = [
         date_filed="2024-01-20",
         case_type="Organized Grand Auto Theft & Fencing",
         crime_category="Theft",
+        modus_operandi=ModusOperandi(
+            time_of_day="midnight",
+            operating_method="duo_partnership",
+            mobility_type="used_vehicle",
+            location_type="commercial",
+            weapon_category="none",
+            target_selection="high_net_worth",
+            signatures=["obd_cloning", "keyless_booster", "bullion_melting_fence"]
+        ),
         created_at="2024-01-20T12:00:00Z",
         ipc_sections=["IPC 379 (Theft)", "IPC 411 (Receiving Stolen Property)", "IPC 413 (Habitually Dealing in Stolen Property)"],
         tags=["Auto Theft", "OBD Cloning", "Bullion Fencing", "Pawn Brokers"],
@@ -170,11 +242,107 @@ DEMO_CASES: List[Case] = [
         date_filed="2024-02-24",
         case_type="Armed Dacoity & Highway Cash Heist",
         crime_category="Robbery",
+        modus_operandi=ModusOperandi(
+            time_of_day="night",
+            operating_method="group_of_3+",
+            mobility_type="used_vehicle",
+            location_type="highway_transit",
+            weapon_category="firearm",
+            target_selection="targeted",
+            signatures=["highway_blockade", "tampered_scorpio_chassis", "transit_cash_box_loot"]
+        ),
         created_at="2024-02-24T16:45:00Z",
         ipc_sections=["IPC 392 (Robbery)", "IPC 397 (Robbery with Attempt to Cause Death)", "Arms Act Sec 25/27"],
         tags=["Armed Robbery", "Cash Transit", "Highway Heist", "Firearms Network", "Multi-Crime Syndicate"],
         node_count=7,
         edge_count=6
+    ),
+    # =========================================================================
+    # OPEN / UNSOLVED COLD CASES (For Serial Offender Pattern Matching Engine)
+    # =========================================================================
+    Case(
+        id="CASE-COLD-CARJACK-2024",
+        fir_number="FIR 55/2024-HR-COLD",
+        title="Unsolved Midnight Highway Carjacking (Manesar Toll)",
+        description="Open Cold Case: Armed 3-man module in a dark SUV blocked a luxury sedan near KMP Expressway, fired countrymade rounds in the air, and fled towards Alwar border.",
+        status="Unsolved Cold Case",
+        lead_investigator="Special Investigation Team (SIT)",
+        agency="Haryana Police / Highway Patrol Unit",
+        state="Haryana",
+        police_station="Manesar PS, Gurugram",
+        date_filed="2024-01-18",
+        case_type="Highway Armed Carjacking",
+        crime_category="Robbery",
+        modus_operandi=ModusOperandi(
+            time_of_day="night",
+            operating_method="group_of_3+",
+            mobility_type="used_vehicle",
+            location_type="highway_transit",
+            weapon_category="firearm",
+            target_selection="targeted",
+            signatures=["highway_blockade", "tampered_scorpio_chassis", "ransom_call_from_moving_vehicle"]
+        ),
+        created_at="2024-01-18T23:30:00Z",
+        ipc_sections=["IPC 392", "IPC 397", "Arms Act 25"],
+        tags=["Cold Case", "Highway Blockade", "Armed SUV", "Unsolved"],
+        node_count=0,
+        edge_count=0
+    ),
+    Case(
+        id="CASE-COLD-EXTORTION-2024",
+        fir_number="FIR 19/2024-CYBER-COLD",
+        title="Unsolved Night VoIP Extortion & Cyber Coercion",
+        description="Open Cold Case: High-frequency midnight threatening calls originating from spoofed international VoIP numbers (+1-202) demanding crypto payouts, targeting solo night commuters.",
+        status="Unsolved Cold Case",
+        lead_investigator="Cyber Forensics Cell",
+        agency="Delhi Police IFSO",
+        state="Delhi",
+        police_station="Cyber PS South-West Delhi",
+        date_filed="2024-01-28",
+        case_type="Digital Coercion & VoIP Threat",
+        crime_category="Harassment",
+        modus_operandi=ModusOperandi(
+            time_of_day="night",
+            operating_method="lone_operator",
+            mobility_type="commercial_taxi",
+            location_type="digital_cyberspace",
+            weapon_category="cyber_spoofing",
+            target_selection="vulnerable_commuter",
+            signatures=["virtual_sip_relay", "spoofed_did"]
+        ),
+        created_at="2024-01-28T02:15:00Z",
+        ipc_sections=["IPC 384", "IT Act Sec 66D"],
+        tags=["Cold Case", "VoIP Spoofing", "Unsolved"],
+        node_count=0,
+        edge_count=0
+    ),
+    Case(
+        id="CASE-COLD-VAULT-2024",
+        fir_number="FIR 81/2024-ROHINI-COLD",
+        title="Unsolved Wazirpur Gold Foundry Vault Break-In",
+        description="Open Cold Case: Stealth commercial burglary of industrial bullion foundry during midnight power shutdown. Electronic alarms bypassed without forced physical door damage.",
+        status="Unsolved Cold Case",
+        lead_investigator="Crime Branch Special Squad",
+        agency="Delhi Police Crime Branch",
+        state="Delhi",
+        police_station="Wazirpur Industrial Area PS",
+        date_filed="2024-01-14",
+        case_type="Commercial Vault Infiltration",
+        crime_category="Theft",
+        modus_operandi=ModusOperandi(
+            time_of_day="midnight",
+            operating_method="duo_partnership",
+            mobility_type="used_vehicle",
+            location_type="commercial",
+            weapon_category="none",
+            target_selection="high_net_worth",
+            signatures=["obd_cloning", "bullion_melting_fence"]
+        ),
+        created_at="2024-01-14T01:45:00Z",
+        ipc_sections=["IPC 380", "IPC 457"],
+        tags=["Cold Case", "Vault Break-in", "Bullion", "Unsolved"],
+        node_count=0,
+        edge_count=0
     )
 ]
 

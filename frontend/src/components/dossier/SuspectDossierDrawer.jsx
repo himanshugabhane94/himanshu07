@@ -127,22 +127,33 @@ export default function SuspectDossierDrawer({
             </div>
           </div>
 
-          {/* Dossier Tabs (XAI, Direct Connections, Blockchain Custody) */}
-          <div className="flex items-center rounded-2xl bg-[#0f0e0d] border border-[#3a352d] p-1 text-xs font-mono">
+          {/* Dossier Tabs (XAI, MO Pattern, Direct Connections, Blockchain Custody) */}
+          <div className="flex items-center rounded-2xl bg-[#0f0e0d] border border-[#3a352d] p-1 text-xs font-mono flex-wrap gap-1">
             <button
               onClick={() => setActiveTab('xai')}
-              className={`flex-1 py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 min-w-[90px] py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 ${
                 activeTab === 'xai' 
                   ? 'bg-[#24211d] text-[#f5c074] border border-[#d68a1f]/40' 
                   : 'text-[#8a8478] hover:text-[#ece7de]'
               }`}
             >
               <Sparkles className="w-3 h-3 text-[#d68a1f]" />
-              <span>AI Explanation</span>
+              <span>AI Risk</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('mo')}
+              className={`flex-1 min-w-[90px] py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 ${
+                activeTab === 'mo' 
+                  ? 'bg-[#24211d] text-[#f5c074] border border-[#d68a1f]/40' 
+                  : 'text-[#8a8478] hover:text-[#ece7de]'
+              }`}
+            >
+              <Network className="w-3 h-3 text-[#e5aa70]" />
+              <span>MO Pattern</span>
             </button>
             <button
               onClick={() => setActiveTab('connections')}
-              className={`flex-1 py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 min-w-[90px] py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 ${
                 activeTab === 'connections' 
                   ? 'bg-[#24211d] text-[#f5c074] border border-[#d68a1f]/40' 
                   : 'text-[#8a8478] hover:text-[#ece7de]'
@@ -153,14 +164,14 @@ export default function SuspectDossierDrawer({
             </button>
             <button
               onClick={() => setActiveTab('custody')}
-              className={`flex-1 py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 min-w-[90px] py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 ${
                 activeTab === 'custody' 
                   ? 'bg-[#24211d] text-[#f5c074] border border-[#d68a1f]/40' 
                   : 'text-[#8a8478] hover:text-[#ece7de]'
               }`}
             >
               <FileCheck className="w-3 h-3 text-[#5c7a5c]" />
-              <span>Sec 65B Audit</span>
+              <span>Sec 65B</span>
             </button>
           </div>
 
@@ -171,6 +182,11 @@ export default function SuspectDossierDrawer({
               caseId={caseId}
               onSelectNode={onSelectNode}
             />
+          )}
+
+          {/* TAB CONTENT: SERIAL OFFENDER MO PATTERN DETECTOR */}
+          {activeTab === 'mo' && (
+            <ModusOperandiSuspectSection nodeId={nodeId} />
           )}
 
           {/* TAB CONTENT 2: DIRECT NEIGHBORHOOD CONNECTIONS */}
@@ -219,3 +235,127 @@ export default function SuspectDossierDrawer({
     </div>
   );
 }
+
+function ModusOperandiSuspectSection({ nodeId }) {
+  const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!nodeId) return;
+    setLoading(true);
+    api.getMoPattern(nodeId)
+      .then(res => {
+        setProfile(res);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to load MO pattern:", err);
+        setLoading(false);
+      });
+  }, [nodeId]);
+
+  if (loading) {
+    return (
+      <div className="p-8 flex flex-col items-center justify-center gap-2 text-[#8a8478]">
+        <div className="w-6 h-6 border-2 border-[#d68a1f] border-t-transparent rounded-full animate-spin"></div>
+        <span className="text-xs font-mono">Synthesizing behavioral Modus Operandi...</span>
+      </div>
+    );
+  }
+
+  if (!profile) {
+    return (
+      <div className="p-4 rounded-2xl bg-[#0f0e0d] border border-[#3a352d] text-xs text-[#8a8478] font-mono">
+        No established MO pattern record for this entity identifier.
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-4 animate-in fade-in">
+      
+      {/* 1. MO Profile Tag Badges */}
+      <div className="p-4 rounded-2xl bg-[#0f0e0d] border border-[#3a352d] space-y-3 shadow-dossier">
+        <div className="flex items-center justify-between text-xs">
+          <span className="font-bold text-[#f5c074] font-mono tracking-wider uppercase">
+            Aggregated Behavioral Signatures
+          </span>
+          <span className="text-[10px] font-mono text-[#8a8478]">
+            {profile.primary_crime_categories?.join(' • ') || 'General'}
+          </span>
+        </div>
+
+        <div className="flex flex-wrap gap-1.5">
+          {(profile.mo_tags || []).map((tag, idx) => (
+            <span 
+              key={idx}
+              className="px-2.5 py-1 rounded-xl bg-[#1c1a17] text-[#ece7de] border border-[#d68a1f]/40 text-[11px] font-mono font-medium flex items-center gap-1 shadow-sm"
+            >
+              <span>⚡</span> {tag}
+            </span>
+          ))}
+        </div>
+
+        <p className="text-xs text-[#8a8478] font-serif italic pt-1 border-t border-[#2a2620] leading-relaxed">
+          "{profile.behavioral_summary}"
+        </p>
+      </div>
+
+      {/* 2. Potentially Related Unsolved Cases */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between text-xs font-bold text-[#8a8478] uppercase font-mono tracking-wider px-1">
+          <span>Potentially Related Unsolved Cases ({profile.potential_related_cases?.length || 0})</span>
+        </div>
+
+        {profile.potential_related_cases && profile.potential_related_cases.length > 0 ? (
+          profile.potential_related_cases.map((rc, idx) => (
+            <div 
+              key={idx}
+              className="p-4 rounded-2xl bg-[#0f0e0d] border border-[#d68a1f]/40 space-y-3 shadow-dossier"
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <div className="font-bold text-xs text-[#ece7de] font-serif">{rc.fir_number}</div>
+                  <div className="text-[11px] text-[#8a8478] font-serif">{rc.title}</div>
+                </div>
+                <div className="text-right shrink-0">
+                  <span className={rc.match_score >= 80 ? 'seal-badge-critical' : 'seal-badge-high'}>
+                    {rc.match_score}% MO Match
+                  </span>
+                </div>
+              </div>
+
+              {/* Matched Attribute Badges */}
+              <div className="flex flex-wrap gap-1">
+                {rc.matched_attributes?.map((attr, aIdx) => (
+                  <span 
+                    key={aIdx} 
+                    className="px-2 py-0.5 rounded-lg bg-[#24211d] text-[#f5c074] border border-[#3a352d] text-[10px] font-mono"
+                  >
+                    ✓ {attr}
+                  </span>
+                ))}
+              </div>
+
+              {/* Rationale */}
+              <p className="text-[11px] text-[#ece7de] font-serif bg-[#1c1a17] p-2.5 rounded-xl border border-[#3a352d]">
+                {rc.investigative_rationale}
+              </p>
+            </div>
+          ))
+        ) : (
+          <div className="p-4 rounded-2xl bg-[#0f0e0d] border border-[#3a352d] text-xs text-[#8a8478] font-serif">
+            No matching unsolved cold cases currently found exceeding similarity threshold.
+          </div>
+        )}
+
+        {/* 3. Statutory Legal Disclaimer */}
+        <div className="p-3 rounded-2xl bg-[#1c1a17] border border-[#3a352d] text-[10px] text-[#8a8478] font-serif italic text-center">
+          ⚖️ <strong className="text-[#f5c074]">Statutory Notice:</strong> This is a pattern-based investigative lead generated via explainable behavioral matching, not confirmed evidence. Requires human verification before judicial filings.
+        </div>
+      </div>
+
+    </div>
+  );
+}
+

@@ -230,6 +230,20 @@ export const api = {
     });
   },
 
+  // Serial Offender MO Pattern Detector
+  getMoPattern: async (personId) => {
+    return fetchJson(`${API_BASE}/analytics/mo-pattern/${encodeURIComponent(personId)}`, {
+      headers: getHeaders()
+    });
+  },
+
+  getMoClusters: async (caseType = null) => {
+    const query = caseType ? `?case_type=${encodeURIComponent(caseType)}` : '';
+    return fetchJson(`${API_BASE}/analytics/mo-clusters${query}`, {
+      headers: getHeaders()
+    });
+  },
+
   // Cross-Case Intelligence Linker
   getCrossCaseLinks: async (params = {}) => {
     const query = new URLSearchParams();

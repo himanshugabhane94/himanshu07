@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { 
   Cpu, Award, Users, GitMerge, Zap, AlertTriangle, 
   ArrowRight, Search, CheckCircle2, ShieldAlert, Sparkles, 
-  ExternalLink, Network, RefreshCw, BarChart3
+  ExternalLink, Network, RefreshCw, BarChart3, Target,
+  Layers, ChevronRight, Fingerprint
 } from 'lucide-react';
 import { api } from '../../services/api';
 
@@ -20,6 +21,8 @@ export default function AnalyticsWarRoom({
   const [communities, setCommunities] = useState([]);
   const [anomalies, setAnomalies] = useState([]);
   const [predictedLinks, setPredictedLinks] = useState([]);
+  const [moClusters, setMoClusters] = useState([]);
+  const [selectedClusterFilter, setSelectedClusterFilter] = useState('all');
   const [loading, setLoading] = useState(false);
 
   // Shortest Path state
@@ -55,6 +58,9 @@ export default function AnalyticsWarRoom({
       } else if (subTab === 'prediction') {
         const res = await api.getPredictedLinks(selectedCaseId, 10);
         setPredictedLinks(res);
+      } else if (subTab === 'serial_patterns') {
+        const res = await api.getMoClusters();
+        setMoClusters(res);
       }
     } catch (err) {
       console.error("Analytics load error:", err);
@@ -106,6 +112,7 @@ export default function AnalyticsWarRoom({
           {[
             { id: 'centrality', label: 'Kingpins & Hubs', icon: Award },
             { id: 'communities', label: 'Gang Clusters', icon: Users },
+            { id: 'serial_patterns', label: 'Serial MO Patterns', icon: Fingerprint },
             { id: 'pathfinder', label: 'Pathfinder', icon: GitMerge },
             { id: 'prediction', label: 'Link Prediction', icon: Zap },
             { id: 'anomalies', label: 'Anomalies', icon: AlertTriangle },
@@ -390,6 +397,125 @@ export default function AnalyticsWarRoom({
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* ==========================================
+          SUB-TAB: SERIAL OFFENDER MO PATTERN DETECTOR
+          ========================================== */}
+      {subTab === 'serial_patterns' && (
+        <div className="space-y-6 animate-in fade-in">
+          
+          {/* Header Description & Stats */}
+          <div className="p-5 rounded-2xl bg-[#1c1a17] border border-[#3a352d] space-y-3 shadow-dossier relative">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="space-y-1">
+                <h3 className="text-sm font-bold text-[#ece7de] font-serif flex items-center gap-2">
+                  <Fingerprint className="w-4 h-4 text-[#d68a1f]" />
+                  <span>Cross-Case Modus Operandi (MO) Pattern Detector</span>
+                </h3>
+                <p className="text-xs text-[#8a8478] font-serif">
+                  Identifies behavioral signatures (Time of Day, Operating Method, Mobility, Weapon, Target Selection) to link multi-case perpetrators with open/unsolved cold cases.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <span className="px-3 py-1 rounded-xl bg-[#24211d] text-[#f5c074] border border-[#d68a1f]/40 text-xs font-mono font-bold">
+                  {moClusters.length} Behavioral Clusters Flagged
+                </span>
+              </div>
+            </div>
+
+            {/* Statutory Legal Notice */}
+            <div className="p-3 rounded-xl bg-[#0f0e0d] border border-[#3a352d] text-[11px] text-[#8a8478] font-serif italic">
+              ⚖️ <strong className="text-[#f5c074]">Judicial Defensibility Note:</strong> MO similarity utilizes explainable weighted attribute scoring across statutory police metadata (BSA 2023 compliant). All cold case suggestions are investigative leads requiring human verification.
+            </div>
+          </div>
+
+          {/* MO Cluster Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+            {moClusters.map((cluster) => (
+              <div 
+                key={cluster.cluster_id}
+                className="p-5 rounded-2xl bg-[#1c1a17] border border-[#3a352d] hover:border-[#d68a1f]/60 transition-all space-y-4 shadow-dossier flex flex-col justify-between"
+              >
+                <div className="space-y-3">
+                  {/* Title & Domain */}
+                  <div className="flex items-start justify-between gap-2">
+                    <div>
+                      <span className="text-[10px] font-mono text-[#d68a1f] uppercase tracking-wider">
+                        {cluster.crime_domain}
+                      </span>
+                      <h4 className="font-bold text-sm text-[#ece7de] font-serif">
+                        {cluster.cluster_name}
+                      </h4>
+                    </div>
+                    <span className="seal-badge-critical shrink-0">
+                      {cluster.confidence_level} Confidence
+                    </span>
+                  </div>
+
+                  {/* Core Signature */}
+                  <div className="p-3 rounded-xl bg-[#0f0e0d] border border-[#3a352d] text-xs text-[#ece7de] font-serif italic">
+                    "{cluster.core_mo_signature}"
+                  </div>
+
+                  {/* Shared Attributes Matrix */}
+                  <div className="space-y-1.5 pt-1">
+                    <span className="text-[10px] font-mono text-[#8a8478] uppercase">Shared Behavioral Attributes:</span>
+                    <div className="grid grid-cols-2 gap-2 text-[11px] font-mono">
+                      {Object.entries(cluster.shared_attributes || {}).map(([k, v], aIdx) => (
+                        <div key={aIdx} className="p-2 rounded-xl bg-[#24211d] border border-[#3a352d]">
+                          <span className="text-[#8a8478] block text-[9px] uppercase">{k}</span>
+                          <span className="text-[#f5c074] font-medium truncate block">{v}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Suspects Involved */}
+                  <div className="space-y-1.5 pt-1">
+                    <span className="text-[10px] font-mono text-[#8a8478] uppercase">
+                      Linked Operatives ({cluster.suspects_count}):
+                    </span>
+                    <div className="flex flex-wrap gap-1.5">
+                      {cluster.suspect_names.map((name, sIdx) => {
+                        const sId = cluster.suspect_ids[sIdx];
+                        return (
+                          <button
+                            key={sIdx}
+                            onClick={() => sId && onSelectNode && onSelectNode(sId)}
+                            className="px-2.5 py-1 rounded-xl bg-[#0f0e0d] hover:bg-[#24211d] text-[#ece7de] hover:text-[#f5c074] border border-[#3a352d] hover:border-[#d68a1f]/60 text-xs font-mono font-medium transition-all flex items-center gap-1"
+                          >
+                            <span>👤</span>
+                            <span>{name}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Associated FIRs */}
+                  <div className="space-y-1 pt-1">
+                    <span className="text-[10px] font-mono text-[#8a8478] uppercase">Associated Cases & Cold Leads:</span>
+                    <div className="flex flex-wrap gap-1">
+                      {cluster.associated_firs.map((fir, fIdx) => (
+                        <span key={fIdx} className="px-2 py-0.5 rounded-lg bg-[#0f0e0d] text-[#8a8478] border border-[#2a2620] text-[10px] font-mono">
+                          📁 {fir}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Pattern Synthesis Footnote */}
+                <p className="text-xs text-[#8a8478] font-serif pt-3 border-t border-[#2a2620] leading-relaxed">
+                  {cluster.pattern_description}
+                </p>
+              </div>
+            ))}
+          </div>
+
         </div>
       )}
 

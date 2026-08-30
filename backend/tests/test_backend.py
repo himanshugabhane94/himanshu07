@@ -185,5 +185,23 @@ class TestCrimeNetBackend(unittest.TestCase):
         self.assertIn("CASE HANDOVER", briefing.html_dossier)
         print(f"[PASS] Case Handover Briefing Test Passed: Compiled {len(briefing.top_targets)} top targets, {len(briefing.open_leads)} actionable leads, {len(briefing.cross_case_alerts)} cross-case alerts, and generated {len(briefing.html_dossier)} bytes official dossier.")
 
+    def test_serial_mo_pattern_detector(self):
+        from app.services.mo_service import serial_pattern_detector
+        profile = serial_pattern_detector.aggregate_person_mo("PER_KULDEEP_YADAV")
+        self.assertEqual(profile.person_id, "PER_KULDEEP_YADAV")
+        self.assertGreater(len(profile.mo_tags), 0)
+        self.assertGreater(len(profile.potential_related_cases), 0)
+        # Should link to Manesar Carjacking cold case with high match score
+        top_match = profile.potential_related_cases[0]
+        self.assertIn("CASE-COLD-CARJACK-2024", top_match.case_id)
+        self.assertGreaterEqual(top_match.match_score, 80)
+        self.assertGreater(len(top_match.matched_attributes), 0)
+
+        # Test global MO clusters
+        clusters = serial_pattern_detector.get_mo_clusters()
+        self.assertGreaterEqual(len(clusters), 4)
+        print(f"[PASS] Serial MO Pattern Detector Test Passed: Profile for {profile.person_label} matched {len(profile.potential_related_cases)} cold cases (Top match: {top_match.fir_number} @ {top_match.match_score}%). Generated {len(clusters)} behavioral clusters.")
+
 if __name__ == "__main__":
     unittest.main()
+

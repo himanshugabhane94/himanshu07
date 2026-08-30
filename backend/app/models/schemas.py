@@ -100,12 +100,21 @@ class GraphData(BaseModel):
     stats: Optional[Dict[str, Any]] = None
 
 # Case Model
+class ModusOperandi(BaseModel):
+    time_of_day: Optional[str] = "night" # midnight, night, evening, daytime, dawn
+    operating_method: Optional[str] = "lone_operator" # lone_operator, group_of_3+, duo_partnership, syndicate_cell
+    mobility_type: Optional[str] = "used_vehicle" # used_vehicle, two_wheeler, on_foot, commercial_taxi, freight_transit
+    location_type: Optional[str] = "commercial" # residential, commercial, highway_transit, isolated_area, digital_cyberspace
+    weapon_category: Optional[str] = "none" # firearm, blunt_force, edged_weapon, cyber_spoofing, none
+    target_selection: Optional[str] = "targeted" # targeted, opportunistic, high_net_worth, vulnerable_commuter
+    signatures: List[str] = Field(default_factory=list)
+
 class Case(BaseModel):
     id: str
     fir_number: str
     title: str
     description: str
-    status: str = "Active" # Active, Under Investigation, Chargesheet Filed, Closed
+    status: str = "Active" # Active, Under Investigation, Chargesheet Filed, Closed, Unsolved Cold Case
     lead_investigator: str
     agency: str = "MHA Special Cell / NCB"
     state: str = "Delhi"
@@ -113,6 +122,7 @@ class Case(BaseModel):
     date_filed: str = "2024-01-15"
     case_type: str = "Financial Fraud & Hawala"
     crime_category: str = "Financial Fraud & Hawala" # Kidnapping, Murder, SexualAssault, Harassment, Theft, Robbery, Narcotics, Hawala/Financial, Counter-Terrorism
+    modus_operandi: Optional[ModusOperandi] = None
     created_at: str
     ipc_sections: List[str] = Field(default_factory=list)
     tags: List[str] = Field(default_factory=list)
@@ -128,6 +138,7 @@ class CaseCreate(BaseModel):
     police_station: Optional[str] = "Special Cell PS Lodhi Colony"
     case_type: Optional[str] = "Organized Crime"
     crime_category: Optional[str] = "General Crime"
+    modus_operandi: Optional[ModusOperandi] = None
     ipc_sections: List[str] = Field(default_factory=list)
     tags: List[str] = Field(default_factory=list)
 
@@ -476,4 +487,52 @@ class CaseHandoverBriefing(BaseModel):
     recommended_next_steps: List[str]
     statutory_handover_declaration: str
     html_dossier: Optional[str] = None
+
+# Serial Offender Pattern Detector Models
+class MOMatchDetail(BaseModel):
+    attribute: str
+    suspect_value: str
+    case_value: str
+    is_match: bool
+    weight: float
+    contribution: float
+
+class MORelatedCaseMatch(BaseModel):
+    case_id: str
+    fir_number: str
+    title: str
+    crime_category: str
+    state: str
+    police_station: str
+    status: str # "Unsolved", "Under Investigation", "Cold Case"
+    match_score: int # 0 - 100
+    matched_attributes: List[str]
+    match_details: List[MOMatchDetail]
+    investigative_rationale: str
+    statutory_disclaimer: str = "This is a pattern-based investigative lead, not confirmed evidence — requires human verification."
+
+class MOPersonProfile(BaseModel):
+    person_id: str
+    person_label: str
+    primary_cases: List[str]
+    primary_crime_categories: List[str]
+    aggregated_mo: ModusOperandi
+    mo_tags: List[str]
+    behavioral_summary: str
+    potential_related_cases: List[MORelatedCaseMatch]
+    total_unsolved_checked: int
+
+class MOCluster(BaseModel):
+    cluster_id: str
+    cluster_name: str
+    crime_domain: str
+    core_mo_signature: str
+    shared_attributes: Dict[str, str]
+    suspects_count: int
+    suspect_ids: List[str]
+    suspect_names: List[str]
+    associated_firs: List[str]
+    confidence_level: str # "HIGH", "MEDIUM", "EXPERIMENTAL"
+    pattern_description: str
+
 
