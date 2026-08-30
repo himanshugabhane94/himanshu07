@@ -70,6 +70,28 @@ Consignment was delivered to Manoj Shukla at Mayapuri Secret Chemical Godown for
         "sample_fir_text": """NATIONAL INVESTIGATION AGENCY INTELLIGENCE BRIEF:
 Technical signals analysis detected covert communications originating from Matrix Node onion://subversion77.onion. Controller Zuber Farooq routed funding via ChipMixer CoinJoin Tx to operative Bilal Ahmed for procuring forged IDs.
 Operative Asif Nazir using burner +91-70061-00214 conducted reconnaissance at Pahalgam Ridge Dead-Drop Point and rendezvoused at Okhla Jamia Safe Apartment with Naveed Khan operating Bajaj Pulsar DL-3S-CJ-9912."""
+    },
+    {
+        "id": "scenario_cross_crime",
+        "case_id": "CASE-ROBBERY-2024",
+        "title": "Scenario 4: Multi-Domain Cross-Crime Triangulation (Serial Offender & Shared Hardware Linkage)",
+        "badge": "Cross-Domain Crime Linkage",
+        "fir_number": "FIR 415/2024-SPL-NDLS",
+        "description": "Demonstrates SUTRA's ability to instantly discover hidden bridges connecting an Armed Bank Robbery, Kidnapping Syndicate, and Contract Homicide via shared getaway vehicles, weapons, and operatives.",
+        "judge_focus": [
+            "Cross-Case Linker Fusion: Select 'CASE-ROBBERY-2024' and 'CASE-KIDNAP-2024' to reveal Kuldeep Yadav & Scorpio DL-4C-NA-8821 as the exact bridging conduit across crime types.",
+            "Betweenness Centrality: Kuldeep Yadav and Ramesh Bagga show up as high-centrality bridge nodes linking disparate violent crime syndicates.",
+            "Multi-FIR Firearms Forensics: Trace weapon flow from Contract Shooter Ramesh Bagga (.32 Pistol in GK-1 Homicide) to Armed Robbery gang in Janakpuri."
+        ],
+        "sample_nl_queries": [
+            "Find cross-case links between Robbery and Kidnapping",
+            "Show all cases involving Kuldeep Yadav",
+            "Trace path from Joginder Pehalwan to Aarav Malhotra"
+        ],
+        "sample_fir_text": """SPECIAL CELL MULTI-JURISDICTIONAL INTELLIGENCE SYNTHESIS:
+During investigation of Janakpuri Armed Cash Heist (FIR 415/2024), getaway driver Kuldeep Yadav (alias 'KD') was captured on ANPR CCTV operating white Mahindra Scorpio DL-4C-NA-8821.
+Automated cross-case fusion matched this vehicle registration and suspect profile to ongoing Kidnapping FIR 104/2024 (Crime Branch) where student Aarav Malhotra was abducted in the same vehicle.
+Further, firearms procured by gang leader Joginder Pehalwan originated from contract shooter Ramesh Bagga, prime accused in Greater Kailash Homicide (FIR 312/2024)."""
     }
 ]
 

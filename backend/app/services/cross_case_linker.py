@@ -11,7 +11,8 @@ from app.services.seed_data import DEMO_CASES
 class CrossCaseLinker:
     """
     Cross-Case Intelligence Linker & Inter-Jurisdictional Fusion Engine.
-    Discovers hidden connections across siloed FIRs, police stations, and state jurisdictions.
+    Discovers hidden connections across siloed FIRs, police stations, and diverse crime domains
+    (Kidnapping, Murder, Sensitive Assault, Harassment, Theft, Armed Robbery, Narcotics, Hawala).
     """
     def __init__(self):
         self.cached_alerts: List[CrossCaseAlert] = []
@@ -26,7 +27,8 @@ class CrossCaseLinker:
                 state=case.state,
                 police_station=case.police_station,
                 agency=case.agency,
-                lead_investigator=case.lead_investigator
+                lead_investigator=case.lead_investigator,
+                crime_category=getattr(case, 'crime_category', case.case_type)
             )
         return CaseSummaryRef(
             case_id=case_id,
@@ -35,7 +37,8 @@ class CrossCaseLinker:
             state="Central Jurisdiction",
             police_station="MHA Central Cell",
             agency="Central Law Enforcement",
-            lead_investigator="Investigating Officer"
+            lead_investigator="Investigating Officer",
+            crime_category="General Crime"
         )
 
     def _string_similarity(self, s1: str, s2: str) -> float:
@@ -47,25 +50,36 @@ class CrossCaseLinker:
     def find_cross_case_matches(self) -> List[CrossCaseLink]:
         links: List[CrossCaseLink] = []
 
-        # 1. Exact Matches (Nodes linked to 2+ distinct cases)
+        # 1. Exact Matches (Nodes linked to 2+ distinct cases across any crime domain)
         for node_id, node in graph_engine.nodes_dict.items():
             if len(node.case_ids) >= 2:
                 cases_involved = [self._get_case_ref(cid) for cid in node.case_ids]
                 states = list(set(c.state for c in cases_involved))
                 police_stations = list(set(c.police_station for c in cases_involved))
+                categories = list(set(c.crime_category for c in cases_involved if c.crime_category))
 
-                # Build investigative insight
+                # Build rich investigative insight tailored to entity type and crime domains
                 fir_list = ", ".join([c.fir_number for c in cases_involved])
-                if node.type == NodeType.PHONE:
-                    insight = f"Identical phone identifier ({node.label}) active across {len(cases_involved)} jurisdictions ({', '.join(states)}). Indicates shared communication conduit or common handler."
-                elif node.type == NodeType.BANK_ACCOUNT:
-                    insight = f"Identical bank account ({node.label}) utilized across {fir_list}. Strong evidence of centralized Hawala layering across state lines."
+                cat_desc = f" ({' & '.join(categories)})" if categories else ""
+
+                if node.type == NodeType.PERSON:
+                    insight = f"Direct suspect/operative appearance [{node.label}] recorded across {len(cases_involved)} separate FIRs{cat_desc} in {', '.join(states)}. Indicates serial offender or multi-crime syndicate operative."
                 elif node.type == NodeType.VEHICLE:
-                    insight = f"Same logistics vehicle ({node.label}) tracked across {', '.join(states)}. Indicates unified inter-state transport corridor."
+                    insight = f"Same logistics/getaway vehicle [{node.label}] tracked across {len(cases_involved)} distinct cases{cat_desc}. Indicates shared getaway mobility and inter-station criminal logistics."
+                elif node.type == NodeType.WEAPON:
+                    insight = f"Identical firearm / weapon [{node.label}] linked across separate violent crime FIRs ({fir_list}). Potential common arms supplier or ballistics match across crimes."
+                elif node.type == NodeType.STOLEN_PROPERTY:
+                    insight = f"Stolen asset / bullion [{node.label}] recovered or fenced across different police station jurisdictions ({fir_list})."
+                elif node.type == NodeType.LOCATION:
+                    insight = f"Identical location [{node.label}] utilized across distinct investigations ({fir_list}). Common syndicate safehouse, drop point, or fencing vault."
+                elif node.type == NodeType.PHONE:
+                    insight = f"Identical phone identifier [{node.label}] active across {len(cases_involved)} jurisdictions ({', '.join(states)}). Indicates shared communication conduit or common handler across crime types."
+                elif node.type == NodeType.BANK_ACCOUNT:
+                    insight = f"Identical bank account [{node.label}] utilized across {fir_list}. Strong evidence of centralized financial conduit across state lines."
                 elif node.type == NodeType.DIGITAL_ID:
-                    insight = f"Identical digital/crypto identifier ({node.label}) active across multiple cases. Cross-syndicate crypto off-ramp nexus."
+                    insight = f"Identical digital/crypto identifier [{node.label}] active across multiple cases. Cross-syndicate cyber/crypto off-ramp nexus."
                 else:
-                    insight = f"Direct entity appearance ({node.label}) recorded across {len(cases_involved)} separate FIRs ({', '.join(states)})."
+                    insight = f"Direct entity appearance [{node.label}] recorded across {len(cases_involved)} separate FIRs ({', '.join(states)})."
 
                 links.append(CrossCaseLink(
                     link_id=f"LINK-EXACT-{node_id}",
@@ -151,16 +165,18 @@ class CrossCaseLinker:
         # Generate summary
         if len(shared_nodes) > 0:
             shared_names = ", ".join([n.label for n in shared_nodes[:3]])
-            summary = f"Inter-jurisdictional network fusion discovered {len(shared_nodes)} direct bridging entities ({shared_names}) connecting '{case_1_ref.fir_number}' ({case_1_ref.state}) and '{case_2_ref.fir_number}' ({case_2_ref.state})."
+            summary = f"Multi-domain network fusion discovered {len(shared_nodes)} direct bridging entities ({shared_names}) connecting '{case_1_ref.fir_number}' ({case_1_ref.crime_category}) and '{case_2_ref.fir_number}' ({case_2_ref.crime_category})."
         else:
-            summary = f"Cases '{case_1_ref.fir_number}' and '{case_2_ref.fir_number}' operate in separate domains with no direct shared hardware/banking nodes."
+            summary = f"Cases '{case_1_ref.fir_number}' ({case_1_ref.crime_category}) and '{case_2_ref.fir_number}' ({case_2_ref.crime_category}) operate in separate spheres with no direct shared hardware or personnel."
 
         stats = {
             "total_nodes": len(merged_nodes),
             "total_edges": len(merged_edges),
             "shared_nodes_count": len(shared_nodes),
             "case_1_fir": case_1_ref.fir_number,
-            "case_2_fir": case_2_ref.fir_number
+            "case_2_fir": case_2_ref.fir_number,
+            "case_1_category": case_1_ref.crime_category,
+            "case_2_category": case_2_ref.crime_category
         }
 
         return CaseOverlapResult(
@@ -182,8 +198,8 @@ class CrossCaseLinker:
             state_list = " ↔ ".join(match.states_involved)
 
             if match.match_type == "CONFIRMED_EXACT":
-                title = f"Inter-State Bridge Detected: {match.entity_label}"
-                desc = f"Entity [{match.entity_label}] ({match.entity_type.value}) appears in {len(match.cases_involved)} separate FIRs across {state_list} ({fir_list}). Potential multi-jurisdiction syndicate operative."
+                title = f"Multi-Domain Crime Bridge: {match.entity_label}"
+                desc = f"Entity [{match.entity_label}] ({match.entity_type.value}) appears in {len(match.cases_involved)} separate FIRs across {state_list} ({fir_list}). Potential serial offender or cross-syndicate operative."
                 severity = RiskLevel.CRITICAL if match.risk_level == RiskLevel.CRITICAL else RiskLevel.HIGH
             else:
                 title = f"Possible Cross-Jurisdiction Alias Match: {match.entity_label}"

@@ -20,14 +20,23 @@ export default function CrossCaseInsights({
   const [activeSubTab, setActiveSubTab] = useState('links'); // 'links', 'alerts', 'overlap'
 
   // Multi-Case Overlap View state
-  const [case1, setCase1] = useState('CASE-HAWALA-2024');
-  const [case2, setCase2] = useState('CASE-NARCO-2024');
+  const [casesList, setCasesList] = useState([]);
+  const [case1, setCase1] = useState('CASE-ROBBERY-2024');
+  const [case2, setCase2] = useState('CASE-KIDNAP-2024');
   const [overlapResult, setOverlapResult] = useState(null);
   const [overlapLoading, setOverlapLoading] = useState(false);
 
   useEffect(() => {
     loadCrossCaseData();
   }, [selectedState, selectedType]);
+
+  useEffect(() => {
+    api.getCases().then(res => {
+      if (Array.isArray(res) && res.length > 0) {
+        setCasesList(res);
+      }
+    }).catch(err => console.error("Failed to load cases in CrossCaseInsights:", err));
+  }, []);
 
   const loadCrossCaseData = async () => {
     setLoading(true);
@@ -307,9 +316,21 @@ export default function CrossCaseInsights({
                   onChange={(e) => setCase1(e.target.value)}
                   className="w-full p-2.5 rounded-xl bg-[#0f0e0d] border border-[#3a352d] text-xs text-[#ece7de] font-mono focus:border-[#d68a1f] outline-none"
                 >
-                  <option value="CASE-HAWALA-2024">FIR 882/2024 — NCR Hawala & Money Laundering</option>
-                  <option value="CASE-NARCO-2024">FIR 104/2024 — Western Border Narcotics Syndicate</option>
-                  <option value="CASE-TERROR-FIN-2024">FIR 45/2024 — Cross-Border Terror Financing</option>
+                  {casesList.length > 0 ? (
+                    casesList.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.fir_number} — {c.title} ({c.crime_category || c.case_type})
+                      </option>
+                    ))
+                  ) : (
+                    <>
+                      <option value="CASE-ROBBERY-2024">FIR 415/2024 — Armed Cash Transit Van Heist (Robbery)</option>
+                      <option value="CASE-KIDNAP-2024">FIR 104/2024 — Operation Amber Shield (Kidnapping)</option>
+                      <option value="CASE-MURDER-2024">FIR 312/2024 — GK-1 Homicide (Murder)</option>
+                      <option value="CASE-HAWALA-2024">FIR 402/2024 — NCR Hawala Syndicate</option>
+                      <option value="CASE-NARCO-2024">FIR 188/2024 — Narcotics Transit Corridor</option>
+                    </>
+                  )}
                 </select>
               </div>
 
@@ -320,9 +341,21 @@ export default function CrossCaseInsights({
                   onChange={(e) => setCase2(e.target.value)}
                   className="w-full p-2.5 rounded-xl bg-[#0f0e0d] border border-[#3a352d] text-xs text-[#ece7de] font-mono focus:border-[#d68a1f] outline-none"
                 >
-                  <option value="CASE-NARCO-2024">FIR 104/2024 — Western Border Narcotics Syndicate</option>
-                  <option value="CASE-HAWALA-2024">FIR 882/2024 — NCR Hawala & Money Laundering</option>
-                  <option value="CASE-TERROR-FIN-2024">FIR 45/2024 — Cross-Border Terror Financing</option>
+                  {casesList.length > 0 ? (
+                    casesList.map((c) => (
+                      <option key={c.id} value={c.id}>
+                        {c.fir_number} — {c.title} ({c.crime_category || c.case_type})
+                      </option>
+                    ))
+                  ) : (
+                    <>
+                      <option value="CASE-KIDNAP-2024">FIR 104/2024 — Operation Amber Shield (Kidnapping)</option>
+                      <option value="CASE-ROBBERY-2024">FIR 415/2024 — Armed Cash Transit Van Heist (Robbery)</option>
+                      <option value="CASE-MURDER-2024">FIR 312/2024 — GK-1 Homicide (Murder)</option>
+                      <option value="CASE-THEFT-2024">FIR 219/2024 — Auto & Bullion Theft Ring</option>
+                      <option value="CASE-HAWALA-2024">FIR 402/2024 — NCR Hawala Syndicate</option>
+                    </>
+                  )}
                 </select>
               </div>
             </div>

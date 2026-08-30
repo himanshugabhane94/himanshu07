@@ -13,7 +13,9 @@ const NODE_COLORS = {
   Vehicle: '#6d757a',       // Charcoal Steel
   Location: '#8c5e4a',      // Terracotta
   DigitalID: '#6a5a7a',     // Muted Indigo
-  Incident: '#b8860b'       // Dark Amber
+  Incident: '#b8860b',      // Dark Amber
+  Weapon: '#a5342a',        // Deep Rust Red
+  StolenProperty: '#c9a227' // Muted Antique Gold
 };
 
 const RISK_COLORS = {
@@ -412,7 +414,9 @@ export default function GraphCanvas({
                         node.type === 'BankAccount' ? '🏦' :
                         node.type === 'Vehicle' ? '🚗' :
                         node.type === 'Organization' ? '🏢' :
-                        node.type === 'Location' ? '📍' : '🌐';
+                        node.type === 'Location' ? '📍' :
+                        node.type === 'Weapon' ? '🗡️' :
+                        node.type === 'StolenProperty' ? '💎' : '🌐';
           ctx.fillText(glyph, node.x, node.y + 1);
         }
 

@@ -12,6 +12,8 @@ class NodeType(str, Enum):
     VEHICLE = "Vehicle"
     DIGITAL_ID = "DigitalID"
     INCIDENT = "Incident"
+    WEAPON = "Weapon"
+    STOLEN_PROPERTY = "StolenProperty"
 
 class EdgeType(str, Enum):
     CALLED = "called"
@@ -25,6 +27,16 @@ class EdgeType(str, Enum):
     OPERATES_ACCOUNT = "operates_account"
     DRIVES_VEHICLE = "drives_vehicle"
     INVOLVED_IN = "involved_in"
+    VICTIM_OF = "victim_of"
+    WITNESSED = "witnessed"
+    HELD_CAPTIVE_AT = "held_captive_at"
+    USED_WEAPON = "used_weapon"
+    FLED_IN = "fled_in"
+    SOLD_STOLEN_ITEM_TO = "sold_stolen_item_to"
+    STALKED = "stalked"
+    THREATENED = "threatened"
+    STASHED_AT = "stashed_at"
+    LOCATED_AT = "located_at"
 
 class RiskLevel(str, Enum):
     CRITICAL = "Critical"
@@ -100,6 +112,7 @@ class Case(BaseModel):
     police_station: str = "Special Cell PS Lodhi Colony"
     date_filed: str = "2024-01-15"
     case_type: str = "Financial Fraud & Hawala"
+    crime_category: str = "Financial Fraud & Hawala" # Kidnapping, Murder, SexualAssault, Harassment, Theft, Robbery, Narcotics, Hawala/Financial, Counter-Terrorism
     created_at: str
     ipc_sections: List[str] = Field(default_factory=list)
     tags: List[str] = Field(default_factory=list)
@@ -114,6 +127,7 @@ class CaseCreate(BaseModel):
     state: Optional[str] = "Delhi"
     police_station: Optional[str] = "Special Cell PS Lodhi Colony"
     case_type: Optional[str] = "Organized Crime"
+    crime_category: Optional[str] = "General Crime"
     ipc_sections: List[str] = Field(default_factory=list)
     tags: List[str] = Field(default_factory=list)
 
@@ -126,6 +140,7 @@ class CaseSummaryRef(BaseModel):
     police_station: str
     agency: str
     lead_investigator: str
+    crime_category: Optional[str] = "General Crime"
 
 class CrossCaseLink(BaseModel):
     link_id: str

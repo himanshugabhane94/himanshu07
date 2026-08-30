@@ -97,12 +97,15 @@ export default function Navbar({
                   >
                     <div className="font-mono font-bold text-[#ece7de]">{c.fir_number}</div>
                     <div className="text-[11px] text-[#8a8478] truncate font-serif">{c.title}</div>
-                    <div className="mt-1 flex items-center gap-1.5 font-mono text-[9px]">
+                    <div className="mt-1 flex items-center gap-1.5 font-mono text-[9px] flex-wrap">
                       <span className="px-1.5 py-0.2 bg-[#0f0e0d] text-[#d68a1f] rounded border border-[#3a352d]">
+                        {c.crime_category || c.case_type || 'Crime'}
+                      </span>
+                      <span className="px-1.5 py-0.2 bg-[#1c1a17] text-[#8a8478] rounded border border-[#3a352d]">
                         {c.agency.split('/')[0]}
                       </span>
                       <span className="text-[#8a8478]">
-                        {c.node_count || 30}+ Entities
+                        {c.node_count || 10}+ Entities
                       </span>
                     </div>
                   </button>

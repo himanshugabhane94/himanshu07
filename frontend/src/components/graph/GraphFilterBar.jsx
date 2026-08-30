@@ -2,7 +2,7 @@ import React from 'react';
 import { 
   User, Phone, Building2, Landmark, Truck, 
   MapPin, Globe, AlertOctagon, Filter, Eye, ShieldAlert,
-  Sliders, Maximize2, RefreshCw
+  Sliders, Maximize2, RefreshCw, Crosshair, Package
 } from 'lucide-react';
 
 export default function GraphFilterBar({
@@ -26,6 +26,8 @@ export default function GraphFilterBar({
     { type: 'Organization', label: 'Front Orgs', icon: Building2, color: 'text-[#8a7258]' },
     { type: 'Vehicle', label: 'Vehicles', icon: Truck, color: 'text-[#6d757a]' },
     { type: 'Location', label: 'Locations', icon: MapPin, color: 'text-[#8c5e4a]' },
+    { type: 'Weapon', label: 'Weapons', icon: Crosshair, color: 'text-[#a5342a]' },
+    { type: 'StolenProperty', label: 'Stolen Property', icon: Package, color: 'text-[#c9a227]' },
     { type: 'DigitalID', label: 'Digital / Crypto', icon: Globe, color: 'text-[#6a5a7a]' },
   ];
 
