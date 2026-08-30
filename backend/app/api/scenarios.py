@@ -5,6 +5,76 @@ router = APIRouter(prefix="/scenarios", tags=["Hackathon Demo Scenarios"])
 
 SCENARIOS: List[Dict[str, Any]] = [
     {
+        "id": "scenario_hidden_network",
+        "case_id": "CASE-THEFT-2024",
+        "title": "Flagship Scenario: The Hidden Network — Cross-Domain Serial Syndicate Convergence",
+        "badge": "⭐ Flagship Master Demo (2 Min)",
+        "fir_number": "Multi-FIR: 219/24, 415/24, 62/24, 104/24",
+        "description": "The ultimate 5-step demonstration of SUTRA's full intelligence stack. Reveals how an apparently minor transport driver in a local theft case (Kuldeep Yadav) is actually the keystone operative connecting an Armed Bank Robbery, Cyberstalking Ring, and Kidnapping Syndicate across 4 independent state jurisdictions.",
+        "judge_focus": [
+            "Step 1: The Deceptive Surface — Kuldeep Yadav appears as a minor logistics driver in local auto theft FIR 219/2024.",
+            "Step 2: Cross-Case Linker — Automated triangulation exposes shared Scorpio DL-4C-NA-8821 & burner SIM connecting him to Armed Robbery FIR 415/2024 and Stalking FIR 62/2024.",
+            "Step 3: Serial MO Pattern Detector — AI detects 100% behavioral MO match linking him to unsolved Kidnapping FIR 104/2024 & cold case FIR 55/2024.",
+            "Step 4: What-If Disruption Simulator — Neutralizing Kuldeep Yadav produces an 88% Network Disruption Score, crippling 4 separate criminal syndicates simultaneously.",
+            "Step 5: Automated Case Priority Score — His syndicate network scores 93/100 and 86/100 in the Priority Queue, establishing instant legal justification for inter-state SWAT dispatch."
+        ],
+        "guided_steps": [
+            {
+                "step": 1,
+                "title": "Step 1: The Deceptive Surface (Isolated Theft Case)",
+                "target_tab": "graph",
+                "target_case_id": "CASE-THEFT-2024",
+                "highlight_node_id": "PER_KULDEEP_YADAV",
+                "narrative": "Open the Auto Theft & Fencing case (FIR 219/2024). Notice suspect 'Kuldeep Yadav (Alias KD)' appears at the periphery as a minor transport driver who moves stolen vehicles.",
+                "action_prompt": "Observe Kuldeep Yadav on the Graph Canvas. In a traditional siloed police database, he would be treated as an isolated petty driver."
+            },
+            {
+                "step": 2,
+                "title": "Step 2: Cross-Case Intelligence Linker (Syndicate Unmasking)",
+                "target_tab": "crosscase",
+                "target_case_id": "CASE-THEFT-2024",
+                "highlight_node_id": "PER_KULDEEP_YADAV",
+                "narrative": "Switch to Cross-Case Intelligence Linker. The system automatically cross-references entities across Delhi, Haryana, and Rajasthan. SUTRA discovers that Kuldeep Yadav and his white Scorpio (DL-4C-NA-8821) are shared with Armed Robbery FIR 415/2024 and Cyberstalking FIR 62/2024.",
+                "action_prompt": "Examine the shared entity badges. SUTRA has instantly bridged 3 completely different crime categories!"
+            },
+            {
+                "step": 3,
+                "title": "Step 3: Serial Offender MO Pattern Detector (Cold Case Matching)",
+                "target_tab": "analytics",
+                "target_case_id": "CASE-THEFT-2024",
+                "highlight_node_id": "PER_KULDEEP_YADAV",
+                "narrative": "In AI Analytics Lab -> Serial Offender MO tab, inspect Kuldeep Yadav's profile. SUTRA's behavioral pattern detector flags a 100% Modus Operandi match against cold case FIR 55/2024 (Manesar Toll Carjacking) and Kidnapping FIR 104/2024 (Abduction of student Aarav Malhotra).",
+                "action_prompt": "Review the Matched Behavioral Attributes (Night, Used Vehicle, Group of 3+, Firearms, Targeted Asset)."
+            },
+            {
+                "step": 4,
+                "title": "Step 4: What-If Disruption Simulator (Keystone Interdiction)",
+                "target_tab": "analytics",
+                "target_case_id": "CASE-ROBBERY-2024",
+                "highlight_node_id": "PER_KULDEEP_YADAV",
+                "narrative": "In AI Analytics Lab -> What-If Simulator, select Kuldeep Yadav and click 'Simulate Node Removal'. The simulator computes an 88% Network Disruption Score, proving that arresting this single operative severs the logistics and weapon flow across 4 active investigations at once!",
+                "action_prompt": "Observe the 88% Disruption Score and structural fragmentation graph."
+            },
+            {
+                "step": 5,
+                "title": "Step 5: Automated Case Priority Score & Judicial Triage",
+                "target_tab": "priority_queue",
+                "target_case_id": "CASE-ROBBERY-2024",
+                "highlight_node_id": "PER_KULDEEP_YADAV",
+                "narrative": "Open the Case Priority Triage Queue. SUTRA automatically evaluates the 5-factor transparent rubric. Kuldeep Yadav's connected cases (FIR 415/2024 at 93/100, FIR 104/2024 at 86/100, FIR 89/2024 at 85/100) rank at the top of the Critical Priority Queue with immediate SWAT dispatch directives.",
+                "action_prompt": "Click on FIR 415/2024 to inspect the 5-factor scoring breakdown and operational action plan."
+            }
+        ],
+        "sample_nl_queries": [
+            "Show all cases connected to Kuldeep Yadav",
+            "What happens if Kuldeep Yadav is arrested?",
+            "Find links between Auto Theft and Kidnapping"
+        ],
+        "sample_fir_text": """INTELLIGENCE SYNTHESIS MEMORANDUM:
+Suspect Kuldeep Yadav (alias 'KD' / 'Ustaad'), initially arrested in Rohini Auto Theft FIR 219/2024, has been identified through SUTRA AI cross-case graph analytics as the prime logistics operative for Joginder Pehalwan's Armed Robbery Syndicate (FIR 415/2024) and the abduction crew in FIR 104/2024.
+ANPR telemetry confirms white Mahindra Scorpio DL-4C-NA-8821 was present at all three crime scenes within a 30-day window."""
+    },
+    {
         "id": "scenario_hawala",
         "case_id": "CASE-HAWALA-2024",
         "title": "Scenario 1: Operation DarkNet Hawala (Kingpin & Layering Detection)",

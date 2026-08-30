@@ -368,8 +368,16 @@ export default function App() {
       {/* SIH Judge Demo Scenarios Modal */}
       {showScenarioModal && (
         <ScenarioSelectorModal
-          onSelectScenario={(caseId) => {
-            setSelectedCaseId(caseId);
+          onSelectScenario={(caseId, targetTab, highlightNodeId) => {
+            if (caseId) setSelectedCaseId(caseId);
+            if (targetTab === 'priority_queue') {
+              setShowPriorityQueueModal(true);
+            } else if (targetTab) {
+              setActiveTab(targetTab);
+            }
+            if (highlightNodeId) {
+              setSelectedNodeId(highlightNodeId);
+            }
             loadGraph();
           }}
           onClose={() => setShowScenarioModal(false)}
