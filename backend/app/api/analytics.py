@@ -116,4 +116,25 @@ def get_victim_safety_overview():
     from app.services.victim_safety_service import victim_safety_service
     return victim_safety_service.get_victim_safety_overview()
 
+@router.get("/geo-clusters")
+def get_geo_crime_clusters(
+    radius_km: float = Query(15.0, description="Spatial clustering radius threshold in km"),
+    crime_category: Optional[str] = Query(None, description="Optional crime type filter"),
+    case_id: Optional[str] = Query(None, description="Optional case filter"),
+    risk_level: Optional[str] = Query(None, description="Optional risk level filter")
+):
+    """
+    Geo Intelligence Map:
+    Returns all mapped crime scene and infrastructure locations across India,
+    with proximity-based spatial clustering to highlight geographic hotspots and gang operational territories.
+    """
+    from app.services.geo_service import geo_service
+    return geo_service.get_geo_clusters(
+        radius_km=radius_km,
+        crime_category=crime_category,
+        case_id=case_id,
+        risk_level=risk_level
+    )
+
+
 

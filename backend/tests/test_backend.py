@@ -220,7 +220,27 @@ class TestCrimeNetBackend(unittest.TestCase):
         self.assertGreaterEqual(overview.critical_escalation_count, 1)
         print(f"[PASS] Victim Safety Network Test Passed: Satish Verma flagged with {report.total_distinct_victims} victims ({report.recidivism_score}% Recidivism Risk - {report.escalation_trajectory}). Flagged {overview.total_repeat_offenders_flagged} repeat offenders system-wide.")
 
+    def test_geo_spatial_clustering(self):
+        from app.services.geo_service import geo_service
+        geo_res = geo_service.get_geo_clusters(radius_km=15.0)
+        self.assertGreaterEqual(geo_res.total_locations_mapped, 12)
+        self.assertGreaterEqual(geo_res.total_hotspots_detected, 3)
+        self.assertGreaterEqual(len(geo_res.clusters), 3)
+        
+        # Verify Delhi NCR Multi-Crime Hotspot contains >= 5 locations
+        delhi_hotspot = next((c for c in geo_res.clusters if "Delhi" in c.cluster_title and c.location_count >= 4), None)
+        self.assertIsNotNone(delhi_hotspot)
+        self.assertGreaterEqual(delhi_hotspot.location_count, 4)
+        self.assertGreaterEqual(len(delhi_hotspot.associated_firs), 3)
+
+        # Test filtering by category
+        hawala_geo = geo_service.get_geo_clusters(crime_category="Hawala")
+        self.assertGreater(len(hawala_geo.locations), 0)
+
+        print(f"[PASS] Geo Spatial Clustering Test Passed: Mapped {geo_res.total_locations_mapped} location nodes across {len(geo_res.regional_coverage)} states. Detected {geo_res.total_hotspots_detected} multi-point gang hotspots (Top hotspot: {delhi_hotspot.cluster_title} with {delhi_hotspot.location_count} nodes).")
+
 if __name__ == "__main__":
     unittest.main()
+
 
 

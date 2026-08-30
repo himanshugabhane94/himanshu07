@@ -14,6 +14,7 @@ import CourtReportModal from './components/reports/CourtReportModal';
 import ScenarioSelectorModal from './components/scenarios/ScenarioSelectorModal';
 import CaseHandoverModal from './components/dossier/CaseHandoverModal';
 import LoginView from './components/auth/LoginView';
+import GeoIntelligenceMap from './components/geo/GeoIntelligenceMap';
 import { api } from './services/api';
 
 export default function App() {
@@ -272,6 +273,22 @@ export default function App() {
               caseId={selectedCaseId}
               onTimelineChange={setTimelineState}
               onSelectNode={setSelectedNodeId}
+            />
+          </div>
+        )}
+
+        {/* VIEW 1.5: GEOSPATIAL INTELLIGENCE MAP */}
+        {activeTab === 'geomap' && (
+          <div className="flex-1 overflow-hidden flex flex-col">
+            <GeoIntelligenceMap
+              cases={cases}
+              onSelectCase={(caseId) => {
+                setSelectedCaseId(caseId);
+                loadGraph();
+              }}
+              onSelectNode={(nodeId) => {
+                setSelectedNodeId(nodeId);
+              }}
             />
           </div>
         )}

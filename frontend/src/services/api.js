@@ -257,6 +257,18 @@ export const api = {
     });
   },
 
+  // Geo Intelligence Map & Spatial Clustering
+  getGeoClusters: async (params = {}) => {
+    const query = new URLSearchParams();
+    if (params.radius_km) query.append('radius_km', params.radius_km);
+    if (params.crime_category) query.append('crime_category', params.crime_category);
+    if (params.case_id) query.append('case_id', params.case_id);
+    if (params.risk_level) query.append('risk_level', params.risk_level);
+    return fetchJson(`${API_BASE}/analytics/geo-clusters?${query.toString()}`, {
+      headers: getHeaders()
+    });
+  },
+
   // Cross-Case Intelligence Linker
   getCrossCaseLinks: async (params = {}) => {
     const query = new URLSearchParams();

@@ -581,5 +581,42 @@ class VictimSafetyOverview(BaseModel):
     flagged_offenders: List[VictimSafetyOffenderSummary]
     system_advisory: str
 
+# Geo Intelligence Map & Spatial Clustering Models
+class GeoLocationPoint(BaseModel):
+    id: str
+    label: str
+    latitude: float
+    longitude: float
+    case_id: str
+    fir_number: str
+    crime_category: str
+    risk_level: str
+    location_type: str
+    city: str
+    state: str
+    evidence_ref: Optional[str] = None
+    discovered_date: Optional[str] = None
+
+class GeoCrimeCluster(BaseModel):
+    cluster_id: str
+    cluster_title: str
+    center_latitude: float
+    center_longitude: float
+    radius_km: float
+    location_count: int
+    locations: List[GeoLocationPoint]
+    dominant_crime_category: str
+    risk_severity: str # "CRITICAL", "HIGH", "MODERATE"
+    gang_territory_analysis: str
+    associated_firs: List[str]
+
+class GeoClustersResponse(BaseModel):
+    total_locations_mapped: int
+    total_hotspots_detected: int
+    locations: List[GeoLocationPoint]
+    clusters: List[GeoCrimeCluster]
+    regional_coverage: List[str]
+
+
 
 

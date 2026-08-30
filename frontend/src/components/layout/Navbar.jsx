@@ -4,7 +4,7 @@ import {
   Sparkles, AlertTriangle, CheckCircle2, 
   ChevronDown, Layers, Binary,
   GitPullRequest, Bell, UserCheck, LogOut,
-  ShieldAlert
+  ShieldAlert, MapPin
 } from 'lucide-react';
 import SutraEmblem from './SutraEmblem';
 
@@ -32,6 +32,7 @@ export default function Navbar({
 
   const navItems = [
     { id: 'graph', label: 'Graph Canvas', icon: Network },
+    { id: 'geomap', label: 'Geo Map', icon: MapPin, badge: 'GIS' },
     { id: 'analytics', label: 'AI Analytics Lab', icon: Cpu, badge: 'ML' },
     { id: 'crosscase', label: 'Cross-Case Linker', icon: GitPullRequest, badge: 'Inter-State' },
     { id: 'ingestion', label: 'NLP & Ingestion', icon: Binary },
