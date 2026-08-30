@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Navbar from './components/layout/Navbar';
+import LeftSidebar from './components/layout/LeftSidebar';
+import TopHeader from './components/layout/TopHeader';
+import CommandCenter from './components/dashboard/CommandCenter';
 import NlSearchBar from './components/layout/NlSearchBar';
 import GraphFilterBar from './components/graph/GraphFilterBar';
 import GraphCanvas from './components/graph/GraphCanvas';
@@ -25,7 +27,8 @@ export default function App() {
   });
 
   // Navigation & User State
-  const [activeTab, setActiveTab] = useState('graph');
+  const [activeTab, setActiveTab] = useState('overview');
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [currentUser, setCurrentUser] = useState({
     id: "USR-INV-001",
     full_name: "Inspector Rajesh Kumar (Mehra)",
@@ -194,41 +197,74 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0f0e0d] text-[#ece7de] flex flex-col font-sans bg-dossier-grid antialiased">
+    <div className="flex h-screen w-screen bg-[#0f0e0d] text-[#ece7de] font-sans antialiased overflow-hidden select-none">
       
-      {/* Top Navigation Bar */}
-      <Navbar
+      {/* PERSISTENT LEFT SIDEBAR */}
+      <LeftSidebar
         activeTab={activeTab}
         setActiveTab={setActiveTab}
-        cases={cases}
-        selectedCaseId={selectedCaseId}
-        onSelectCase={setSelectedCaseId}
+        isCollapsed={isSidebarCollapsed}
+        setIsCollapsed={setIsSidebarCollapsed}
         currentUser={currentUser}
         onSwitchRole={handleSwitchRole}
         onLogout={handleLogout}
-        blockchainValid={blockchainValid}
+        onOpenPriorityQueue={() => setShowPriorityQueueModal(true)}
         onOpenScenarios={() => setShowScenarioModal(true)}
         onOpenReport={() => setShowReportModal(true)}
         onOpenHandover={() => setShowHandoverModal(true)}
-        onOpenIntegrityModal={() => setIsIntegrityModalOpen(true)}
-        onOpenPriorityQueue={() => setShowPriorityQueueModal(true)}
-        stats={graphData.stats}
+        crossCaseAlertsCount={5}
+        criticalTriageCount={3}
       />
 
-      {/* Natural Language AI Search Bar (Visible on Graph and Analytics Tabs) */}
-      {(activeTab === 'graph' || activeTab === 'analytics') && (
-        <NlSearchBar
-          selectedCaseId={selectedCaseId}
-          onQueryResults={handleNlQueryResults}
-          onClearQuery={handleClearQuery}
-        />
-      )}
-
-      {/* Main View Area */}
-      <main className="flex-1 flex flex-col relative overflow-hidden">
+      {/* MAIN APPLICATION CONTAINER (TopHeader + Content Viewport) */}
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
         
-        {/* VIEW 1: INTERACTIVE GRAPH CANVAS */}
-        {activeTab === 'graph' && (
+        {/* SLIM TOP HEADER */}
+        <TopHeader
+          cases={cases}
+          selectedCaseId={selectedCaseId}
+          onSelectCase={(caseId) => {
+            setSelectedCaseId(caseId);
+            loadGraph();
+          }}
+          blockchainValid={blockchainValid}
+          onOpenScenarios={() => setShowScenarioModal(true)}
+          onOpenPriorityQueue={() => setShowPriorityQueueModal(true)}
+          onOpenIntegrityModal={() => setIsIntegrityModalOpen(true)}
+          onNavigateToTab={setActiveTab}
+          crossCaseAlertsCount={5}
+          criticalTriageCount={3}
+        />
+
+        {/* Natural Language AI Search Bar (Visible on Graph and Analytics Tabs) */}
+        {(activeTab === 'graph' || activeTab === 'analytics') && (
+          <NlSearchBar
+            selectedCaseId={selectedCaseId}
+            onQueryResults={handleNlQueryResults}
+            onClearQuery={handleClearQuery}
+          />
+        )}
+
+        {/* Main View Area */}
+        <main className="flex-1 flex flex-col relative overflow-hidden">
+          
+          {/* VIEW 0: COMMAND CENTER OVERVIEW */}
+          {activeTab === 'overview' && (
+            <CommandCenter
+              onNavigateToTab={setActiveTab}
+              onSelectCase={(caseId) => {
+                setSelectedCaseId(caseId);
+                loadGraph();
+              }}
+              onOpenPriorityQueue={() => setShowPriorityQueueModal(true)}
+              onOpenScenarios={() => setShowScenarioModal(true)}
+              onOpenReport={() => setShowReportModal(true)}
+              currentUser={currentUser}
+            />
+          )}
+
+          {/* VIEW 1: INTERACTIVE GRAPH CANVAS */}
+          {activeTab === 'graph' && (
           <div className="flex-1 flex flex-col relative">
             <GraphFilterBar
               selectedNodeTypes={selectedNodeTypes}
@@ -422,6 +458,7 @@ export default function App() {
         }}
       />
 
+      </div>
     </div>
   );
 }
