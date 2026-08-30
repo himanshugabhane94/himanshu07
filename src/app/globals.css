@@ -3,88 +3,120 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 8, 45, 110;
-  --background-start-rgb: 245, 246, 248;
-  --background-end-rgb: 250, 250, 250;
+  --bg-primary: #0D1117;
+  --bg-card: #151B23;
+  --bg-card-hover: #1A2332;
+  --border-color: #1E293B;
+  --teal-primary: #0F766E;
+  --teal-bright: #14B8A6;
+  --amber-primary: #F59E0B;
+  --gold-soft: #FBBF24;
+  --text-main: #F8FAFC;
+  --text-muted: #94A3B8;
 }
 
 body {
-  color: #082D6E;
-  background: #F5F6F8;
+  color: #F8FAFC;
+  background: #0D1117;
   min-height: 100vh;
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
 }
 
-/* Glassmorphism Utilities */
-.glass-panel {
-  background: rgba(255, 255, 255, 0.95);
+/* Custom Obsidian Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0D1117;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1E293B;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* Glassmorphism & High-Tech Cards */
+.synapx-card {
+  background: #151B23;
+  border: 1px solid #1E293B;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.synapx-card-hover:hover {
+  border-color: #0F766E;
+  box-shadow: 0 0 20px -3px rgba(20, 184, 166, 0.15), 0 8px 24px -4px rgba(0, 0, 0, 0.6);
+  transform: translateY(-1px);
+}
+
+.synapx-glass {
+  background: rgba(21, 27, 35, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(229, 231, 235, 0.9);
+  border: 1px solid rgba(30, 41, 59, 0.8);
 }
 
-.glass-panel-dark {
-  background: rgba(11, 61, 145, 0.92);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+.synapx-glass-amber {
+  background: rgba(245, 158, 11, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(245, 158, 11, 0.2);
 }
 
-.gov-card {
-  background: #ffffff;
-  border-radius: 0.75rem;
-  border: 1px solid #E5E7EB;
-  box-shadow: 0 1px 3px 0 rgba(11, 61, 145, 0.04), 0 1px 2px 0 rgba(0, 0, 0, 0.02);
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+.synapx-glass-teal {
+  background: rgba(20, 184, 166, 0.05);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(20, 184, 166, 0.25);
 }
 
-.gov-card:hover {
-  border-color: #BCD0EC;
-  box-shadow: 0 6px 20px -3px rgba(11, 61, 145, 0.08), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
-  transform: translateY(-2px);
+/* Grid backgrounds */
+.bg-grid-pattern {
+  background-image: radial-gradient(rgba(30, 41, 59, 0.6) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
-/* High Contrast Accessibility Mode for Divyangjan & Low-Vision Citizens */
-.high-contrast-mode {
-  filter: contrast(130%);
-  background-color: #000000 !important;
-  color: #ffffff !important;
+.bg-dot-pattern {
+  background-image: radial-gradient(rgba(20, 184, 166, 0.15) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-.high-contrast-mode .bg-white,
-.high-contrast-mode .bg-slate-50,
-.high-contrast-mode .bg-gray-50,
-.high-contrast-mode .glass-panel {
-  background-color: #121212 !important;
-  color: #ffffff !important;
-  border-color: #FF9933 !important;
+/* Pulse Glows */
+.glow-teal-sm {
+  box-shadow: 0 0 15px rgba(20, 184, 166, 0.35);
 }
 
-.high-contrast-mode a,
-.high-contrast-mode button {
-  outline: 2px solid #FF9933 !important;
+.glow-amber-sm {
+  box-shadow: 0 0 15px rgba(245, 158, 11, 0.35);
 }
 
 /* Accessible focus ring */
 *:focus-visible {
-  outline: 2px solid #0B3D91;
+  outline: 2px solid #14B8A6;
   outline-offset: 2px;
 }
 
-/* Smooth transitions */
-.transition-smooth {
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-/* Subtle GovTech Tricolor Accent Ribbon */
-.gov-accent-bar {
-  background: linear-gradient(90deg, #FF9933 0%, #FF9933 33.3%, #0B3D91 33.3%, #0B3D91 66.6%, #138808 66.6%, #138808 100%);
-  height: 3px;
-}
-
 @media print {
-  header, footer, nav, .no-print {
+  header, footer, nav, .no-print, aside {
     display: none !important;
+  }
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .synapx-card {
+    border: 1px solid #cccccc !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-shadow: none !important;
   }
 }

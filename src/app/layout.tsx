@@ -1,35 +1,25 @@
 import type { Metadata } from 'next';
-import { Inter, Plus_Jakarta_Sans } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import './globals.css';
-import { LanguageProvider } from '@/context/LanguageContext';
-import AuthSessionProvider from '@/context/AuthSessionProvider';
-import AccessibilityToolbar from '@/components/AccessibilityToolbar';
-import Navbar from '@/components/Navbar';
-import BottomNav from '@/components/BottomNav';
-import MinistryLogosRow from '@/components/MinistryLogosRow';
-import Footer from '@/components/Footer';
+import { InvestigationProvider } from '@/context/InvestigationContext';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' });
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  variable: '--font-plus-jakarta',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
-  title: 'YogyaSetu - Indian Government Schemes & Scholarships Portal',
+  title: 'SYNAPX — AI-Powered Criminal Network Analysis System (SIH26189)',
   description:
-    'Aapke Liye Sahi Yojana, Ab Ek Hi Jagah. Check your eligibility and get direct official application links for 100+ Central and State welfare schemes, PM-KISAN, Ayushman Bharat, Scholarships, and PMAY.',
+    'From Records → Relationships → Intelligence. Decision-support intelligence platform for complex criminal network analysis, entity resolution, hidden bridge detection, and explainable AI dossiers.',
   keywords: [
-    'YogyaSetu',
-    'Government Schemes India',
-    'Sarkari Yojana',
-    'National Scholarship Portal',
-    'PM-KISAN',
-    'Ayushman Bharat',
-    'PM Awas Yojana',
-    'Sukanya Samriddhi',
-    'Eligibility Checker',
+    'SYNAPX',
+    'Criminal Network Analysis',
+    'SIH 2026',
+    'SIH26189',
+    'Knowledge Graph',
+    'Entity Resolution',
+    'Hidden Bridge Detection',
+    'Case DNA',
+    'Explainable AI',
+    'Forensic Investigation'
   ],
 };
 
@@ -39,21 +29,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${plusJakartaSans.variable}`}>
-      <body className="font-sans antialiased text-slate-900 bg-slate-50 flex flex-col min-h-screen selection:bg-govEmerald-100 selection:text-govNavy-900">
-        <AuthSessionProvider>
-          <LanguageProvider>
-            <AccessibilityToolbar />
-            <Navbar />
-            <main id="main-content" className="flex-1">
-              {children}
-            </main>
-            <MinistryLogosRow />
-            <BottomNav />
-            <Footer />
-          </LanguageProvider>
-        </AuthSessionProvider>
+    <html lang="en" className={`dark ${inter.variable}`}>
+      <body className="font-sans antialiased bg-obsidian-900 text-slate-100 min-h-screen selection:bg-teal-500/30 selection:text-teal-200">
+        <InvestigationProvider>
+          {children}
+        </InvestigationProvider>
       </body>
     </html>
   );
 }
+

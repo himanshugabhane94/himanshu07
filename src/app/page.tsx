@@ -1,468 +1,339 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useLanguage } from '@/context/LanguageContext';
-import { INDIAN_STATES } from '@/lib/indianStates';
-import { CATEGORIES_CONFIG } from '@/lib/categoriesConfig';
-import SchemeCard from '@/components/SchemeCard';
-import { SchemeItem } from '@/types';
-import {
-  Search,
-  MapPin,
-  Sparkles,
-  ArrowRight,
-  ShieldCheck,
-  Building2,
+import { useInvestigation } from '@/context/InvestigationContext';
+import { 
+  Share2, 
+  Dna, 
+  Sparkles, 
+  ShieldCheck, 
+  Compass, 
+  Clock, 
+  Network, 
+  ArrowRight, 
+  CheckCircle2, 
+  Lock, 
+  Cpu, 
+  FileText, 
+  Users, 
+  Eye, 
+  PlayCircle,
+  Layers,
   ChevronRight,
-  GraduationCap,
-  Sprout,
-  HeartHandshake,
-  Award,
-  Accessibility,
-  Briefcase,
-  Home as HomeIcon,
-  HeartPulse,
-  Landmark,
-  CheckCircle2,
   Zap,
-  Globe2,
-  FileCheck2,
-  Users2,
+  Building
 } from 'lucide-react';
 
-const CATEGORY_ICON_COMPONENTS: Record<string, any> = {
-  GraduationCap,
-  Sprout,
-  HeartHandshake,
-  Award,
-  Accessibility,
-  Briefcase,
-  Home: HomeIcon,
-  HeartPulse,
-};
-
-import HeroIllustration from '@/components/HeroIllustration';
-
-export default function HomePage() {
-  const router = useRouter();
-  const { language, t } = useLanguage();
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedState, setSelectedState] = useState('All');
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [featuredSchemes, setFeaturedSchemes] = useState<SchemeItem[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetch('/api/schemes?limit=6')
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.schemes) {
-          setFeaturedSchemes(data.schemes);
-        }
-      })
-      .catch((err) => console.error('Failed to load featured schemes:', err))
-      .finally(() => setLoading(false));
-  }, []);
-
-  const handleHeroSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    const params = new URLSearchParams();
-    if (searchQuery.trim()) params.set('search', searchQuery.trim());
-    if (selectedState !== 'All') params.set('state', selectedState);
-    if (selectedCategory !== 'all') params.set('category', selectedCategory);
-    router.push(`/schemes?${params.toString()}`);
-  };
-
-  // Quick Filter Pills (Exact sequence: Students, Farmers, Women, Healthcare, Employment, Senior Citizens, Divyangjan)
-  const quickFilterPills = [
-    { labelEn: 'Students', labelHi: 'छात्र', slug: 'students', icon: '🎓' },
-    { labelEn: 'Farmers', labelHi: 'किसान', slug: 'farmers', icon: '🌾' },
-    { labelEn: 'Women', labelHi: 'महिलाएं', slug: 'women', icon: '👩' },
-    { labelEn: 'Healthcare', labelHi: 'स्वास्थ्य', slug: 'health', icon: '🏥' },
-    { labelEn: 'Employment', labelHi: 'रोजगार', slug: 'employment', icon: '💼' },
-    { labelEn: 'Senior Citizens', labelHi: 'वरिष्ठ नागरिक', slug: 'seniors', icon: '👴' },
-    { labelEn: 'Divyangjan', labelHi: 'दिव्यांगजन', slug: 'divyangjan', icon: '♿' },
-  ];
+export default function LandingPage() {
+  const { startJudgeMode } = useInvestigation();
 
   return (
-    <div className="flex flex-col min-h-screen bg-slate-50">
-      {/* 1. TWO-COLUMN HERO BANNER */}
-      <section className="relative bg-gradient-to-br from-govNavy-950 via-govNavy-900 to-slate-900 text-white pt-12 pb-20 sm:pt-20 sm:pb-28 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        {/* Subtle Ambient Mesh Glows */}
-        <div className="absolute inset-0 opacity-15 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:28px_28px] pointer-events-none" />
-        <div className="absolute top-10 left-10 w-96 h-96 bg-saffron-500/10 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-govEmerald-500/10 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
-          {/* Left Column: Eyebrow + Headline + Search Bar + Trust Row */}
-          <div className="lg:col-span-7 space-y-6 text-left">
-            {/* Eyebrow Tag */}
-            <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/15 text-slate-200 text-xs font-semibold shadow-soft-sm">
-              <span className="w-2 h-2 rounded-full bg-saffron-400 animate-pulse" />
-              <span>
-                {language === 'en'
-                  ? "India's Scheme Discovery Platform"
-                  : 'भारत का प्रमुख सरकारी योजना खोज मंच'}
-              </span>
-            </div>
-
-            {/* Headline */}
-            <h1 className="text-3xl sm:text-5xl font-black tracking-tight leading-tight sm:leading-tight text-white">
-              {language === 'en'
-                ? 'Aapke Liye Sahi Yojana, Ab Ek Hi Jagah.'
-                : 'आपके लिए सही योजना, अब एक ही जगह।'}
-            </h1>
-
-            <p className="text-sm sm:text-base text-slate-300 max-w-xl leading-relaxed font-normal">
-              {language === 'en'
-                ? 'Discover verified central scholarships, farmer DBT transfers, health covers, and women welfare programs tailored to your profile with zero middlemen.'
-                : 'अपनी प्रोफ़ाइल के अनुसार छात्रवृत्तियां, किसान डीबीटी, आयुष्मान स्वास्थ्य कार्ड और स्वरोजगार योजनाएं खोजें।'}
-            </p>
-
-            {/* Elevated Search Card with State & Category Dropdowns */}
-            <form
-              onSubmit={handleHeroSearch}
-              className="glass-panel p-3.5 sm:p-4 rounded-2xl shadow-glass border border-white/70 text-slate-900"
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-12 gap-2.5 items-center">
-                {/* Search Input Field */}
-                <div className="sm:col-span-5 relative">
-                  <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={
-                      language === 'en'
-                        ? 'Scheme ya scholarship search karein...'
-                        : 'योजना या छात्रवृत्ति खोजें...'
-                    }
-                    className="w-full pl-10 pr-3 py-3 rounded-xl bg-white border border-slate-200 text-xs sm:text-sm font-medium text-slate-900 placeholder:text-slate-400 focus:ring-2 focus:ring-govNavy-800 outline-none transition-smooth"
-                  />
-                </div>
-
-                {/* State Dropdown (All 28 States + 8 UTs) */}
-                <div className="sm:col-span-3 relative">
-                  <MapPin className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
-                  <select
-                    value={selectedState}
-                    onChange={(e) => setSelectedState(e.target.value)}
-                    className="w-full pl-8 pr-2 py-3 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-govNavy-800 outline-none transition-smooth truncate"
-                  >
-                    <option value="All">{t('allStates')}</option>
-                    {INDIAN_STATES.map((st) => (
-                      <option key={st.code} value={st.nameEn}>
-                        {language === 'hi' ? st.nameHi : st.nameEn}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Category Dropdown */}
-                <div className="sm:col-span-2">
-                  <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                    className="w-full px-2.5 py-3 rounded-xl bg-white border border-slate-200 text-xs font-semibold text-slate-800 focus:ring-2 focus:ring-govNavy-800 outline-none transition-smooth truncate"
-                  >
-                    <option value="all">{t('allCategories')}</option>
-                    {CATEGORIES_CONFIG.map((cat) => (
-                      <option key={cat.slug} value={cat.slug}>
-                        {language === 'hi' ? cat.nameHi : cat.nameEn}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Saffron CTA Button */}
-                <div className="sm:col-span-2">
-                  <button
-                    type="submit"
-                    className="w-full py-3 px-3 bg-saffron-500 hover:bg-saffron-600 active:bg-saffron-700 text-govNavy-950 font-black text-xs sm:text-sm rounded-xl shadow-soft-sm hover:shadow-soft-md transition-smooth flex items-center justify-center space-x-1"
-                  >
-                    <span>{t('findSchemesBtn')}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-            </form>
-
-            {/* Small Trust Row below search */}
-            <div className="flex flex-wrap items-center gap-3 sm:gap-6 text-xs text-slate-300 font-medium">
-              <span className="flex items-center space-x-1.5">
-                <CheckCircle2 className="w-4 h-4 text-govEmerald-400" />
-                <span>500+ Verified Schemes</span>
-              </span>
-              <span className="flex items-center space-x-1.5">
-                <Globe2 className="w-4 h-4 text-saffron-400" />
-                <span>28 States Covered</span>
-              </span>
-              <span className="flex items-center space-x-1.5">
-                <ShieldCheck className="w-4 h-4 text-govEmerald-400" />
-                <span>100% Free Public Service</span>
-              </span>
-            </div>
-
-            {/* Quick Explore Pills in a single clean row on desktop, wrapping gracefully on mobile */}
-            <div className="flex flex-wrap items-center gap-2 pt-2.5">
-              <span className="text-xs text-slate-300 font-bold shrink-0 mr-0.5">
-                {language === 'en' ? 'Quick Explore:' : 'त्वरित खोजें:'}
-              </span>
-              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                {quickFilterPills.map((pill) => (
-                  <Link
-                    key={pill.slug}
-                    href={`/schemes?category=${pill.slug}`}
-                    className="inline-flex items-center space-x-1.5 h-8 px-3.5 rounded-full bg-white/10 hover:bg-white/20 active:bg-white/25 border border-white/15 text-xs font-semibold text-slate-200 hover:text-white backdrop-blur-sm transition-all hover:scale-105 shadow-soft-sm shrink-0 select-none"
-                  >
-                    <span className="text-xs">{pill.icon}</span>
-                    <span>{language === 'hi' ? pill.labelHi : pill.labelEn}</span>
-                  </Link>
-                ))}
-              </div>
-            </div>
+    <div className="min-h-screen bg-obsidian-950 text-slate-100 selection:bg-teal-500/30 selection:text-teal-200">
+      
+      {/* Top Navbar */}
+      <header className="sticky top-0 z-40 bg-obsidian-900/90 backdrop-blur-md border-b border-obsidian-700/80 px-4 sm:px-8 py-3.5 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-teal-500 to-teal-800 flex items-center justify-center shadow-glow-teal">
+            <Share2 className="w-5 h-5 text-obsidian-950 font-bold" />
           </div>
-
-          {/* Right Column: High-Quality Custom SVG Hero Graphic */}
-          <div className="lg:col-span-5 flex justify-center">
-            <HeroIllustration />
-          </div>
-        </div>
-      </section>
-
-      {/* 2. VERIFIED STATS COUNTER ROW */}
-      <section className="bg-white border-b border-slate-200/80 py-8 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-6 text-center divide-y md:divide-y-0 md:divide-x divide-slate-100">
-          <div className="p-3">
-            <div className="flex items-center justify-center space-x-2 text-2xl sm:text-3xl font-black text-govNavy-900">
-              <FileCheck2 className="w-6 h-6 text-govEmerald-600 inline" />
-              <span>500+ Schemes</span>
-            </div>
-            <p className="text-xs font-bold text-slate-500 mt-1 uppercase tracking-wider">
-              {language === 'en' ? 'Verified Programs' : 'सत्यापित योजनाएं'}
-            </p>
-          </div>
-
-          <div className="p-3">
-            <div className="flex items-center justify-center space-x-2 text-2xl sm:text-3xl font-black text-govNavy-900">
-              <Globe2 className="w-6 h-6 text-blue-600 inline" />
-              <span>All 28 States</span>
-            </div>
-            <p className="text-xs font-bold text-slate-500 mt-1 uppercase tracking-wider">
-              {language === 'en' ? 'Pan-India Coverage' : 'अखिल भारतीय कवरेज'}
-            </p>
-          </div>
-
-          <div className="p-3">
-            <div className="flex items-center justify-center space-x-2 text-2xl sm:text-3xl font-black text-govEmerald-600">
-              <Zap className="w-6 h-6 text-govEmerald-600 inline" />
-              <span>Instant Eligibility</span>
-            </div>
-            <p className="text-xs font-bold text-slate-500 mt-1 uppercase tracking-wider">
-              {language === 'en' ? 'AI Rules Engine' : 'AI पात्रता इंजन'}
-            </p>
-          </div>
-
-          <div className="p-3">
-            <div className="flex items-center justify-center space-x-2 text-2xl sm:text-3xl font-black text-govNavy-900">
-              <CheckCircle2 className="w-6 h-6 text-emerald-600 inline" />
-              <span>100% Free</span>
-            </div>
-            <p className="text-xs font-bold text-slate-500 mt-1 uppercase tracking-wider">
-              {language === 'en' ? 'Direct Official Portals' : 'प्रत्यक्ष आधिकारिक पोर्टल'}
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. QUICK CATEGORY TILES */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
           <div>
-            <span className="text-xs font-bold text-govEmerald-700 uppercase tracking-wider block mb-1">
-              {language === 'en' ? 'Target Beneficiaries' : 'लक्षित लाभार्थी'}
+            <span className="font-mono text-base font-extrabold tracking-wider text-slate-100">
+              SYNAPX
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-govNavy-900 tracking-tight">
-              {t('exploreByCategory')}
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              {t('exploreSub')}
-            </p>
+            <span className="ml-2 text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.2 rounded bg-amber-500/15 text-amber-400 border border-amber-500/30">
+              SIH26189
+            </span>
           </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Link
+            href="/login"
+            className="px-3.5 py-1.5 rounded-lg text-xs font-semibold text-slate-300 hover:text-slate-100 hover:bg-obsidian-800 transition-colors"
+          >
+            Sign In
+          </Link>
+          <Link
+            href="/dashboard"
+            className="px-4 py-1.5 rounded-lg bg-teal-500 hover:bg-teal-400 text-obsidian-950 font-bold text-xs shadow-glow-teal flex items-center gap-1.5 transition-all"
+          >
+            <span>Command Center</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <section className="relative px-4 sm:px-8 pt-16 pb-20 max-w-6xl mx-auto text-center overflow-hidden">
+        {/* Background Radial Glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[350px] bg-teal-500/10 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs font-mono font-medium mb-6">
+          <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+          <span>SIH 2026 Problem Statement SIH26189 — Production-Style Intelligence Platform</span>
+        </div>
+
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-100 leading-tight">
+          From Fragmented Records → <br className="hidden sm:inline" />
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-400 via-teal-200 to-amber-300">
+            Explainable Criminal Intelligence
+          </span>
+        </h1>
+
+        <p className="mt-6 text-sm sm:text-base text-slate-300 max-w-3xl mx-auto leading-relaxed">
+          <strong>SYNAPX</strong> converts disconnected investigation records, trade manifests, and digital transactions into unified relationship graphs. Detect covert bridge entities, track multi-year syndicate evolution, and generate verified court dossiers.
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="mt-8 flex items-center justify-center gap-4 flex-wrap">
+          <Link
+            href="/dashboard"
+            className="px-6 py-3 rounded-xl bg-teal-500 hover:bg-teal-400 text-obsidian-950 font-bold text-sm shadow-glow-teal flex items-center gap-2 transition-all group"
+          >
+            <span>Launch Command Center</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" />
+          </Link>
+
+          <button
+            onClick={() => {
+              startJudgeMode();
+              window.location.href = '/dashboard';
+            }}
+            className="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500/20 to-amber-600/30 border border-amber-500/50 hover:bg-amber-500 hover:text-obsidian-950 text-amber-300 font-bold text-sm shadow-glow-amber flex items-center gap-2 transition-all"
+          >
+            <PlayCircle className="w-4 h-4 animate-pulse" />
+            <span>Start 15-Step Judge Demo Tour</span>
+          </button>
 
           <Link
-            href="/schemes"
-            className="inline-flex items-center space-x-1 text-xs sm:text-sm font-bold text-govNavy-900 hover:text-govEmerald-600 transition-colors shrink-0"
+            href="/architecture"
+            className="px-5 py-3 rounded-xl bg-obsidian-850 hover:bg-obsidian-800 text-slate-300 border border-obsidian-700 text-sm font-semibold transition-colors flex items-center gap-2"
           >
-            <span>{t('viewAllSchemes')}</span>
-            <ArrowRight className="w-4 h-4" />
+            <Cpu className="w-4 h-4 text-teal-400" />
+            <span>Architecture Blueprint</span>
           </Link>
         </div>
 
-        {/* 8 Category Tiles Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {CATEGORIES_CONFIG.map((cat) => {
-            const Icon = CATEGORY_ICON_COMPONENTS[cat.icon] || Landmark;
-            const catName = language === 'hi' ? cat.nameHi : cat.nameEn;
-            const tagline = language === 'hi' ? cat.taglineHi : cat.taglineEn;
-
-            return (
-              <Link
-                key={cat.slug}
-                href={`/schemes?category=${cat.slug}`}
-                className="group relative bg-white p-6 rounded-2xl border border-slate-200/90 hover:border-govNavy-300 shadow-soft-sm hover:shadow-soft-md transition-all duration-300 flex flex-col justify-between"
-              >
-                <div>
-                  <div
-                    className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110"
-                    style={{ backgroundColor: `${cat.accent}15`, color: cat.accent }}
-                  >
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="text-base font-bold text-govNavy-900 group-hover:text-govNavy-800 mb-1">
-                    {catName}
-                  </h3>
-                  <p className="text-xs text-slate-500 line-clamp-2 leading-relaxed">
-                    {tagline}
-                  </p>
-                </div>
-
-                <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-govNavy-800 group-hover:text-govEmerald-600">
-                  <span>Explore Schemes</span>
-                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </div>
-              </Link>
-            );
-          })}
+        {/* Safety & Compliance Badge */}
+        <div className="mt-8 inline-flex items-center gap-2 text-xs text-slate-400 bg-obsidian-900/80 px-4 py-2 rounded-lg border border-obsidian-800">
+          <ShieldCheck className="w-4 h-4 text-teal-400" />
+          <span>Decision-Support Architecture • Strict Synthetic Demonstration Data • Human Verification Enforced</span>
         </div>
       </section>
 
-      {/* 4. HOW IT WORKS */}
-      <section className="bg-slate-100/60 py-16 sm:py-24 px-4 sm:px-6 lg:px-8 border-y border-slate-200/80">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center max-w-3xl mx-auto mb-14">
-            <span className="text-xs font-bold text-govEmerald-700 uppercase tracking-wider block mb-1">
-              {language === 'en' ? 'Transparent & Middlemen-Free' : 'पारदर्शी एवं बिचौलियों से मुक्त'}
+      {/* Interactive Core Capabilities Grid */}
+      <section className="px-4 sm:px-8 py-16 bg-obsidian-900 border-y border-obsidian-800">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="text-xs font-mono font-bold uppercase tracking-widest text-teal-400">
+              SIX INTELLIGENCE PILLARS
             </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-govNavy-900 tracking-tight">
-              {t('howItWorksTitle')}
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-100 mt-1">
+              Engineered for Law Enforcement & Financial Intelligence
             </h2>
-            <p className="text-xs sm:text-sm text-slate-600 mt-2">
-              {t('howItWorksSub')}
-            </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Step 1 */}
-            <div className="bg-white p-7 rounded-2xl border border-slate-200/90 shadow-soft-sm relative">
-              <div className="w-12 h-12 rounded-xl bg-govNavy-50 border border-govNavy-100 text-govNavy-900 font-black text-base flex items-center justify-center mb-5">
-                01
-              </div>
-              <h3 className="text-base sm:text-lg font-bold text-govNavy-900 mb-2">{t('step1Title')}</h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                {t('step1Desc')}
-              </p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="bg-white p-7 rounded-2xl border border-slate-200/90 shadow-soft-sm relative">
-              <div className="w-12 h-12 rounded-xl bg-govEmerald-50 border border-govEmerald-100 text-govEmerald-700 font-black text-base flex items-center justify-center mb-5">
-                02
-              </div>
-              <h3 className="text-base sm:text-lg font-bold text-govNavy-900 mb-2">{t('step2Title')}</h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                {t('step2Desc')}
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="bg-white p-7 rounded-2xl border border-slate-200/90 shadow-soft-sm relative">
-              <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 text-blue-700 font-black text-base flex items-center justify-center mb-5">
-                03
-              </div>
-              <h3 className="text-base sm:text-lg font-bold text-govNavy-900 mb-2">{t('step3Title')}</h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
-                {t('step3Desc')}
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 5. FEATURED SCHEMES SECTION */}
-      <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto w-full">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4">
-          <div>
-            <span className="text-xs font-bold text-govEmerald-700 uppercase tracking-wider block mb-1">
-              {language === 'en' ? 'Verified Government Programs' : 'सत्यापित सरकारी कार्यक्रम'}
-            </span>
-            <h2 className="text-2xl sm:text-3xl font-black text-govNavy-900 tracking-tight">
-              {language === 'en' ? 'Flagship National Welfare Schemes' : 'प्रमुख राष्ट्रीय कल्याणकारी योजनाएं'}
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1">
-              {language === 'en'
-                ? 'Direct cash transfers, health covers, and educational subsidies for citizens'
-                : 'नागरिकों के लिए प्रत्यक्ष नकद अंतरण, स्वास्थ्य सुरक्षा एवं छात्रवृत्ति योजनाएं'}
-            </p>
-          </div>
-
-          <Link
-            href="/schemes"
-            className="inline-flex items-center space-x-1 text-xs sm:text-sm font-bold text-govNavy-900 hover:text-govEmerald-600 transition-colors"
-          >
-            <span>{t('viewAllSchemes')}</span>
-            <ArrowRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
-              <div key={i} className="h-72 rounded-2xl bg-slate-200 animate-pulse" />
-            ))}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredSchemes.map((scheme) => (
-              <SchemeCard key={scheme.id} scheme={scheme} />
-            ))}
-          </div>
-        )}
-      </section>
+            
+            {/* 1. Case DNA */}
+            <Link href="/case-dna" className="synapx-card p-6 synapx-card-hover group flex flex-col justify-between">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-teal-400 mb-4 group-hover:scale-110 transition-transform">
+                  <Dna className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-slate-100 group-hover:text-teal-300 transition-colors">
+                  Case DNA Signature Hub
+                </h3>
+                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  Visual hub-and-spoke synthesis linking cases to People, Orgs, Events, Locations, Documents, Digital IDs, and Timelines with instant completeness scoring.
+                </p>
+              </div>
+              <div className="mt-4 flex items-center gap-1 text-xs font-bold text-teal-400">
+                <span>Inspect Case DNA</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </div>
+            </Link>
 
-      {/* 6. GOVTECH TRUST & PRIVACY GUARANTEE BANNER */}
-      <section className="bg-govNavy-900 text-white py-14 px-4 sm:px-6 lg:px-8 border-t border-govNavy-800">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-start space-x-4">
-            <div className="p-3 bg-govEmerald-600 rounded-2xl text-white shrink-0 shadow-soft-sm">
-              <ShieldCheck className="w-7 h-7" />
-            </div>
-            <div>
-              <h3 className="text-lg font-bold text-white mb-1">
-                {language === 'en'
-                  ? 'Zero Identity Document Storage & Direct Government Redirection'
-                  : 'शून्य दस्तावेज भंडारण एवं प्रत्यक्ष सरकारी पोर्टल रीडायरेक्शन'}
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-300 max-w-2xl leading-relaxed">
-                {language === 'en'
-                  ? 'YogyaSetu operates as an open discovery and eligibility bridge. We never collect or store Aadhaar numbers, biometric data, or bank credentials. All applications are submitted strictly on authorized Government of India (.gov.in / .nic.in) portals.'
-                  : 'योग्यसेतु नागरिकों और योजनाओं के बीच एक पारदर्शी डिजिटल सेतु है। हम कभी आधार, बायोमेट्रिक्स या बैंकिंग क्रेडेंशियल स्टोर नहीं करते। सभी आवेदन सीधे आधिकारिक सरकारी पोर्टल पर ही किए जाते हैं।'}
-              </p>
-            </div>
-          </div>
+            {/* 2. Hidden Bridge Detector */}
+            <Link href="/hidden-bridges" className="synapx-card p-6 synapx-card-hover group flex flex-col justify-between">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 mb-4 group-hover:scale-110 transition-transform">
+                  <Network className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-slate-100 group-hover:text-amber-300 transition-colors">
+                  Hidden Bridge Detector
+                </h3>
+                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  Betweenness centrality algorithms isolate covert intermediaries connecting otherwise disconnected shell company and freight clusters.
+                </p>
+              </div>
+              <div className="mt-4 flex items-center gap-1 text-xs font-bold text-amber-400">
+                <span>View Bridge Analysis</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </div>
+            </Link>
 
-          <Link
-            href="/eligibility"
-            className="shrink-0 px-6 py-3.5 bg-govEmerald-600 hover:bg-govEmerald-700 text-white font-bold text-xs sm:text-sm rounded-xl shadow-soft-sm hover:shadow-soft-md transition-smooth flex items-center space-x-2"
-          >
-            <Sparkles className="w-4 h-4 text-emerald-200" />
-            <span>{t('checkEligibilityHeroBtn')}</span>
-          </Link>
+            {/* 3. Network Time Machine */}
+            <Link href="/time-machine" className="synapx-card p-6 synapx-card-hover group flex flex-col justify-between">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400 mb-4 group-hover:scale-110 transition-transform">
+                  <Clock className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-slate-100 group-hover:text-cyan-300 transition-colors">
+                  Network Time Machine (2021–2026)
+                </h3>
+                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  Interactive year-by-year slider animating syndicate inception, transaction volume spikes, and pre-interception coordination patterns.
+                </p>
+              </div>
+              <div className="mt-4 flex items-center gap-1 text-xs font-bold text-cyan-400">
+                <span>Launch Time Machine</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </div>
+            </Link>
+
+            {/* 4. AI Entity Resolution */}
+            <Link href="/entity-resolution" className="synapx-card p-6 synapx-card-hover group flex flex-col justify-between">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400 mb-4 group-hover:scale-110 transition-transform">
+                  <Users className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-slate-100 group-hover:text-purple-300 transition-colors">
+                  AI Entity Resolution Engine
+                </h3>
+                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  Fuzzy alias resolution across PAN, Phone, and RoC filings with 92% attribute overlap scoring and safe human-verified merging.
+                </p>
+              </div>
+              <div className="mt-4 flex items-center gap-1 text-xs font-bold text-purple-400">
+                <span>Review Duplicate Aliases</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </div>
+            </Link>
+
+            {/* 5. Geospatial Intelligence */}
+            <Link href="/geo-intelligence" className="synapx-card p-6 synapx-card-hover group flex flex-col justify-between">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 mb-4 group-hover:scale-110 transition-transform">
+                  <Compass className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-slate-100 group-hover:text-yellow-300 transition-colors">
+                  Geographic Intelligence & Map Sync
+                </h3>
+                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  Correlate port container yards, bullion trading bazaars, and offshore settlement hubs with bi-directional graph synchronization.
+                </p>
+              </div>
+              <div className="mt-4 flex items-center gap-1 text-xs font-bold text-yellow-400">
+                <span>Explore Geospatial Map</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </div>
+            </Link>
+
+            {/* 6. Explainable AI & Copilot */}
+            <Link href="/ai-copilot" className="synapx-card p-6 synapx-card-hover group flex flex-col justify-between">
+              <div>
+                <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-teal-300 mb-4 group-hover:scale-110 transition-transform">
+                  <Sparkles className="w-5 h-5" />
+                </div>
+                <h3 className="text-base font-bold text-slate-100 group-hover:text-teal-300 transition-colors">
+                  Explainable AI & Investigation Copilot
+                </h3>
+                <p className="text-xs text-slate-300 mt-2 leading-relaxed">
+                  Natural language decision support with transparent rationale ("Why Flagged", "Evidence", "Confidence") and instant graph highlights.
+                </p>
+              </div>
+              <div className="mt-4 flex items-center gap-1 text-xs font-bold text-teal-300">
+                <span>Interact with Copilot</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </div>
+            </Link>
+
+          </div>
         </div>
       </section>
+
+      {/* Problem vs Solution Comparison Table */}
+      <section className="px-4 sm:px-8 py-16 max-w-5xl mx-auto">
+        <div className="text-center mb-10">
+          <span className="text-xs font-mono font-bold uppercase tracking-widest text-amber-400">
+            PROBLEM STATEMENT SIH26189 CONTEXT
+          </span>
+          <h2 className="text-2xl font-bold text-slate-100 mt-1">
+            Transforming Fragmented Records into Actionable Intelligence
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="p-6 rounded-2xl bg-red-950/20 border border-red-500/30 space-y-3">
+            <h3 className="text-sm font-mono font-bold uppercase text-red-400 flex items-center gap-2">
+              <span>Traditional Siloed Investigations</span>
+            </h3>
+            <ul className="space-y-2 text-xs text-slate-300">
+              <li className="flex items-start gap-2">
+                <span className="text-red-400 font-bold">✕</span>
+                <span>Records trapped in disparate PDF panchnamas, bank sheets, and customs logs.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-400 font-bold">✕</span>
+                <span>Suspects create minor spelling variations to avoid watchlists.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-400 font-bold">✕</span>
+                <span>Hidden bridge entities between shell firms remain undetected for years.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-red-400 font-bold">✕</span>
+                <span>Zero visibility into syndicate structural growth across time dimensions.</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="p-6 rounded-2xl bg-teal-950/20 border border-teal-500/30 space-y-3">
+            <h3 className="text-sm font-mono font-bold uppercase text-teal-400 flex items-center gap-2">
+              <span>SYNAPX AI Intelligence Solution</span>
+            </h3>
+            <ul className="space-y-2 text-xs text-slate-300">
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                <span>Automated OCR & NER pipelines convert documents into unified knowledge graphs.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                <span>Multi-attribute fuzzy resolution flags duplicate aliases with similarity scores.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                <span>Betweenness centrality algorithms instantly highlight covert bridge conduits.</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <CheckCircle2 className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" />
+                <span>Network Time Machine & Case DNA provide leadership with complete clarity.</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="px-4 sm:px-8 py-8 bg-obsidian-900 border-t border-obsidian-800 text-center text-xs text-slate-400">
+        <div className="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <span className="font-mono font-bold text-slate-200">SYNAPX Intelligence Platform</span>
+            <span>•</span>
+            <span>SIH 2026 Problem Statement SIH26189</span>
+          </div>
+
+          <div className="flex items-center gap-4 text-slate-400">
+            <Link href="/architecture" className="hover:text-teal-300">Architecture</Link>
+            <Link href="/privacy-redaction" className="hover:text-teal-300">Privacy Shield</Link>
+            <Link href="/audit-trail" className="hover:text-teal-300">Audit Logs</Link>
+            <Link href="/dashboard" className="text-teal-400 font-bold hover:underline">Command Center</Link>
+          </div>
+        </div>
+      </footer>
+
     </div>
   );
 }
