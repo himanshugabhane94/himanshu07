@@ -98,3 +98,22 @@ def get_mo_clusters(case_type: Optional[str] = Query(None, description="Optional
     from app.services.mo_service import serial_pattern_detector
     return serial_pattern_detector.get_mo_clusters(case_type=case_type)
 
+@router.get("/repeat-offense/{suspect_id}")
+def get_repeat_offense_report(suspect_id: str):
+    """
+    Victim Safety Network:
+    Finds all cases where this suspect has an associated victim, detects escalation velocity,
+    calculates Recidivism Risk Score, and recommends protective measures under Sec 398 BNSS 2023.
+    """
+    from app.services.victim_safety_service import victim_safety_service
+    return victim_safety_service.get_suspect_repeat_offense_report(suspect_id=suspect_id)
+
+@router.get("/victim-safety-overview")
+def get_victim_safety_overview():
+    """
+    Returns system-wide overview of all flagged repeat offenders with multiple distinct victims.
+    """
+    from app.services.victim_safety_service import victim_safety_service
+    return victim_safety_service.get_victim_safety_overview()
+
+

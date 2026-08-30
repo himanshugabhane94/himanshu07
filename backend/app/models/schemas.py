@@ -535,4 +535,51 @@ class MOCluster(BaseModel):
     confidence_level: str # "HIGH", "MEDIUM", "EXPERIMENTAL"
     pattern_description: str
 
+# Victim Safety Network & Recidivism Risk Models
+class VictimIncidentRecord(BaseModel):
+    case_id: str
+    fir_number: str
+    date_recorded: str
+    crime_category: str
+    severity_tier: int # 1: Minor/Property, 2: Cyber/Harassment, 3: Theft, 4: Violent Assault/Kidnapping, 5: Homicide
+    victim_identifier: str # Anonymized metadata code: e.g. VIC-CASE-ASSAULT-01
+    victim_node_id: Optional[str] = None
+    jurisdiction: str
+    police_station: str
+    court_protection_status: str # "Active Restraining Order", "Witness Protection Tier-1", "None / Pending"
+    offense_summary: str
+
+class RecidivismRiskReport(BaseModel):
+    suspect_id: str
+    suspect_name: str
+    total_distinct_victims: int
+    total_linked_cases: int
+    recidivism_score: int # 0 - 100
+    risk_level: str # "CRITICAL", "HIGH", "MODERATE", "LOW"
+    escalation_trajectory: str # "ESCALATING_SEVERITY", "CHRONIC_REPEAT", "STABLE", "SINGLE_OFFENSE"
+    average_gap_days: Optional[int] = None
+    incidents_timeline: List[VictimIncidentRecord]
+    protective_recommendations: List[str]
+    priority_action_note: str
+    statutory_protection_clause: str = "Sec 398 Bharatiya Nagarik Suraksha Sanhita (BNSS) 2023 / Witness Protection Scheme."
+
+class VictimSafetyOffenderSummary(BaseModel):
+    suspect_id: str
+    suspect_name: str
+    total_victims: int
+    recidivism_score: int
+    risk_level: str
+    escalation_trajectory: str
+    latest_incident_date: str
+    primary_crime_categories: List[str]
+    priority_alert: str
+
+class VictimSafetyOverview(BaseModel):
+    total_repeat_offenders_flagged: int
+    total_protected_victims_tracked: int
+    critical_escalation_count: int
+    flagged_offenders: List[VictimSafetyOffenderSummary]
+    system_advisory: str
+
+
 

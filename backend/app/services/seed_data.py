@@ -480,7 +480,7 @@ def seed_database():
     # SCENARIO 4: OPERATION AMBER SHIELD (Kidnapping & Ransom Syndicate)
     # =========================================================================
     kidnap_nodes = [
-        Node(id="PER_AARAV_MALHOTRA", label="Aarav Malhotra (Victim)", type=NodeType.PERSON, risk_level=RiskLevel.LOW, case_ids=["CASE-KIDNAP-2024"], discovered_date="2024-02-10T11:00:00Z", properties={"role": "Abducted Student", "status": "Rescued in Tactical Raid", "age": 21}),
+        Node(id="PER_AARAV_MALHOTRA", label="Aarav Malhotra (Victim)", type=NodeType.PERSON, risk_level=RiskLevel.LOW, case_ids=["CASE-KIDNAP-2024"], discovered_date="2024-02-10T11:00:00Z", properties={"role": "Victim", "anonymized_id": "VIC-KIDNAP-104", "crime_category": "Kidnapping", "protection_status": "Special Police Escort", "case_summary": "Armed student abduction for crypto ransom", "status": "Rescued in Tactical Raid", "age": 21}),
         Node(id="PER_KULDEEP_YADAV", label="Kuldeep Yadav (Alias KD)", type=NodeType.PERSON, risk_level=RiskLevel.CRITICAL, case_ids=["CASE-KIDNAP-2024", "CASE-ROBBERY-2024"], discovered_date="2024-02-10T11:30:00Z", properties={"role": "Abductor & Armed Getaway Specialist", "alias": "KD Pehalwan", "cross_jurisdiction": "Kidnapping FIR 104/2024 & Janakpuri Robbery FIR 415/2024"}),
         Node(id="PER_SUNIL_RAWAT", label="Sunil 'Goli' Rawat", type=NodeType.PERSON, risk_level=RiskLevel.HIGH, case_ids=["CASE-KIDNAP-2024"], discovered_date="2024-02-11T14:00:00Z", properties={"role": "Extortion Caller & Guard", "status": "Arrested"}),
         Node(id="PH_RANSOM_BURNER", label="+91-98110-33441 (Ransom Burner)", type=NodeType.PHONE, risk_level=RiskLevel.HIGH, case_ids=["CASE-KIDNAP-2024"], discovered_date="2024-02-11T14:30:00Z", properties={"carrier": "Vodafone Idea", "tower_location": "Alwar-Bhiwadi Highway"}),
@@ -491,7 +491,7 @@ def seed_database():
     ]
 
     kidnap_edges = [
-        Edge(id="EDG_K01", source="PER_KULDEEP_YADAV", target="PER_AARAV_MALHOTRA", type=EdgeType.VICTIM_OF, weight=0.98, evidence_ref="CCTV Footage & Victim Statement", case_id="CASE-KIDNAP-2024", timestamp="2024-02-10T11:45:00Z", discovered_date="2024-02-10T11:45:00Z"),
+        Edge(id="EDG_K01", source="PER_AARAV_MALHOTRA", target="PER_KULDEEP_YADAV", type=EdgeType.VICTIM_OF, weight=0.98, evidence_ref="CCTV Footage & Victim Statement", case_id="CASE-KIDNAP-2024", timestamp="2024-02-10T11:45:00Z", discovered_date="2024-02-10T11:45:00Z"),
         Edge(id="EDG_K02", source="PER_KULDEEP_YADAV", target="VEH_SCORPIO_DL4C", type=EdgeType.DRIVES_VEHICLE, weight=0.95, evidence_ref="Toll ANPR Camera Pings", case_id="CASE-KIDNAP-2024", timestamp="2024-02-10T12:30:00Z", discovered_date="2024-02-10T12:30:00Z"),
         Edge(id="EDG_K03", source="PER_AARAV_MALHOTRA", target="LOC_ALWAR_KILN", type=EdgeType.HELD_CAPTIVE_AT, weight=0.95, evidence_ref="Tactical Rescue Memo", case_id="CASE-KIDNAP-2024", timestamp="2024-02-10T14:00:00Z", discovered_date="2024-02-10T14:00:00Z"),
         Edge(id="EDG_K04", source="PER_SUNIL_RAWAT", target="LOC_ALWAR_KILN", type=EdgeType.MET_AT, weight=0.90, evidence_ref="Raid Arrest Log", case_id="CASE-KIDNAP-2024", timestamp="2024-02-11T15:00:00Z", discovered_date="2024-02-11T15:00:00Z"),
@@ -505,12 +505,12 @@ def seed_database():
     # SCENARIO 5: GREATER KAILASH HOMICIDE (Murder)
     # =========================================================================
     murder_nodes = [
-        Node(id="PER_SUBHASH_SINGHAL", label="Subhash Singhal (Victim)", type=NodeType.PERSON, risk_level=RiskLevel.LOW, case_ids=["CASE-MURDER-2024"], discovered_date="2024-02-18T20:30:00Z", properties={"role": "Deceased Real Estate Builder", "motive": "Commercial Property Dispute ₹12 Cr"}),
+        Node(id="PER_SUBHASH_SINGHAL", label="Subhash Singhal (Victim)", type=NodeType.PERSON, risk_level=RiskLevel.LOW, case_ids=["CASE-MURDER-2024"], discovered_date="2024-02-18T20:30:00Z", properties={"role": "Victim", "anonymized_id": "VIC-HOMICIDE-312", "crime_category": "Murder", "case_summary": "Fatal gunshot injury in commercial dispute", "motive": "Commercial Property Dispute ₹12 Cr"}),
         Node(id="PER_PRADEEP_SINGHAL", label="Pradeep Singhal (Mastermind)", type=NodeType.PERSON, risk_level=RiskLevel.CRITICAL, case_ids=["CASE-MURDER-2024"], discovered_date="2024-02-19T10:00:00Z", properties={"role": "Partner & Financial Beneficiary", "status": "Chargesheeted"}),
         Node(id="PER_RAMESH_BAGGA", label="Ramesh 'Shooter' Bagga", type=NodeType.PERSON, risk_level=RiskLevel.CRITICAL, case_ids=["CASE-MURDER-2024", "CASE-ROBBERY-2024"], discovered_date="2024-02-20T14:00:00Z", properties={"role": "Contract Shooter & Arms Supplier", "alias": "Bagga Shooter", "cross_jurisdiction": "GK-1 Homicide FIR 312/2024 & Janakpuri Armed Robbery FIR 415/2024"}),
         Node(id="WEP_PISTOL_32", label="Countrymade .32 Pistol [SN: IND-7721]", type=NodeType.WEAPON, risk_level=RiskLevel.CRITICAL, case_ids=["CASE-MURDER-2024"], discovered_date="2024-02-21T16:00:00Z", properties={"caliber": ".32 Auto", "ballistics": "FSL Ballistic Match with Spent Cartridge"}),
         Node(id="LOC_GK1_PENTHOUSE", label="Singhal Enclave Penthouse (GK-1)", type=NodeType.LOCATION, risk_level=RiskLevel.HIGH, case_ids=["CASE-MURDER-2024"], discovered_date="2024-02-18T21:00:00Z", properties={"type": "Crime Scene Location", "city": "New Delhi"}),
-        Node(id="PER_DINESH_JOSHI", label="Dinesh Joshi (Eyewitness)", type=NodeType.PERSON, risk_level=RiskLevel.LOW, case_ids=["CASE-MURDER-2024"], discovered_date="2024-02-18T22:00:00Z", properties={"role": "Security Guard", "testimony": "Identified shooter escaping on motorcycle"}),
+        Node(id="PER_DINESH_JOSHI", label="Dinesh Joshi (Eyewitness)", type=NodeType.PERSON, risk_level=RiskLevel.LOW, case_ids=["CASE-MURDER-2024"], discovered_date="2024-02-18T22:00:00Z", properties={"role": "Witness", "testimony": "Identified shooter escaping on motorcycle"}),
         Node(id="ACC_CONTRACT_CASH", label="Pradeep Singhal Current Acc #1092", type=NodeType.BANK_ACCOUNT, risk_level=RiskLevel.HIGH, case_ids=["CASE-MURDER-2024"], discovered_date="2024-02-22T11:00:00Z", properties={"bank": "Kotak Mahindra Bank", "withdrawal": "₹ 25 Lakhs Cash Withdrawal prior to attack"})
     ]
 
@@ -520,7 +520,7 @@ def seed_database():
         Edge(id="EDG_M03", source="PER_RAMESH_BAGGA", target="WEP_PISTOL_32", type=EdgeType.USED_WEAPON, weight=0.96, evidence_ref="FSL Rohini Ballistics Report", case_id="CASE-MURDER-2024", timestamp="2024-02-21T16:30:00Z", discovered_date="2024-02-21T16:30:00Z"),
         Edge(id="EDG_M04", source="PER_SUBHASH_SINGHAL", target="LOC_GK1_PENTHOUSE", type=EdgeType.LOCATED_AT, weight=0.90, evidence_ref="Residence Scene Memo", case_id="CASE-MURDER-2024", timestamp="2024-02-18T21:15:00Z", discovered_date="2024-02-18T21:15:00Z"),
         Edge(id="EDG_M05", source="PER_DINESH_JOSHI", target="PER_RAMESH_BAGGA", type=EdgeType.WITNESSED, weight=0.88, evidence_ref="Judicial Identification Parade TIP", case_id="CASE-MURDER-2024", timestamp="2024-02-22T14:00:00Z", discovered_date="2024-02-22T14:00:00Z"),
-        Edge(id="EDG_M06", source="PER_PRADEEP_SINGHAL", target="PER_SUBHASH_SINGHAL", type=EdgeType.VICTIM_OF, weight=0.90, evidence_ref="Civil Court Arbitration Records", case_id="CASE-MURDER-2024", timestamp="2024-02-19T10:30:00Z", discovered_date="2024-02-19T10:30:00Z"),
+        Edge(id="EDG_M06", source="PER_SUBHASH_SINGHAL", target="PER_PRADEEP_SINGHAL", type=EdgeType.VICTIM_OF, weight=0.90, evidence_ref="Civil Court Arbitration Records", case_id="CASE-MURDER-2024", timestamp="2024-02-19T10:30:00Z", discovered_date="2024-02-19T10:30:00Z"),
         Edge(id="EDG_M07", source="PER_PRADEEP_SINGHAL", target="ACC_CONTRACT_CASH", type=EdgeType.OPERATES_ACCOUNT, weight=0.92, evidence_ref="Bank Statement Analysis", case_id="CASE-MURDER-2024", timestamp="2024-02-22T11:30:00Z", discovered_date="2024-02-22T11:30:00Z")
     ]
 
@@ -528,7 +528,8 @@ def seed_database():
     # SCENARIO 6: SENSITIVE METRO CORRIDOR CASE (SexualAssault - Professional Metadata)
     # =========================================================================
     assault_nodes = [
-        Node(id="PER_SATISH_VERMA", label="Satish 'Chhotu' Verma", type=NodeType.PERSON, risk_level=RiskLevel.CRITICAL, case_ids=["CASE-ASSAULT-2024", "CASE-STALK-2024"], discovered_date="2024-01-25T09:00:00Z", properties={"role": "Commercial Cab Driver & Serial Stalker", "license": "DL-04-2018-91823", "cross_jurisdiction": "Assault FIR 89/2024 & Cyberstalking FIR 62/2024"}),
+        Node(id="PER_SATISH_VERMA", label="Satish 'Chhotu' Verma", type=NodeType.PERSON, risk_level=RiskLevel.CRITICAL, case_ids=["CASE-ASSAULT-2024", "CASE-STALK-2024"], discovered_date="2024-01-25T09:00:00Z", properties={"role": "Commercial Cab Driver & Serial Offender", "license": "DL-04-2018-91823", "cross_jurisdiction": "Assault FIR 89/2024 & Cyberstalking FIR 62/2024"}),
+        Node(id="VIC_ASSAULT_COMPLAINANT", label="Complainant (Gurugram FIR 89/24)", type=NodeType.PERSON, risk_level=RiskLevel.LOW, case_ids=["CASE-ASSAULT-2024"], discovered_date="2024-01-25T09:00:00Z", properties={"role": "Victim", "anonymized_id": "VIC-GURUGRAM-89", "crime_category": "SexualAssault", "protection_status": "Active Judicial Protection Protocol", "case_summary": "Attempted physical intercept of night commuter near IFFCO Chowk"}),
         Node(id="PH_SATISH_BURNER", label="+91-98711-22990 (Active Burner)", type=NodeType.PHONE, risk_level=RiskLevel.HIGH, case_ids=["CASE-ASSAULT-2024", "CASE-STALK-2024"], discovered_date="2024-01-25T09:30:00Z", properties={"carrier": "Airtel", "imei": "864192039182049", "cross_jurisdiction": "Linked across Gurugram Assault & Dwarka Cyberstalking"}),
         Node(id="VEH_SWIFT_HR55", label="Maruti Swift Dzire Taxi [HR-55-AT-4019]", type=NodeType.VEHICLE, risk_level=RiskLevel.HIGH, case_ids=["CASE-ASSAULT-2024"], discovered_date="2024-01-26T12:00:00Z", properties={"permit": "All India Tourist Permit", "gps_device_id": "GPS-TRK-9901"}),
         Node(id="LOC_IFFCO_CHOWK", label="IFFCO Chowk Flyover CCTV Zone", type=NodeType.LOCATION, risk_level=RiskLevel.MEDIUM, case_ids=["CASE-ASSAULT-2024"], discovered_date="2024-01-26T14:00:00Z", properties={"type": "Technical Evidence Collection Grid", "coordinates": "28.4721, 77.0699"}),
@@ -539,25 +540,27 @@ def seed_database():
         Edge(id="EDG_A01", source="PER_SATISH_VERMA", target="VEH_SWIFT_HR55", type=EdgeType.DRIVES_VEHICLE, weight=0.95, evidence_ref="Fleet Operator Driver Manifest", case_id="CASE-ASSAULT-2024", timestamp="2024-01-25T10:00:00Z", discovered_date="2024-01-25T10:00:00Z"),
         Edge(id="EDG_A02", source="PER_SATISH_VERMA", target="PH_SATISH_BURNER", type=EdgeType.OWNS_DEVICE, weight=0.98, evidence_ref="Cellular Tower CDR Pings", case_id="CASE-ASSAULT-2024", timestamp="2024-01-25T10:30:00Z", discovered_date="2024-01-25T10:30:00Z"),
         Edge(id="EDG_A03", source="VEH_SWIFT_HR55", target="LOC_IFFCO_CHOWK", type=EdgeType.LOCATED_AT, weight=0.90, evidence_ref="Toll Fastag & GPS Log", case_id="CASE-ASSAULT-2024", timestamp="2024-01-26T14:15:00Z", discovered_date="2024-01-26T14:15:00Z"),
-        Edge(id="EDG_A04", source="DIG_CCTV_IFFCO", target="LOC_IFFCO_CHOWK", type=EdgeType.LOCATED_AT, weight=0.95, evidence_ref="Gurugram Traffic Police Video Stream", case_id="CASE-ASSAULT-2024", timestamp="2024-01-26T14:45:00Z", discovered_date="2024-01-26T14:45:00Z")
+        Edge(id="EDG_A04", source="DIG_CCTV_IFFCO", target="LOC_IFFCO_CHOWK", type=EdgeType.LOCATED_AT, weight=0.95, evidence_ref="Gurugram Traffic Police Video Stream", case_id="CASE-ASSAULT-2024", timestamp="2024-01-26T14:45:00Z", discovered_date="2024-01-26T14:45:00Z"),
+        Edge(id="EDG_A05", source="VIC_ASSAULT_COMPLAINANT", target="PER_SATISH_VERMA", type=EdgeType.VICTIM_OF, weight=0.98, evidence_ref="Station FIR & CCTV Forensic Match", case_id="CASE-ASSAULT-2024", timestamp="2024-01-25T09:30:00Z", discovered_date="2024-01-25T09:30:00Z")
     ]
 
     # =========================================================================
     # SCENARIO 7: CYBERSTALKING & HARASSMENT (Harassment)
     # =========================================================================
     stalk_nodes = [
-        Node(id="PER_RITU_VERMA", label="Dr. Ritu Verma (Complainant)", type=NodeType.PERSON, risk_level=RiskLevel.LOW, case_ids=["CASE-STALK-2024"], discovered_date="2024-02-04T15:00:00Z", properties={"role": "Complainant / Medical Officer", "status": "Under Cyber Cell Protection"}),
-        Node(id="DIG_VOIP_GATEWAY", label="Virtual VoIP Gateway [US-DID +1-202-555-0193]", type=NodeType.DIGITAL_ID, risk_level=RiskLevel.HIGH, case_ids=["CASE-STALK-2024"], discovered_date="2024-02-05T11:00:00Z", properties={"service": "Twilio / SkypeIn SIP Trunk", "spoofed_caller_id": True}),
-        Node(id="DIG_PROTON_MAIL", label="Encrypted Mailbox [alpha_trace@proton.me]", type=NodeType.DIGITAL_ID, risk_level=RiskLevel.HIGH, case_ids=["CASE-STALK-2024"], discovered_date="2024-02-06T13:00:00Z", properties={"service": "Proton Technologies AG", "threat_count": 42}),
-        Node(id="LOC_DWARKA_SECTOR17", label="Dwarka Cyber Cell Technical Unit", type=NodeType.LOCATION, risk_level=RiskLevel.LOW, case_ids=["CASE-STALK-2024"], discovered_date="2024-02-04T15:30:00Z", properties={"type": "Jurisdiction Office", "city": "Delhi"}),
-        Node(id="PH_COMPLAINANT_SECURE", label="+91-98100-55443 (Complainant)", type=NodeType.PHONE, risk_level=RiskLevel.LOW, case_ids=["CASE-STALK-2024"], discovered_date="2024-02-04T16:00:00Z", properties={"carrier": "Airtel", "status": "Logged for Harassment Intercept"})
+        Node(id="PER_RITU_VERMA", label="Dr. Ritu Verma (Complainant)", type=NodeType.PERSON, risk_level=RiskLevel.LOW, case_ids=["CASE-STALK-2024"], discovered_date="2024-01-20T15:00:00Z", properties={"role": "Victim", "anonymized_id": "VIC-DWARKA-62", "crime_category": "Harassment", "protection_status": "Witness Protection Tier-1", "case_summary": "Persistent VoIP threat calls & virtual spoofing"}),
+        Node(id="DIG_VOIP_GATEWAY", label="Virtual VoIP Gateway [US-DID +1-202-555-0193]", type=NodeType.DIGITAL_ID, risk_level=RiskLevel.HIGH, case_ids=["CASE-STALK-2024"], discovered_date="2024-01-20T11:00:00Z", properties={"service": "Twilio / SkypeIn SIP Trunk", "spoofed_caller_id": True}),
+        Node(id="DIG_PROTON_MAIL", label="Encrypted Mailbox [alpha_trace@proton.me]", type=NodeType.DIGITAL_ID, risk_level=RiskLevel.HIGH, case_ids=["CASE-STALK-2024"], discovered_date="2024-01-20T13:00:00Z", properties={"service": "Proton Technologies AG", "threat_count": 42}),
+        Node(id="LOC_DWARKA_SECTOR17", label="Dwarka Cyber Cell Technical Unit", type=NodeType.LOCATION, risk_level=RiskLevel.LOW, case_ids=["CASE-STALK-2024"], discovered_date="2024-01-20T15:30:00Z", properties={"type": "Jurisdiction Office", "city": "Delhi"}),
+        Node(id="PH_COMPLAINANT_SECURE", label="+91-98100-55443 (Complainant)", type=NodeType.PHONE, risk_level=RiskLevel.LOW, case_ids=["CASE-STALK-2024"], discovered_date="2024-01-20T16:00:00Z", properties={"carrier": "Airtel", "status": "Logged for Harassment Intercept"})
     ]
 
     stalk_edges = [
-        Edge(id="EDG_ST01", source="PER_SATISH_VERMA", target="DIG_VOIP_GATEWAY", type=EdgeType.OPERATES_ACCOUNT, weight=0.92, evidence_ref="Credit Card Billing Account Link", case_id="CASE-STALK-2024", timestamp="2024-02-05T11:30:00Z", discovered_date="2024-02-05T11:30:00Z"),
-        Edge(id="EDG_ST02", source="DIG_VOIP_GATEWAY", target="PER_RITU_VERMA", type=EdgeType.THREATENED, weight=0.95, properties={"spoofed_calls": 42}, evidence_ref="Call Audio Recordings & CDR", case_id="CASE-STALK-2024", timestamp="2024-02-05T12:00:00Z", discovered_date="2024-02-05T12:00:00Z"),
-        Edge(id="EDG_ST03", source="PER_SATISH_VERMA", target="PER_RITU_VERMA", type=EdgeType.STALKED, weight=0.96, evidence_ref="IFSO Cyber Investigation Memo", case_id="CASE-STALK-2024", timestamp="2024-02-06T14:00:00Z", discovered_date="2024-02-06T14:00:00Z"),
-        Edge(id="EDG_ST04", source="PH_SATISH_BURNER", target="DIG_PROTON_MAIL", type=EdgeType.ASSOCIATED_WITH, weight=0.88, evidence_ref="2FA SMS Recovery Header Analysis", case_id="CASE-STALK-2024", timestamp="2024-02-06T14:30:00Z", discovered_date="2024-02-06T14:30:00Z")
+        Edge(id="EDG_ST01", source="PER_SATISH_VERMA", target="DIG_VOIP_GATEWAY", type=EdgeType.OPERATES_ACCOUNT, weight=0.92, evidence_ref="Credit Card Billing Account Link", case_id="CASE-STALK-2024", timestamp="2024-01-20T11:30:00Z", discovered_date="2024-01-20T11:30:00Z"),
+        Edge(id="EDG_ST02", source="DIG_VOIP_GATEWAY", target="PER_RITU_VERMA", type=EdgeType.THREATENED, weight=0.95, properties={"spoofed_calls": 42}, evidence_ref="Call Audio Recordings & CDR", case_id="CASE-STALK-2024", timestamp="2024-01-20T12:00:00Z", discovered_date="2024-01-20T12:00:00Z"),
+        Edge(id="EDG_ST03", source="PER_SATISH_VERMA", target="PER_RITU_VERMA", type=EdgeType.STALKED, weight=0.96, evidence_ref="IFSO Cyber Investigation Memo", case_id="CASE-STALK-2024", timestamp="2024-01-20T14:00:00Z", discovered_date="2024-01-20T14:00:00Z"),
+        Edge(id="EDG_ST04", source="PH_SATISH_BURNER", target="DIG_PROTON_MAIL", type=EdgeType.ASSOCIATED_WITH, weight=0.88, evidence_ref="2FA SMS Recovery Header Analysis", case_id="CASE-STALK-2024", timestamp="2024-01-20T14:30:00Z", discovered_date="2024-01-20T14:30:00Z"),
+        Edge(id="EDG_ST05", source="PER_RITU_VERMA", target="PER_SATISH_VERMA", type=EdgeType.VICTIM_OF, weight=0.96, evidence_ref="Cyber Cell VoIP Billing Record", case_id="CASE-STALK-2024", timestamp="2024-01-20T15:30:00Z", discovered_date="2024-01-20T15:30:00Z")
     ]
 
     # =========================================================================
@@ -569,7 +572,7 @@ def seed_database():
         Node(id="STP_GOLD_BULLION", label="Stolen Gold Bullion (₹85 Lakhs)", type=NodeType.STOLEN_PROPERTY, risk_level=RiskLevel.HIGH, case_ids=["CASE-THEFT-2024"], discovered_date="2024-01-22T14:30:00Z", properties={"weight_kg": "1.25 kg", "melted_bars": 4, "value_inr": "₹ 85,00,000"}),
         Node(id="LOC_KAROL_BAGH_PAWN", label="Karol Bagh Bullion & Pawn Vault", type=NodeType.LOCATION, risk_level=RiskLevel.HIGH, case_ids=["CASE-THEFT-2024", "CASE-HAWALA-2024"], discovered_date="2024-01-24T16:00:00Z", properties={"city": "New Delhi", "type": "Pawn Shop Underground Safe & Cash Drop"}),
         Node(id="VEH_TATA_ACE_DL1L", label="Tata Ace Delivery Van [DL-1L-AA-3321]", type=NodeType.VEHICLE, risk_level=RiskLevel.MEDIUM, case_ids=["CASE-THEFT-2024"], discovered_date="2024-01-25T11:00:00Z", properties={"make": "Tata Ace", "cargo_box": "Modified False Floor"}),
-        Node(id="PER_SURESH_KUMAR_THEFT_VICTIM", label="Suresh Kumar (Complainant)", type=NodeType.PERSON, risk_level=RiskLevel.LOW, case_ids=["CASE-THEFT-2024"], discovered_date="2024-01-20T12:30:00Z", properties={"role": "Vault Owner / Complainant"})
+        Node(id="PER_SURESH_KUMAR_THEFT_VICTIM", label="Suresh Kumar (Complainant)", type=NodeType.PERSON, risk_level=RiskLevel.LOW, case_ids=["CASE-THEFT-2024"], discovered_date="2024-01-20T12:30:00Z", properties={"role": "Victim", "anonymized_id": "VIC-ROHINI-219", "crime_category": "Theft", "case_summary": "Vault break-in and bullion burglary"})
     ]
 
     theft_edges = [
@@ -585,6 +588,7 @@ def seed_database():
     # =========================================================================
     robbery_nodes = [
         Node(id="PER_JOGINDER_PEHALWAN", label="Joginder Singh (Alias Jogi Pehalwan)", type=NodeType.PERSON, risk_level=RiskLevel.CRITICAL, case_ids=["CASE-ROBBERY-2024"], discovered_date="2024-02-24T16:45:00Z", properties={"role": "Armed Dacoity Syndicate Leader", "alias": "Jogi Pehalwan", "status": "Mastermind"}),
+        Node(id="VIC_ROBBERY_TRANSIT_GUARD", label="Cash Van Security Officer (Janakpuri)", type=NodeType.PERSON, risk_level=RiskLevel.LOW, case_ids=["CASE-ROBBERY-2024"], discovered_date="2024-02-24T17:00:00Z", properties={"role": "Victim", "anonymized_id": "VIC-ROBBERY-415", "crime_category": "Robbery", "protection_status": "Hospital Medical & Witness Security", "case_summary": "Injured security crew member during daylight armed cash van heist"}),
         Node(id="STP_AXIS_CASH_BOX", label="Janakpuri Bank Cash Chest (₹1.8 Cr)", type=NodeType.STOLEN_PROPERTY, risk_level=RiskLevel.CRITICAL, case_ids=["CASE-ROBBERY-2024"], discovered_date="2024-02-24T17:00:00Z", properties={"stolen_amount": "₹ 1,80,00,000", "currency": "INR 500 bundles"}),
         Node(id="LOC_JANAKPURI_HEIST", label="Janakpuri Outer Ring Road Flyover", type=NodeType.LOCATION, risk_level=RiskLevel.HIGH, case_ids=["CASE-ROBBERY-2024"], discovered_date="2024-02-24T17:15:00Z", properties={"type": "Armed Blockade & Attack Scene", "city": "West Delhi"}),
         Node(id="WEP_COUNTRY_SHOTGUN", label="12-Bore Countrymade Shotgun #ROB01", type=NodeType.WEAPON, risk_level=RiskLevel.CRITICAL, case_ids=["CASE-ROBBERY-2024"], discovered_date="2024-02-26T14:00:00Z", properties={"caliber": "12 Bore", "used_in_heist": True})
@@ -596,7 +600,8 @@ def seed_database():
         Edge(id="EDG_R03", source="PER_KULDEEP_YADAV", target="VEH_SCORPIO_DL4C", type=EdgeType.FLED_IN, weight=0.98, evidence_ref="Janakpuri Flyover CCTV Video Feed", case_id="CASE-ROBBERY-2024", timestamp="2024-02-24T18:00:00Z", discovered_date="2024-02-24T18:00:00Z"),
         Edge(id="EDG_R04", source="PER_JOGINDER_PEHALWAN", target="STP_AXIS_CASH_BOX", type=EdgeType.INVOLVED_IN, weight=0.95, evidence_ref="Physical Loot Recovery", case_id="CASE-ROBBERY-2024", timestamp="2024-02-24T18:15:00Z", discovered_date="2024-02-24T18:15:00Z"),
         Edge(id="EDG_R05", source="PER_JOGINDER_PEHALWAN", target="LOC_JANAKPURI_HEIST", type=EdgeType.LOCATED_AT, weight=0.90, evidence_ref="Eyewitness Police Constables", case_id="CASE-ROBBERY-2024", timestamp="2024-02-24T18:30:00Z", discovered_date="2024-02-24T18:30:00Z"),
-        Edge(id="EDG_R06", source="PER_JOGINDER_PEHALWAN", target="WEP_COUNTRY_SHOTGUN", type=EdgeType.USED_WEAPON, weight=0.95, evidence_ref="Ballistic Empty Shells", case_id="CASE-ROBBERY-2024", timestamp="2024-02-26T14:30:00Z", discovered_date="2024-02-26T14:30:00Z")
+        Edge(id="EDG_R06", source="PER_JOGINDER_PEHALWAN", target="WEP_COUNTRY_SHOTGUN", type=EdgeType.USED_WEAPON, weight=0.95, evidence_ref="Ballistic Empty Shells", case_id="CASE-ROBBERY-2024", timestamp="2024-02-26T14:30:00Z", discovered_date="2024-02-26T14:30:00Z"),
+        Edge(id="EDG_R07", source="VIC_ROBBERY_TRANSIT_GUARD", target="PER_KULDEEP_YADAV", type=EdgeType.VICTIM_OF, weight=0.94, evidence_ref="PCR Statement Memo", case_id="CASE-ROBBERY-2024", timestamp="2024-02-24T17:30:00Z", discovered_date="2024-02-24T17:30:00Z")
     ]
 
     # Ingest All Nodes & Edges into Engine

@@ -244,6 +244,19 @@ export const api = {
     });
   },
 
+  // Victim Safety Network & Repeat Offense Detection
+  getRepeatOffenseReport: async (suspectId) => {
+    return fetchJson(`${API_BASE}/analytics/repeat-offense/${encodeURIComponent(suspectId)}`, {
+      headers: getHeaders()
+    });
+  },
+
+  getVictimSafetyOverview: async () => {
+    return fetchJson(`${API_BASE}/analytics/victim-safety-overview`, {
+      headers: getHeaders()
+    });
+  },
+
   // Cross-Case Intelligence Linker
   getCrossCaseLinks: async (params = {}) => {
     const query = new URLSearchParams();

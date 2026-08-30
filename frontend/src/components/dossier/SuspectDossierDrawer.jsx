@@ -127,11 +127,11 @@ export default function SuspectDossierDrawer({
             </div>
           </div>
 
-          {/* Dossier Tabs (XAI, MO Pattern, Direct Connections, Blockchain Custody) */}
+          {/* Dossier Tabs (XAI, MO Pattern, Victim Safety, Direct Connections, Blockchain Custody) */}
           <div className="flex items-center rounded-2xl bg-[#0f0e0d] border border-[#3a352d] p-1 text-xs font-mono flex-wrap gap-1">
             <button
               onClick={() => setActiveTab('xai')}
-              className={`flex-1 min-w-[90px] py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 min-w-[75px] py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1 ${
                 activeTab === 'xai' 
                   ? 'bg-[#24211d] text-[#f5c074] border border-[#d68a1f]/40' 
                   : 'text-[#8a8478] hover:text-[#ece7de]'
@@ -142,18 +142,29 @@ export default function SuspectDossierDrawer({
             </button>
             <button
               onClick={() => setActiveTab('mo')}
-              className={`flex-1 min-w-[90px] py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 min-w-[75px] py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1 ${
                 activeTab === 'mo' 
                   ? 'bg-[#24211d] text-[#f5c074] border border-[#d68a1f]/40' 
                   : 'text-[#8a8478] hover:text-[#ece7de]'
               }`}
             >
               <Network className="w-3 h-3 text-[#e5aa70]" />
-              <span>MO Pattern</span>
+              <span>MO</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('safety')}
+              className={`flex-1 min-w-[85px] py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1 ${
+                activeTab === 'safety' 
+                  ? 'bg-[#24211d] text-[#f5c074] border border-[#a5342a]/60' 
+                  : 'text-[#8a8478] hover:text-[#ece7de]'
+              }`}
+            >
+              <ShieldAlert className="w-3 h-3 text-[#e27d75]" />
+              <span>Safety</span>
             </button>
             <button
               onClick={() => setActiveTab('connections')}
-              className={`flex-1 min-w-[90px] py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 min-w-[75px] py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1 ${
                 activeTab === 'connections' 
                   ? 'bg-[#24211d] text-[#f5c074] border border-[#d68a1f]/40' 
                   : 'text-[#8a8478] hover:text-[#ece7de]'
@@ -164,7 +175,7 @@ export default function SuspectDossierDrawer({
             </button>
             <button
               onClick={() => setActiveTab('custody')}
-              className={`flex-1 min-w-[90px] py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1.5 ${
+              className={`flex-1 min-w-[75px] py-1.5 rounded-xl font-bold transition-all flex items-center justify-center gap-1 ${
                 activeTab === 'custody' 
                   ? 'bg-[#24211d] text-[#f5c074] border border-[#d68a1f]/40' 
                   : 'text-[#8a8478] hover:text-[#ece7de]'
@@ -182,6 +193,11 @@ export default function SuspectDossierDrawer({
               caseId={caseId}
               onSelectNode={onSelectNode}
             />
+          )}
+
+          {/* TAB CONTENT: VICTIM SAFETY & RECIDIVISM DETECTOR */}
+          {activeTab === 'safety' && (
+            <VictimSafetySuspectSection suspectId={nodeId} />
           )}
 
           {/* TAB CONTENT: SERIAL OFFENDER MO PATTERN DETECTOR */}
@@ -358,4 +374,147 @@ function ModusOperandiSuspectSection({ nodeId }) {
     </div>
   );
 }
+
+function VictimSafetySuspectSection({ suspectId }) {
+  const [safetyReport, setSafetyReport] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!suspectId) return;
+    setLoading(true);
+    api.getRepeatOffenseReport(suspectId)
+      .then(res => {
+        setSafetyReport(res);
+        setLoading(false);
+      })
+      .catch(err => {
+        console.error("Failed to load Victim Safety report:", err);
+        setLoading(false);
+      });
+  }, [suspectId]);
+
+  if (loading) {
+    return (
+      <div className="p-8 flex flex-col items-center justify-center gap-2 text-[#8a8478]">
+        <div className="w-6 h-6 border-2 border-[#a5342a] border-t-transparent rounded-full animate-spin"></div>
+        <span className="text-xs font-mono">Running Victim Safety & Recidivism analytics...</span>
+      </div>
+    );
+  }
+
+  if (!safetyReport) {
+    return (
+      <div className="p-4 rounded-2xl bg-[#0f0e0d] border border-[#3a352d] text-xs text-[#8a8478] font-mono">
+        No repeat victim safety records for this entity.
+      </div>
+    );
+  }
+
+  const isCritical = safetyReport.risk_level === 'CRITICAL';
+  const isHigh = safetyReport.risk_level === 'HIGH';
+
+  return (
+    <div className="space-y-4 animate-in fade-in">
+      
+      {/* 1. Recidivism Risk Meter Card */}
+      <div className={`p-4 rounded-2xl bg-[#0f0e0d] border ${isCritical ? 'border-[#a5342a]' : isHigh ? 'border-[#d68a1f]' : 'border-[#3a352d]'} space-y-3 shadow-dossier`}>
+        <div className="flex items-center justify-between text-xs">
+          <span className="font-bold text-[#ece7de] font-serif flex items-center gap-1.5">
+            <ShieldAlert className={`w-4 h-4 ${isCritical ? 'text-[#e27d75]' : 'text-[#d68a1f]'}`} />
+            <span>Recidivism & Repeat Victim Assessment</span>
+          </span>
+          <span className={isCritical ? 'seal-badge-critical' : isHigh ? 'seal-badge-high' : 'seal-badge-medium'}>
+            {safetyReport.recidivism_score}/100 • {safetyReport.risk_level}
+          </span>
+        </div>
+
+        {/* Stats Grid */}
+        <div className="grid grid-cols-3 gap-2 text-center text-xs font-mono pt-1">
+          <div className="p-2.5 rounded-xl bg-[#1c1a17] border border-[#3a352d]">
+            <span className="text-[10px] text-[#8a8478] block">KNOWN VICTIMS</span>
+            <strong className="text-sm text-[#ece7de]">{safetyReport.total_distinct_victims}</strong>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#1c1a17] border border-[#3a352d]">
+            <span className="text-[10px] text-[#8a8478] block">LINKED CASES</span>
+            <strong className="text-sm text-[#ece7de]">{safetyReport.total_linked_cases}</strong>
+          </div>
+          <div className="p-2.5 rounded-xl bg-[#1c1a17] border border-[#3a352d]">
+            <span className="text-[10px] text-[#8a8478] block">AVG GAP</span>
+            <strong className="text-sm text-[#d68a1f]">{safetyReport.average_gap_days ? `${safetyReport.average_gap_days}d` : 'N/A'}</strong>
+          </div>
+        </div>
+
+        {/* Trajectory Badge */}
+        <div className="p-2.5 rounded-xl bg-[#1c1a17] border border-[#2a2620] flex items-center justify-between text-xs font-mono">
+          <span className="text-[#8a8478] text-[11px]">Escalation Trajectory:</span>
+          <span className={`font-bold ${safetyReport.escalation_trajectory === 'ESCALATING_SEVERITY' ? 'text-[#e27d75]' : 'text-[#f5c074]'}`}>
+            {safetyReport.escalation_trajectory.replace('_', ' ')}
+          </span>
+        </div>
+
+        {/* Priority Action Advisory Note */}
+        <p className="text-xs text-[#ece7de] font-serif italic bg-[#1c1a17] p-3 rounded-xl border border-[#a5342a]/40 leading-relaxed">
+          "{safetyReport.priority_action_note}"
+        </p>
+      </div>
+
+      {/* 2. Chronological Incident Escalation Timeline */}
+      <div className="space-y-2">
+        <div className="flex items-center justify-between text-xs font-bold text-[#8a8478] uppercase font-mono tracking-wider px-1">
+          <span>Cross-Case Victim Incidents Timeline</span>
+        </div>
+
+        {safetyReport.incidents_timeline && safetyReport.incidents_timeline.length > 0 ? (
+          <div className="relative pl-4 space-y-3 before:absolute before:left-1.5 before:top-2 before:bottom-2 before:w-[2px] before:bg-[#3a352d]">
+            {safetyReport.incidents_timeline.map((inc, idx) => (
+              <div key={idx} className="relative space-y-1.5">
+                {/* Timeline Dot */}
+                <div className={`absolute -left-4 top-1.5 w-3 h-3 rounded-full border-2 ${inc.severity_tier >= 4 ? 'bg-[#a5342a] border-[#e27d75]' : 'bg-[#d68a1f] border-[#f5c074]'}`}></div>
+
+                <div className="p-3.5 rounded-xl bg-[#0f0e0d] border border-[#3a352d] space-y-2">
+                  <div className="flex items-start justify-between text-xs">
+                    <div>
+                      <span className="font-bold text-[#ece7de] font-serif">{inc.fir_number}</span>
+                      <div className="text-[11px] text-[#8a8478] font-mono">{inc.date_recorded} • {inc.jurisdiction}</div>
+                    </div>
+                    <span className="seal-badge-high">
+                      Tier {inc.severity_tier} Severity
+                    </span>
+                  </div>
+
+                  <div className="flex items-center justify-between text-[11px] font-mono pt-1 border-t border-[#2a2620]">
+                    <span className="text-[#8a8478]">Victim Code: <strong className="text-[#f5c074]">{inc.victim_identifier}</strong></span>
+                    <span className="text-[#5c7a5c]">{inc.court_protection_status}</span>
+                  </div>
+
+                  <p className="text-[11px] text-[#ece7de] font-serif bg-[#1c1a17] p-2 rounded-lg border border-[#2a2620]">
+                    {inc.offense_summary}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="p-4 rounded-2xl bg-[#0f0e0d] border border-[#3a352d] text-xs text-[#8a8478] font-serif">
+            No multiple registered victim incidents logged.
+          </div>
+        )}
+      </div>
+
+      {/* 3. Protective Recommendations */}
+      <div className="p-4 rounded-2xl bg-[#0f0e0d] border border-[#3a352d] space-y-2.5">
+        <span className="text-xs font-bold text-[#8a8478] uppercase font-mono tracking-wider">
+          Statutory Victim Protection Directives (Sec 398 BNSS 2023)
+        </span>
+        <ul className="space-y-1.5 text-xs text-[#ece7de] font-serif list-disc pl-4">
+          {safetyReport.protective_recommendations?.map((rec, rIdx) => (
+            <li key={rIdx}>{rec}</li>
+          ))}
+        </ul>
+      </div>
+
+    </div>
+  );
+}
+
 

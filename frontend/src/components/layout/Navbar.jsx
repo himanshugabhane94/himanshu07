@@ -3,7 +3,8 @@ import {
   Network, Cpu, FileText, Database, 
   Sparkles, AlertTriangle, CheckCircle2, 
   ChevronDown, Layers, Binary,
-  GitPullRequest, Bell, UserCheck, LogOut
+  GitPullRequest, Bell, UserCheck, LogOut,
+  ShieldAlert
 } from 'lucide-react';
 import SutraEmblem from './SutraEmblem';
 
@@ -151,6 +152,17 @@ export default function Navbar({
           {/* Right Action Controls: Bell, Scenarios, Audit Badge, Handover, Dossier, Persona */}
           <div className="flex items-center gap-2">
             
+            {/* Victim Safety Network Alert Badge */}
+            <button
+              onClick={() => setActiveTab('analytics')}
+              className="hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-[#241a18] border border-[#a5342a]/60 hover:border-[#e27d75] text-xs font-mono transition-all text-[#e27d75] active:scale-95"
+              title="Victim Safety Network: 2 Repeat Offenders Detected Across Disparate FIRs"
+            >
+              <ShieldAlert className="w-3.5 h-3.5 text-[#e27d75] shrink-0 animate-pulse" />
+              <span className="font-bold hidden xl:inline">Victim Safety Alert:</span>
+              <span className="font-bold">2 Serial Repeaters</span>
+            </button>
+
             {/* Inter-State Alerts Notification Bell */}
             <button
               onClick={() => setActiveTab('crosscase')}

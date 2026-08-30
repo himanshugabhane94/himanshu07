@@ -202,6 +202,25 @@ class TestCrimeNetBackend(unittest.TestCase):
         self.assertGreaterEqual(len(clusters), 4)
         print(f"[PASS] Serial MO Pattern Detector Test Passed: Profile for {profile.person_label} matched {len(profile.potential_related_cases)} cold cases (Top match: {top_match.fir_number} @ {top_match.match_score}%). Generated {len(clusters)} behavioral clusters.")
 
+    def test_victim_safety_network(self):
+        from app.services.victim_safety_service import victim_safety_service
+        # Test report for Satish Verma (2 victims: Harassment -> Assault)
+        report = victim_safety_service.get_suspect_repeat_offense_report("PER_SATISH_VERMA")
+        self.assertEqual(report.suspect_id, "PER_SATISH_VERMA")
+        self.assertGreaterEqual(report.total_distinct_victims, 2)
+        self.assertGreaterEqual(report.recidivism_score, 75)
+        self.assertEqual(report.risk_level, "CRITICAL")
+        self.assertEqual(report.escalation_trajectory, "ESCALATING_SEVERITY")
+        self.assertGreater(len(report.incidents_timeline), 1)
+        self.assertGreater(len(report.protective_recommendations), 0)
+
+        # Test overview
+        overview = victim_safety_service.get_victim_safety_overview()
+        self.assertGreaterEqual(overview.total_repeat_offenders_flagged, 2)
+        self.assertGreaterEqual(overview.critical_escalation_count, 1)
+        print(f"[PASS] Victim Safety Network Test Passed: Satish Verma flagged with {report.total_distinct_victims} victims ({report.recidivism_score}% Recidivism Risk - {report.escalation_trajectory}). Flagged {overview.total_repeat_offenders_flagged} repeat offenders system-wide.")
+
 if __name__ == "__main__":
     unittest.main()
+
 
