@@ -1,4 +1,17 @@
-const API_BASE = '/api/v1';
+// Determine the base API URL from environment variable VITE_API_URL (e.g. for Vercel production),
+// falling back to http://127.0.0.1:8000 for local development.
+const getRawApiBase = () => {
+  const envUrl = (typeof import.meta !== 'undefined' && import.meta.env && import.meta.env.VITE_API_URL) || '';
+  const raw = envUrl.trim() || 'http://127.0.0.1:8000';
+  const clean = raw.replace(/\/+$/, '');
+  if (clean.endsWith('/api/v1')) {
+    return clean;
+  }
+  return `${clean}/api/v1`;
+};
+
+export const API_BASE = getRawApiBase();
+export const BACKEND_URL = API_BASE.replace(/\/api\/v1$/, '');
 
 let authToken = null;
 
