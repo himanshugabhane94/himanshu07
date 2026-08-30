@@ -239,8 +239,28 @@ class TestCrimeNetBackend(unittest.TestCase):
 
         print(f"[PASS] Geo Spatial Clustering Test Passed: Mapped {geo_res.total_locations_mapped} location nodes across {len(geo_res.regional_coverage)} states. Detected {geo_res.total_hotspots_detected} multi-point gang hotspots (Top hotspot: {delhi_hotspot.cluster_title} with {delhi_hotspot.location_count} nodes).")
 
+    def test_case_priority_queue(self):
+        from app.services.priority_service import case_priority_service
+        queue_res = case_priority_service.get_priority_queue()
+        self.assertGreaterEqual(queue_res.total_cases_analyzed, 9)
+        self.assertGreaterEqual(queue_res.critical_urgent_count, 1)
+        self.assertGreaterEqual(queue_res.high_priority_count, 2)
+        
+        # Verify cases are properly sorted descending
+        scores = [c.priority_score for c in queue_res.cases_queue]
+        self.assertEqual(scores, sorted(scores, reverse=True))
+
+        # Top case should be >= 80 (e.g. Kidnapping, Murder, Robbery or Assault)
+        top_case = queue_res.cases_queue[0]
+        self.assertGreaterEqual(top_case.priority_score, 80)
+        self.assertEqual(len(top_case.score_breakdown), 5)
+        self.assertGreater(len(top_case.triage_recommendation), 0)
+
+        print(f"[PASS] Case Priority Scoring & Triage Queue Test Passed: Scored {queue_res.total_cases_analyzed} active cases. Flagged {queue_res.critical_urgent_count} Critical Urgent and {queue_res.high_priority_count} High Priority cases (Top Ranked Case: {top_case.fir_number} '{top_case.title}' with {top_case.priority_score}/100 pts - {top_case.urgency_level}).")
+
 if __name__ == "__main__":
     unittest.main()
+
 
 
 

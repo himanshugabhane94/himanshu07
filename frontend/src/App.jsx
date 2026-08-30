@@ -15,6 +15,7 @@ import ScenarioSelectorModal from './components/scenarios/ScenarioSelectorModal'
 import CaseHandoverModal from './components/dossier/CaseHandoverModal';
 import LoginView from './components/auth/LoginView';
 import GeoIntelligenceMap from './components/geo/GeoIntelligenceMap';
+import CasePriorityQueueModal from './components/triage/CasePriorityQueueModal';
 import { api } from './services/api';
 
 export default function App() {
@@ -66,6 +67,7 @@ export default function App() {
   const [showScenarioModal, setShowScenarioModal] = useState(false);
   const [showReportModal, setShowReportModal] = useState(false);
   const [showHandoverModal, setShowHandoverModal] = useState(false);
+  const [showPriorityQueueModal, setShowPriorityQueueModal] = useState(false);
   const [isIntegrityModalOpen, setIsIntegrityModalOpen] = useState(false);
 
   // Initial Load: Cases & User
@@ -209,6 +211,7 @@ export default function App() {
         onOpenReport={() => setShowReportModal(true)}
         onOpenHandover={() => setShowHandoverModal(true)}
         onOpenIntegrityModal={() => setIsIntegrityModalOpen(true)}
+        onOpenPriorityQueue={() => setShowPriorityQueueModal(true)}
         stats={graphData.stats}
       />
 
@@ -399,6 +402,16 @@ export default function App() {
         isOpen={isIntegrityModalOpen}
         onClose={() => setIsIntegrityModalOpen(false)}
         currentUser={currentUser}
+      />
+
+      {/* Automated Case Priority & Triage Queue Modal */}
+      <CasePriorityQueueModal
+        isOpen={showPriorityQueueModal}
+        onClose={() => setShowPriorityQueueModal(false)}
+        onSelectCase={(caseId) => {
+          setSelectedCaseId(caseId);
+          loadGraph();
+        }}
       />
 
     </div>

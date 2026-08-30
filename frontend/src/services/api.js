@@ -269,6 +269,13 @@ export const api = {
     });
   },
 
+  // Automated Case Priority Score & Triage Queue
+  getPriorityQueue: async () => {
+    return fetchJson(`${API_BASE}/cases/priority-queue`, {
+      headers: getHeaders()
+    });
+  },
+
   // Cross-Case Intelligence Linker
   getCrossCaseLinks: async (params = {}) => {
     const query = new URLSearchParams();

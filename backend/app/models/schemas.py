@@ -617,6 +617,39 @@ class GeoClustersResponse(BaseModel):
     clusters: List[GeoCrimeCluster]
     regional_coverage: List[str]
 
+# Automated Case Priority Score & Triage Queue Models
+class PriorityScoreFactor(BaseModel):
+    name: str
+    points: int
+    max_points: int
+    explanation: str
+
+class CasePriorityItem(BaseModel):
+    case_id: str
+    fir_number: str
+    title: str
+    crime_category: str
+    agency: str
+    state: str
+    status: str
+    priority_score: int # 0 - 100
+    urgency_level: str # "CRITICAL_URGENT", "HIGH_PRIORITY", "MODERATE_TRIAGE", "STANDARD_ROUTINE"
+    score_breakdown: List[PriorityScoreFactor]
+    triage_recommendation: str
+    cross_case_links_count: int
+    victims_count: int
+    nodes_count: int
+    edges_count: int
+    last_activity_date: str
+
+class PriorityQueueResponse(BaseModel):
+    total_cases_analyzed: int
+    critical_urgent_count: int
+    high_priority_count: int
+    cases_queue: List[CasePriorityItem]
+    scoring_rubric_summary: Dict[str, int]
+
+
 
 
 

@@ -14,6 +14,16 @@ router = APIRouter(prefix="/cases", tags=["Case Management & FIRs"])
 def list_cases():
     return DEMO_CASES
 
+@router.get("/priority-queue")
+def get_cases_priority_queue():
+    """
+    Automated Case Priority Scoring & Triage Queue:
+    Ranks all cases by operational urgency based on crime severity, cross-case syndicate links,
+    victim vulnerability, evidence strength, and time recency.
+    """
+    from app.services.priority_service import case_priority_service
+    return case_priority_service.get_priority_queue()
+
 @router.get("/{case_id}", response_model=Case)
 def get_case(case_id: str):
     case = next((c for c in DEMO_CASES if c.id == case_id), None)
