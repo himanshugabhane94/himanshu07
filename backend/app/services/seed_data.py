@@ -245,4 +245,21 @@ def seed_database():
         data_payload={"nodes_ingested": len(sleeper_nodes), "edges_ingested": len(sleeper_edges), "status": "SYNTHETIC_DATASET_COMMITTED"}
     )
 
-    print(f"[CrimeNet] Database seeded successfully: {len(all_nodes)} nodes, {len(all_edges)} edges across 3 high-impact cases.")
+    print(f"[SUTRA] In-memory graph seeded: {len(all_nodes)} nodes, {len(all_edges)} edges across 3 high-impact cases.")
+
+    # Neo4j AuraDB Cloud Seeding
+    try:
+        from app.config import settings
+        from app.services.neo4j_service import neo4j_service
+        if settings.USE_NEO4J or (settings.NEO4J_URI and settings.NEO4J_PASSWORD):
+            print(f"[SUTRA Neo4j] Seeding dataset to Neo4j AuraDB ({settings.NEO4J_URI})...")
+            neo_res = neo4j_service.seed_graph_data(all_nodes, all_edges, clear_existing=True)
+            print(f"[SUTRA Neo4j] AuraDB seeding complete: {neo_res.get('nodes_ingested')} nodes, {neo_res.get('edges_ingested')} edges.")
+    except Exception as e:
+        print(f"[SUTRA Neo4j] AuraDB cloud sync skipped / notice: {e}")
+
+    return all_nodes, all_edges
+
+if __name__ == "__main__":
+    seed_database()
+
