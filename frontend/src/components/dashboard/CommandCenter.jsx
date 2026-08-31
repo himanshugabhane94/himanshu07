@@ -16,6 +16,8 @@ export default function CommandCenter({
   onOpenScenarios,
   onOpenReport,
   onStartGuidedDemo,
+  demoLanguage = 'hi',
+  onLanguageToggle,
   currentUser
 }) {
   const [priorityData, setPriorityData] = useState(null);
@@ -84,13 +86,22 @@ export default function CommandCenter({
 
         {/* Quick Top Actions */}
         <div className="flex items-center gap-2.5 z-10 flex-wrap">
+          {/* Language Toggle Pill */}
+          <button
+            onClick={onLanguageToggle}
+            className="px-3 py-2 rounded-xl bg-[#1c1a17] hover:bg-[#24211d] border border-[#3a352d] hover:border-[#d68a1f]/60 text-[#f5c074] text-xs font-mono font-bold transition-all flex items-center gap-1.5 shadow-sm"
+            title="Toggle Demo Narration Language"
+          >
+            <span>{demoLanguage === 'hi' ? '🇮🇳 हिन्दी' : '🇬🇧 English'}</span>
+          </button>
+
           <button
             onClick={onStartGuidedDemo}
             className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#241a18] border border-[#a5342a]/60 hover:border-[#e27d75] text-[#e27d75] text-xs font-mono font-bold transition-all shadow-md active:scale-95"
             title="Start Self-Playing Demo with Voice Narration"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#e27d75]" />
-            <span>🎬 Run Guided Demo (2 Min)</span>
+            <span>{demoLanguage === 'hi' ? '🎬 गाइडेड डेमो (2 मिनट)' : '🎬 Run Guided Demo (2 Min)'}</span>
           </button>
 
           <button

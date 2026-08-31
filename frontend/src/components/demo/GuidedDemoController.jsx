@@ -2,7 +2,7 @@ import React from 'react';
 import { 
   Play, Pause, SkipForward, SkipBack, 
   Volume2, VolumeX, X, Sparkles, Radio,
-  Compass, Eye, CheckCircle2
+  Globe, Languages
 } from 'lucide-react';
 
 export default function GuidedDemoController({
@@ -11,8 +11,10 @@ export default function GuidedDemoController({
   stepData,
   isPaused,
   isMuted,
+  demoLanguage = 'hi',
   onPauseToggle,
   onMuteToggle,
+  onLanguageToggle,
   onNext,
   onPrev,
   onExit
@@ -20,6 +22,8 @@ export default function GuidedDemoController({
   if (!stepData) return null;
 
   const progressPercent = Math.round((currentStep / totalSteps) * 100);
+  const activeTitle = demoLanguage === 'hi' ? (stepData.title_hi || stepData.title) : stepData.title;
+  const activeCaption = demoLanguage === 'hi' ? stepData.caption_hi : stepData.caption_en;
 
   return (
     <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 w-11/12 max-w-4xl animate-in slide-in-from-bottom-5 duration-200 select-none">
@@ -32,12 +36,12 @@ export default function GuidedDemoController({
           <div className="flex items-center gap-2.5">
             <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl bg-[#24211d] border border-[#d68a1f]/50 text-[#f5c074] text-xs font-mono font-bold shadow-sm">
               <span className="w-2 h-2 rounded-full bg-[#d68a1f] animate-ping" />
-              <span>STEP {currentStep} OF {totalSteps}</span>
+              <span>{demoLanguage === 'hi' ? `चरण ${currentStep} / ${totalSteps}` : `STEP ${currentStep} OF ${totalSteps}`}</span>
             </div>
 
             <div className="flex items-center gap-2">
               <span className="font-bold text-xs text-[#ece7de] font-serif">
-                {stepData.title}
+                {activeTitle}
               </span>
               <span className="hidden sm:inline text-[11px] font-mono text-[#8a8478]">
                 ({stepData.tab.toUpperCase()})
@@ -45,9 +49,19 @@ export default function GuidedDemoController({
             </div>
           </div>
 
-          {/* Right: Controller Buttons */}
+          {/* Right: Controller Buttons & Language Toggle */}
           <div className="flex items-center gap-1.5 bg-[#0f0e0d] p-1 rounded-2xl border border-[#3a352d]">
             
+            {/* Language Switcher Pill */}
+            <button
+              onClick={onLanguageToggle}
+              className="px-2.5 py-1 rounded-xl bg-[#1c1a17] hover:bg-[#24211d] border border-[#3a352d] hover:border-[#d68a1f]/50 text-xs font-mono text-[#f5c074] flex items-center gap-1.5 transition-all"
+              title="Toggle Narration Language (हिन्दी / English)"
+            >
+              <Languages className="w-3.5 h-3.5 text-[#d68a1f]" />
+              <span className="font-bold">{demoLanguage === 'hi' ? '🇮🇳 हिन्दी' : '🇬🇧 English'}</span>
+            </button>
+
             {/* Prev Button */}
             <button
               onClick={onPrev}
@@ -65,7 +79,7 @@ export default function GuidedDemoController({
               title={isPaused ? "Resume Walkthrough" : "Pause Walkthrough"}
             >
               {isPaused ? <Play className="w-3.5 h-3.5 fill-current" /> : <Pause className="w-3.5 h-3.5" />}
-              <span>{isPaused ? "Resume" : "Pause"}</span>
+              <span>{isPaused ? (demoLanguage === 'hi' ? "जारी रखें" : "Resume") : (demoLanguage === 'hi' ? "रोकें" : "Pause")}</span>
             </button>
 
             {/* Next / Skip Button */}
@@ -110,7 +124,7 @@ export default function GuidedDemoController({
 
           <div className="flex-1 min-w-0">
             <div className="text-xs text-[#ece7de] font-serif leading-relaxed tracking-wide">
-              "{stepData.caption}"
+              "{activeCaption}"
             </div>
           </div>
         </div>

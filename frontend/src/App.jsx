@@ -44,6 +44,7 @@ export default function App() {
   const [demoStepIndex, setDemoStepIndex] = useState(0);
   const [isDemoPaused, setIsDemoPaused] = useState(false);
   const [isDemoMuted, setIsDemoMuted] = useState(false);
+  const [demoLanguage, setDemoLanguage] = useState('hi'); // Default: Hindi
 
   // Cases State
   const [cases, setCases] = useState([]);
@@ -200,7 +201,7 @@ export default function App() {
   };
 
   // Autonomous Guided Demo Execution Handlers
-  const executeDemoStep = (stepIdx) => {
+  const executeDemoStep = (stepIdx, currentLang = demoLanguage) => {
     if (stepIdx < 0 || stepIdx >= DEMO_STEPS.length) {
       stopGuidedDemo();
       return;
@@ -224,10 +225,12 @@ export default function App() {
 
     loadGraph();
 
-    // Speak narration and auto-advance on completion
-    speechController.speak(step.narration, () => {
+    const narrationText = currentLang === 'hi' ? step.narration_hi : step.narration_en;
+
+    // Speak narration in selected language and auto-advance on completion
+    speechController.speak(narrationText, currentLang, () => {
       if (stepIdx < DEMO_STEPS.length - 1) {
-        executeDemoStep(stepIdx + 1);
+        executeDemoStep(stepIdx + 1, currentLang);
       } else {
         stopGuidedDemo();
       }
@@ -236,7 +239,7 @@ export default function App() {
 
   const startGuidedDemo = () => {
     setIsDemoRunning(true);
-    executeDemoStep(0);
+    executeDemoStep(0, demoLanguage);
   };
 
   const stopGuidedDemo = () => {
@@ -244,6 +247,15 @@ export default function App() {
     setIsDemoRunning(false);
     setActiveTab('overview');
     setSelectedNodeId(null);
+  };
+
+  const toggleDemoLanguage = () => {
+    const nextLang = demoLanguage === 'hi' ? 'en' : 'hi';
+    setDemoLanguage(nextLang);
+    speechController.setLanguage(nextLang);
+    if (isDemoRunning) {
+      executeDemoStep(demoStepIndex, nextLang);
+    }
   };
 
   const togglePauseDemo = () => {
@@ -331,6 +343,8 @@ export default function App() {
               onOpenScenarios={() => setShowScenarioModal(true)}
               onOpenReport={() => setShowReportModal(true)}
               onStartGuidedDemo={startGuidedDemo}
+              demoLanguage={demoLanguage}
+              onLanguageToggle={toggleDemoLanguage}
               currentUser={currentUser}
             />
           )}
@@ -538,8 +552,10 @@ export default function App() {
           stepData={DEMO_STEPS[demoStepIndex]}
           isPaused={isDemoPaused}
           isMuted={isDemoMuted}
+          demoLanguage={demoLanguage}
           onPauseToggle={togglePauseDemo}
           onMuteToggle={toggleMuteDemo}
+          onLanguageToggle={toggleDemoLanguage}
           onNext={() => executeDemoStep(demoStepIndex + 1)}
           onPrev={() => executeDemoStep(demoStepIndex - 1)}
           onExit={stopGuidedDemo}
