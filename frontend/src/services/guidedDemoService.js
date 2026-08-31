@@ -1,162 +1,162 @@
 /**
  * SUTRA Autonomous Guided Demo Service
- * Handles script definitions (Hindi & English) and Web Speech API Text-to-Speech narration.
+ * Handles deep technical script definitions (Hindi & English) and Web Speech API Text-to-Speech narration.
  */
 
 export const DEMO_STEPS = [
   {
     step: 1,
-    title: "MHA Command Center & Overview",
-    title_hi: "गृह मंत्रालय कमांड सेंटर एवं ओवरव्यू",
+    title: "System Architecture & Introduction",
+    title_hi: "सिस्टम आर्किटेक्चर एवं परिचय",
     tab: "overview",
     caseId: "CASE-HAWALA-2024",
     nodeId: null,
     subtab: null,
-    narration_hi: "सूत्र (SUTRA) में आपका स्वागत है — यह एक सॉवरेन क्रिमिनल इंटेलिजेंस प्लेटफॉर्म है जो गृह मंत्रालय और जांच अधिकारियों को जटिल इंटर-स्टेट सिंडिकेट्स का पर्दाफाश करने में मदद करता है।",
-    caption_hi: "सूत्र (SUTRA) में आपका स्वागत है — यह एक सॉवरेन क्रिमिनल इंटेलिजेंस प्लेटफॉर्म है जो गृह मंत्रालय और जांच अधिकारियों को जटिल इंटर-स्टेट सिंडिकेट्स का पर्दाफाश करने में मदद करता है।",
-    narration_en: "Welcome to SUTRA — a sovereign criminal intelligence platform engineered for the Ministry of Home Affairs to uncover complex multi-jurisdictional syndicates.",
-    caption_en: "Welcome to SUTRA — a sovereign criminal intelligence platform engineered for the Ministry of Home Affairs to uncover complex multi-jurisdictional syndicates.",
-    durationMs: 7000
+    narration_hi: "SUTRA ek AI-powered criminal network analysis system hai jo Neo4j graph database aur machine learning algorithms ka istemal karke complex criminal networks ko samajhta hai. Chaliye dekhte hain yeh andar se kaise kaam karta hai.",
+    caption_hi: "SUTRA ek AI-powered criminal network analysis system hai jo Neo4j graph database aur machine learning algorithms ka istemal karke complex criminal networks ko samajhta hai. Chaliye dekhte hain yeh andar se kaise kaam karta hai.",
+    narration_en: "SUTRA is an AI-powered criminal network analysis system leveraging Neo4j graph databases and machine learning algorithms to map complex syndicates. Let's see how it works under the hood.",
+    caption_en: "SUTRA is an AI-powered criminal network analysis system leveraging Neo4j graph databases and machine learning algorithms to map complex syndicates. Let's see how it works under the hood.",
+    durationMs: 12000
   },
   {
     step: 2,
-    title: "Raw Evidence & NLP Ingestion Studio",
-    title_hi: "कच्चे साक्ष्य एवं NLP इनजेशन स्टूडियो",
+    title: "Neural NLP & Entity Extraction",
+    title_hi: "न्यूरल NLP एवं एंटिटी निष्कर्षण",
     tab: "ingestion",
     caseId: "CASE-HAWALA-2024",
     nodeId: null,
     subtab: null,
-    narration_hi: "जांच की शुरुआत रॉ और अनस्ट्रक्चर्ड एविडेंस से होती है — जैसे FIR डॉक्युमेंट्स, वायरटैप ट्रांसक्रिप्ट्स और संदिग्ध बैंक रिकॉर्ड्स।",
-    caption_hi: "जांच की शुरुआत रॉ और अनस्ट्रक्चर्ड एविडेंस से होती है — जैसे FIR डॉक्युमेंट्स, वायरटैप ट्रांसक्रिप्ट्स और संदिग्ध बैंक रिकॉर्ड्स।",
-    narration_en: "Investigation begins with raw, unstructured evidence — FIR documents, wiretap transcripts, and suspicious financial records.",
-    caption_en: "Investigation begins with raw, unstructured evidence — FIR documents, wiretap transcripts, and suspicious financial records.",
-    durationMs: 7500
+    narration_hi: "Sabse pehle, hum ek unstructured FIR text lete hain — jaise ki police station mein likha gaya original report. SUTRA ka NLP engine is text ko padhta hai aur Named Entity Recognition technique se automatically logon ke naam, phone numbers, bank accounts, aur organizations ko pehchanta hai. Fir yeh entities ke beech relationships bhi detect karta hai — jaise 'X ne Y ko paisa transfer kiya' — aur inhe structured data mein convert karke Neo4j graph database mein store karta hai.",
+    caption_hi: "Sabse pehle, hum ek unstructured FIR text lete hain — jaise ki police station mein likha gaya original report. SUTRA ka NLP engine is text ko padhta hai aur Named Entity Recognition technique se automatically logon ke naam, phone numbers, bank accounts, aur organizations ko pehchanta hai. Fir yeh entities ke beech relationships bhi detect karta hai — jaise 'X ne Y ko paisa transfer kiya' — aur inhe structured data mein convert karke Neo4j graph database mein store karta hai.",
+    narration_en: "First, we ingest unstructured FIR reports. SUTRA's NLP engine parses the narrative using Named Entity Recognition to automatically extract suspect names, burner phones, bank accounts, and entities, detecting semantic relationships and persisting them into Neo4j graph storage.",
+    caption_en: "First, we ingest unstructured FIR reports. SUTRA's NLP engine parses the narrative using Named Entity Recognition to automatically extract suspect names, burner phones, bank accounts, and entities, detecting semantic relationships and persisting them into Neo4j graph storage.",
+    durationMs: 22000
   },
   {
     step: 3,
-    title: "Automated Entity & Relationship Extraction",
-    title_hi: "स्वचालित एंटिटी व संबंध निष्कर्षण",
-    tab: "ingestion",
-    caseId: "CASE-HAWALA-2024",
-    nodeId: null,
-    subtab: null,
-    narration_hi: "SUTRA की न्यूरल NLP पाइपलाइन संदिग्धों, फोन नंबर्स, म्यूल बैंक अकाउंट्स और वाहनों को एक्सट्रैक्ट करके रियल-टाइम में नॉलेज ग्राफ बनाती है।",
-    caption_hi: "SUTRA की न्यूरल NLP पाइपलाइन संदिग्धों, फोन नंबर्स, म्यूल बैंक अकाउंट्स और वाहनों को एक्सट्रैक्ट करके रियल-टाइम में नॉलेज ग्राफ बनाती है।",
-    narration_en: "SUTRA's neural NLP pipeline extracts suspects, phone numbers, mule accounts, and vehicles, building a unified knowledge graph in real time.",
-    caption_en: "SUTRA's neural NLP pipeline extracts suspects, phone numbers, mule accounts, and vehicles, building a unified knowledge graph in real time.",
-    durationMs: 8000
-  },
-  {
-    step: 4,
     title: "Interactive Multi-Hop Graph Canvas",
     title_hi: "इंटरएक्टिव मल्टी-हॉप ग्राफ कैनवास",
     tab: "graph",
     caseId: "CASE-HAWALA-2024",
     nodeId: "PER_VIKRAM_SHARMA",
     subtab: null,
-    narration_hi: "जांच अधिकारी इन क्रिमिनल नेटवर्क्स को विजुअली एक्सप्लोर कर सकते हैं, मल्टी-हॉप कनेक्शन देख सकते हैं और बॉर्डर के पार कैश फ्लो को ट्रेस कर सकते हैं।",
-    caption_hi: "जांच अधिकारी इन क्रिमिनल नेटवर्क्स को विजुअली एक्सप्लोर कर सकते हैं, मल्टी-हॉप कनेक्शन देख सकते हैं और बॉर्डर के पार कैश फ्लो को ट्रेस कर सकते हैं।",
-    narration_en: "Investigators can explore these complex criminal topologies visually, performing multi-hop expansions and tracing cash flow conduits across borders.",
-    caption_en: "Investigators can explore these complex criminal topologies visually, performing multi-hop expansions and tracing cash flow conduits across borders.",
-    durationMs: 8500
+    narration_hi: "Yeh saari extracted entities ab ek graph ke roop mein dikhti hain — jahan har node ek person, phone, ya account represent karta hai, aur har edge unke beech ka relationship dikhata hai. Hum is graph ko real-time mein explore kar sakte hain — kisi bhi suspect ko double-click karke uske 2-hop connections dekh sakte hain, matlab uske direct contacts aur unke contacts bhi.",
+    caption_hi: "Yeh saari extracted entities ab ek graph ke roop mein dikhti hain — jahan har node ek person, phone, ya account represent karta hai, aur har edge unke beech ka relationship dikhata hai. Hum is graph ko real-time mein explore kar sakte hain — kisi bhi suspect ko double-click karke uske 2-hop connections dekh sakte hain, matlab uske direct contacts aur unke contacts bhi.",
+    narration_en: "All extracted entities form an interactive topology graph where nodes represent entities and edges represent relationships. Investigators can explore in real-time, double-clicking suspects to traverse 2-hop neighborhoods, revealing direct contacts and secondary associates.",
+    caption_en: "All extracted entities form an interactive topology graph where nodes represent entities and edges represent relationships. Investigators can explore in real-time, double-clicking suspects to traverse 2-hop neighborhoods, revealing direct contacts and secondary associates.",
+    durationMs: 18000
   },
   {
-    step: 5,
-    title: "Graph Centrality & Kingpin Leaderboard",
-    title_hi: "ग्राफ सेंट्रैलिटी व किंगपिन लीडरबोर्ड",
+    step: 4,
+    title: "PageRank Centrality & Kingpin Detection",
+    title_hi: "पेज-रैंक सेंट्रैलिटी एवं किंगपिन डिटेक्शन",
     tab: "analytics",
     caseId: "CASE-HAWALA-2024",
     nodeId: "PER_VIKRAM_SHARMA",
     subtab: "centrality",
-    narration_hi: "हमारा AI पेज-रैंक ग्राफ सेंट्रैलिटी का उपयोग करके सबसे प्रभावशाली ऑपरेटरों को रैंक करता है — जिससे सिर्फ प्यादे नहीं, बल्कि असली मास्टरमाइंड सामने आते हैं।",
-    caption_hi: "हमारा AI पेज-रैंक ग्राफ सेंट्रैलिटी का उपयोग करके सबसे प्रभावशाली ऑपरेटरों को रैंक करता है — जिससे सिर्फ प्यादे नहीं, बल्कि असली मास्टरमाइंड सामने आते हैं।",
-    narration_en: "Our AI ranks the most influential operatives using PageRank graph centrality — surfacing hidden kingpins, not just low-level mules.",
-    caption_en: "Our AI ranks the most influential operatives using PageRank graph centrality — surfacing hidden kingpins, not just low-level mules.",
-    durationMs: 8000
+    narration_hi: "Ab sabse important sawaal — is network mein sabse powerful kaun hai? Iske liye hum graph theory ka ek algorithm use karte hain jise PageRank kehte hain — yeh wahi algorithm hai jo Google search results rank karne ke liye use karta hai. Yeh calculate karta hai ki kaun sa node sabse zyada important connections ke saath juda hai. Jo suspect is score mein sabse upar hota hai, wahi network ka asli kingpin hota hai — sirf naam se nahi, balki mathematical proof se.",
+    caption_hi: "Ab sabse important sawaal — is network mein sabse powerful kaun hai? Iske liye hum graph theory ka ek algorithm use karte hain jise PageRank kehte hain — yeh wahi algorithm hai jo Google search results rank karne ke liye use karta hai. Yeh calculate karta hai ki kaun sa node sabse zyada important connections ke saath juda hai. Jo suspect is score mein sabse upar hota hai, wahi network ka asli kingpin hota hai — sirf naam se nahi, balki mathematical proof se.",
+    narration_en: "To identify the network's most influential figure, SUTRA calculates graph PageRank centrality — the mathematical algorithm behind search ranking. It measures eigenvalue influence across directional paths. The top-ranked node is the mathematical kingpin of the criminal syndicate.",
+    caption_en: "To identify the network's most influential figure, SUTRA calculates graph PageRank centrality — the mathematical algorithm behind search ranking. It measures eigenvalue influence across directional paths. The top-ranked node is the mathematical kingpin of the criminal syndicate.",
+    durationMs: 22000
   },
   {
-    step: 6,
+    step: 5,
     title: "Explainable AI (XAI) & Evidence Traceability",
     title_hi: "एक्सप्लेनेबल AI (XAI) एवं साक्ष्य ट्रेसेबिलिटी",
     tab: "analytics",
     caseId: "CASE-HAWALA-2024",
     nodeId: "PER_VIKRAM_SHARMA",
     subtab: "centrality",
-    narration_hi: "AI का प्रत्येक रिस्क स्कोर 100% एक्सप्लेनेबल है और वेरीफाइड एविडेंस से जुड़ा है — जिससे कोर्ट में मजबूत कानूनी साक्ष्य प्रस्तुत किया जा सके।",
-    caption_hi: "AI का प्रत्येक रिस्क स्कोर 100% एक्सप्लेनेबल है और वेरीफाइड एविडेंस से जुड़ा है — जिससे कोर्ट में मजबूत कानूनी साक्ष्य प्रस्तुत किया जा सके।",
-    narration_en: "Every algorithmic risk score is 100% explainable and traceable to verified evidentiary artifacts — ensuring strict legal admissibility.",
-    caption_en: "Every algorithmic risk score is 100% explainable and traceable to verified evidentiary artifacts — ensuring strict legal admissibility.",
-    durationMs: 8000
+    narration_hi: "Lekin sirf ek score dikhana kaafi nahi hai — kanooni tor par yeh evidence defensible bhi hona chahiye. Isliye SUTRA ka har AI conclusion fully traceable hai — matlab system yeh bhi batata hai ki yeh score kyun mila: kitne verified connections hain, kaunse wiretap records isse support karte hain, aur kya koi unusual pattern mila hai. Yeh 'black-box AI' nahi hai — har decision explainable hai, jo court mein evidence ke roop mein present kiya ja sakta hai.",
+    caption_hi: "Lekin sirf ek score dikhana kaafi nahi hai — kanooni tor par yeh evidence defensible bhi hona chahiye. Isliye SUTRA ka har AI conclusion fully traceable hai — matlab system yeh bhi batata hai ki yeh score kyun mila: kitne verified connections hain, kaunse wiretap records isse support karte hain, aur kya koi unusual pattern mila hai. Yeh 'black-box AI' nahi hai — har decision explainable hai, jo court mein evidence ke roop mein present kiya ja sakta hai.",
+    narration_en: "For courtroom admissibility, SUTRA rejects black-box models. Every risk score is explainable with traceable citations: verified call detail records, banking transactions, and anomaly flags that defense lawyers and judges can audit under Indian Evidence Act norms.",
+    caption_en: "For courtroom admissibility, SUTRA rejects black-box models. Every risk score is explainable with traceable citations: verified call detail records, banking transactions, and anomaly flags that defense lawyers and judges can audit under Indian Evidence Act norms.",
+    durationMs: 22000
   },
   {
-    step: 7,
+    step: 6,
     title: "Cross-Case Linker & Inter-State Triangulation",
     title_hi: "क्रॉस-केस लिंकर एवं अंतर्राज्यीय सिंडिकेट",
     tab: "crosscase",
     caseId: "CASE-THEFT-2024",
     nodeId: "PER_KULDEEP_YADAV",
     subtab: null,
-    narration_hi: "SUTRA ऑटोमैटिकली पहचानता है जब वही संदिग्ध या वाहन अलग-अलग राज्यों और अलग-अलग अपराधों में शामिल होता है।",
-    caption_hi: "SUTRA ऑटोमैटिकली पहचानता है जब वही संदिग्ध या वाहन अलग-अलग राज्यों और अलग-अलग अपराधों में शामिल होता है।",
-    narration_en: "SUTRA automatically detects when the same suspect or vehicle connects across unrelated cases and completely different crime categories.",
-    caption_en: "SUTRA automatically detects when the same suspect or vehicle connects across unrelated cases and completely different crime categories.",
-    durationMs: 8000
+    narration_hi: "Ab ek aur powerful feature — Cross-Case Linker. Yeh system database mein saare cases ko scan karta hai aur dekhta hai ki koi entity — jaise ek phone number ya bank account — do alag-alag, alag-alag states ke FIR mein to nahi repeat ho raha. Agar match milta hai, to system automatically flag karta hai ki yeh dono cases ek hi network ka hissa ho sakte hain — jo normally investigators manually kabhi discover nahi kar paate kyunki cases alag-alag police stations mein register hote hain.",
+    caption_hi: "Ab ek aur powerful feature — Cross-Case Linker. Yeh system database mein saare cases ko scan karta hai aur dekhta hai ki koi entity — jaise ek phone number ya bank account — do alag-alag, alag-alag states ke FIR mein to nahi repeat ho raha. Agar match milta hai, to system automatically flag karta hai ki yeh dono cases ek hi network ka hissa ho sakte hain — jo normally investigators manually kabhi discover nahi kar paate kyunki cases alag-alag police stations mein register hote hain.",
+    narration_en: "The Cross-Case Linker scans all FIR cases across jurisdictions, discovering shared entities — such as vehicles or burner SIMs — appearing in separate cases across different states, instantly connecting what would otherwise remain siloed local police records.",
+    caption_en: "The Cross-Case Linker scans all FIR cases across jurisdictions, discovering shared entities — such as vehicles or burner SIMs — appearing in separate cases across different states, instantly connecting what would otherwise remain siloed local police records.",
+    durationMs: 22000
   },
   {
-    step: 8,
+    step: 7,
     title: "Serial Offender MO Pattern Detector",
     title_hi: "सीरियल ऑफेंडर MO पैटर्न डिटेक्टर",
     tab: "analytics",
     caseId: "CASE-KIDNAP-2024",
     nodeId: "PER_KULDEEP_YADAV",
     subtab: "serial_patterns",
-    narration_hi: "सीरियल ऑफेंडर पैटर्न डिटेक्टर संदिग्ध के काम करने के तरीके के आधार पर अनसुलझे पुराने केसों से समानताएं ढूंढ निकालता है।",
-    caption_hi: "सीरियल ऑफेंडर पैटर्न डिटेक्टर संदिग्ध के काम करने के तरीके के आधार पर अनसुलझे पुराने केसों से समानताएं ढूंढ निकालता है।",
-    narration_en: "The Serial Offender Pattern Detector flags behavioral similarities to unsolved cold cases based on operational modus operandi signatures.",
-    caption_en: "The Serial Offender Pattern Detector flags behavioral similarities to unsolved cold cases based on operational modus operandi signatures.",
-    durationMs: 8500
+    narration_hi: "SUTRA ek Serial Offender Pattern Detector bhi rakhta hai. Yeh har suspect ka 'Modus Operandi' — matlab unka crime karne ka tareeka — record karta hai, jaise raat ko operate karna, group mein kaam karna, ya specific vehicle use karna. Fir yeh pattern ko doosre unsolved cases se compare karta hai. Agar strong match milta hai, to system suggest karta hai ki yeh suspect kisi aur unsolved case mein bhi involved ho sakta hai — sirf pattern similarity ke basis par.",
+    caption_hi: "SUTRA ek Serial Offender Pattern Detector bhi rakhta hai. Yeh har suspect ka 'Modus Operandi' — matlab unka crime karne ka tareeka — record karta hai, jaise raat ko operate karna, group mein kaam karna, ya specific vehicle use karna. Fir yeh pattern ko doosre unsolved cases se compare karta hai. Agar strong match milta hai, to system suggest karta hai ki yeh suspect kisi aur unsolved case mein bhi involved ho sakta hai — sirf pattern similarity ke basis par.",
+    narration_en: "The Serial Offender Pattern Detector profiles behavioral Modus Operandi — timing, weapons, group size, and vehicle usage — matching active suspects against cold cases to solve dormant investigations based on behavioral similarity.",
+    caption_en: "The Serial Offender Pattern Detector profiles behavioral Modus Operandi — timing, weapons, group size, and vehicle usage — matching active suspects against cold cases to solve dormant investigations based on behavioral similarity.",
+    durationMs: 20000
   },
   {
-    step: 9,
+    step: 8,
     title: "What-If Network Disruption Simulator",
     title_hi: "व्हाट-इफ नेटवर्क डिसरप्शन सिम्युलेटर",
     tab: "analytics",
     caseId: "CASE-ROBBERY-2024",
     nodeId: "PER_KULDEEP_YADAV",
     subtab: "whatif",
-    narration_hi: "कार्रवाई करने से पहले, कमांडर्स किसी संदिग्ध की गिरफ्तारी के असर को सिम्युलेट कर सकते हैं, जिससे एक ही झटके में कई सिंडिकेट्स को तोड़ा जा सके।",
-    caption_hi: "कार्रवाई करने से पहले, कमांडर्स किसी संदिग्ध की गिरफ्तारी के असर को सिम्युलेट कर सकते हैं, जिससे एक ही झटके में कई सिंडिकेट्स को तोड़ा जा सके।",
-    narration_en: "Before taking action, commanders can simulate the disruption impact of an arrest, identifying keystone targets that collapse multiple syndicates at once.",
-    caption_en: "Before taking action, commanders can simulate the disruption impact of an arrest, identifying keystone targets that collapse multiple syndicates at once.",
-    durationMs: 9000
+    narration_hi: "Yeh sabse unique feature hai — What-If Disruption Simulator. Yeh graph theory ka use karke calculate karta hai ki agar hum ek specific suspect ko arrest karein, to poora network kitna disrupt hoga. System us node ko temporarily graph se hata ke dekhta hai ki network kitne pieces mein toot jaata hai. Agar disruption score high hai, matlab yeh suspect network ka critical connector hai — usse pakadna sabse zyada impact dalega.",
+    caption_hi: "Yeh sabse unique feature hai — What-If Disruption Simulator. Yeh graph theory ka use karke calculate karta hai ki agar hum ek specific suspect ko arrest karein, to poora network kitna disrupt hoga. System us node ko temporarily graph se hata ke dekhta hai ki network kitne pieces mein toot jaata hai. Agar disruption score high hai, matlab yeh suspect network ka critical connector hai — usse pakadna sabse zyada impact dalega.",
+    narration_en: "The What-If Disruption Simulator models the operational consequence of interdicting a target by temporarily removing their vertex and recalculating network fragmentation. A high disruption score identifies keystone bridges whose arrest shatters multiple operations.",
+    caption_en: "The What-If Disruption Simulator models the operational consequence of interdicting a target by temporarily removing their vertex and recalculating network fragmentation. A high disruption score identifies keystone bridges whose arrest shatters multiple operations.",
+    durationMs: 22000
   },
   {
-    step: 10,
+    step: 9,
     title: "Blockchain Vault & Section 65B Integrity",
     title_hi: "ब्लॉकचेन वॉल्ट एवं धारा 65B अखंडता",
     tab: "blockchain",
     caseId: "CASE-HAWALA-2024",
     nodeId: null,
     subtab: null,
-    narration_hi: "सिस्टम में दर्ज हर साक्ष्य और नोट्स को ब्लॉकचेन लेजर पर क्रिप्टोग्राफिक रूप से लॉक किया जाता है, जो सेक्शन 65B के तहत कोर्ट में मान्य है।",
-    caption_hi: "सिस्टम में दर्ज हर साक्ष्य और नोट्स को ब्लॉकचेन लेजर पर क्रिप्टोग्राफिक रूप से लॉक किया जाता है, जो सेक्शन 65B के तहत कोर्ट में मान्य है।",
-    narration_en: "Every evidence ingestion and investigator note is cryptographically anchored to an immutable blockchain ledger with Polygon Layer-2 checkpoints.",
-    caption_en: "Every evidence ingestion and investigator note is cryptographically anchored to an immutable blockchain ledger with Polygon Layer-2 checkpoints.",
-    durationMs: 8500
+    narration_hi: "Aakhri mein, evidence integrity ka sawaal aata hai. SUTRA har action — chahe woh naya entity add karna ho ya koi query run karna ho — ko ek blockchain-style hash chain mein record karta hai. Har block mein SHA-256 cryptographic hash hota hai jo pichle block se linked hota hai. Agar koi bhi purana data tamper kare, to hash chain turant mismatch ho jaata hai aur system 'Tamper Detected' alert dikhata hai — isse evidence ki integrity court mein legally provable hai, Indian Evidence Act ke Section 65B ke under.",
+    caption_hi: "Aakhri mein, evidence integrity ka sawaal aata hai. SUTRA har action — chahe woh naya entity add karna ho ya koi query run karna ho — ko ek blockchain-style hash chain mein record karta hai. Har block mein SHA-256 cryptographic hash hota hai jo pichle block se linked hota hai. Agar koi bhi purana data tamper kare, to hash chain turant mismatch ho jaata hai aur system 'Tamper Detected' alert dikhata hai — isse evidence ki integrity court mein legally provable hai, Indian Evidence Act ke Section 65B ke under.",
+    narration_en: "To guarantee chain of custody, every ingestion and modification is hashed into an SHA-256 linked blockchain. Any historical tampering triggers an instant cryptographic mismatch, fulfilling Section 65B admissibility under the Indian Evidence Act.",
+    caption_en: "To guarantee chain of custody, every ingestion and modification is hashed into an SHA-256 linked blockchain. Any historical tampering triggers an instant cryptographic mismatch, fulfilling Section 65B admissibility under the Indian Evidence Act.",
+    durationMs: 25000
+  },
+  {
+    step: 10,
+    title: "Automated Case Priority Queue",
+    title_hi: "स्वचालित केस प्रायोरिटी एवं ट्राइएज क्यू",
+    tab: "priority_queue",
+    caseId: "CASE-ROBBERY-2024",
+    nodeId: null,
+    subtab: null,
+    narration_hi: "System automatically har case ko ek Priority Score bhi deta hai — jo crime severity, cross-case connections ki sankhya, aur victim safety jaise factors ko weight karke calculate hota hai. Isse investigators ko pata chalta hai ki sabse pehle kaunsa case attend karna chahiye jab unke paas ek saath kai cases ho.",
+    caption_hi: "System automatically har case ko ek Priority Score bhi deta hai — jo crime severity, cross-case connections ki sankhya, aur victim safety jaise factors ko weight karke calculate hota hai. Isse investigators ko pata chalta hai ki sabse pehle kaunsa case attend karna chahiye jab unke paas ek saath kai cases ho.",
+    narration_en: "SUTRA automatically assigns every case an explainable Priority Score (0-100) based on crime severity, cross-case syndicate volume, victim safety, and evidence completeness, allowing commanders to triage resources with transparent mathematical logic.",
+    caption_en: "SUTRA automatically assigns every case an explainable Priority Score (0-100) based on crime severity, cross-case syndicate volume, victim safety, and evidence completeness, allowing commanders to triage resources with transparent mathematical logic.",
+    durationMs: 18000
   },
   {
     step: 11,
-    title: "SUTRA Intelligence Summary",
-    title_hi: "SUTRA इंटेलिजेंस सारांश",
+    title: "Conclusion & Operational Readiness",
+    title_hi: "निष्कर्ष एवं परिचालन तत्परता",
     tab: "overview",
     caseId: "CASE-HAWALA-2024",
     nodeId: null,
     subtab: null,
-    narration_hi: "यह है SUTRA — बिखरे हुए पुलिस डेटा को संगठित और कोर्ट-रेडी राष्ट्रीय सुरक्षा इंटेलिजेंस में बदलने वाला प्लेटफॉर्म।",
-    caption_hi: "यह है SUTRA — बिखरे हुए पुलिस डेटा को संगठित और कोर्ट-रेडी राष्ट्रीय सुरक्षा इंटेलिजेंस में बदलने वाला प्लेटफॉर्म।",
-    narration_en: "This is SUTRA — turning scattered police data into coordinated, court-ready federal criminal intelligence.",
-    caption_en: "This is SUTRA — turning scattered police data into coordinated, court-ready federal criminal intelligence.",
-    durationMs: 7000
+    narration_hi: "Yeh hai SUTRA — jo scattered, unstructured data ko structured, explainable, aur legally defensible intelligence mein badalta hai, taaki investigators tezi se aur bharosemand tareeke se criminal networks ko todh sakein.",
+    caption_hi: "Yeh hai SUTRA — jo scattered, unstructured data ko structured, explainable, aur legally defensible intelligence mein badalta hai, taaki investigators tezi se aur bharosemand tareeke se criminal networks ko todh sakein.",
+    narration_en: "This is SUTRA — transforming scattered, unstructured police data into structured, explainable, and legally defensible criminal intelligence to dismantle organized syndicates.",
+    caption_en: "This is SUTRA — transforming scattered, unstructured police data into structured, explainable, and legally defensible criminal intelligence to dismantle organized syndicates.",
+    durationMs: 14000
   }
 ];
 
@@ -216,15 +216,15 @@ class SpeechNarrationController {
 
   speak(text, lang = 'hi', onEndCallback) {
     if (!this.synth) {
-      if (onEndCallback) setTimeout(onEndCallback, 6000);
+      if (onEndCallback) setTimeout(onEndCallback, 8000);
       return;
     }
 
     this.stop();
 
     if (this.isMuted) {
-      // If muted, emulate comfortable reading duration
-      const simulatedDuration = Math.max(4000, text.length * 60);
+      // If muted, emulate comfortable reading duration based on character count
+      const simulatedDuration = Math.max(5000, text.length * 65);
       this.timer = setTimeout(() => {
         if (onEndCallback) onEndCallback();
       }, simulatedDuration);
@@ -238,18 +238,19 @@ class SpeechNarrationController {
     }
 
     utterance.lang = lang === 'hi' ? 'hi-IN' : 'en-US';
-    utterance.rate = lang === 'hi' ? 0.92 : 0.94; // Professional natural cadence
+    utterance.rate = lang === 'hi' ? 0.92 : 0.94; // Natural authoritative pacing
     utterance.pitch = 1.0;
 
+    // Use onend event for flawless synchronization with longer technical text
     utterance.onend = () => {
       if (onEndCallback) {
-        setTimeout(onEndCallback, 650);
+        setTimeout(onEndCallback, 750);
       }
     };
 
     utterance.onerror = (e) => {
       console.warn("Speech synthesis error / interrupted:", e);
-      if (onEndCallback) setTimeout(onEndCallback, 4500);
+      if (onEndCallback) setTimeout(onEndCallback, 5000);
     };
 
     this.currentUtterance = utterance;

@@ -98,10 +98,10 @@ export default function CommandCenter({
           <button
             onClick={onStartGuidedDemo}
             className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#241a18] border border-[#a5342a]/60 hover:border-[#e27d75] text-[#e27d75] text-xs font-mono font-bold transition-all shadow-md active:scale-95"
-            title="Start Self-Playing Demo with Voice Narration"
+            title="Start Self-Playing Technical Demo with Voice Narration"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#e27d75]" />
-            <span>{demoLanguage === 'hi' ? '🎬 गाइडेड डेमो (2 मिनट)' : '🎬 Run Guided Demo (2 Min)'}</span>
+            <span>{demoLanguage === 'hi' ? '🎬 गाइडेड डेमो (3-4 मिनट)' : '🎬 Run Guided Demo (3-4 Min)'}</span>
           </button>
 
           <button
@@ -524,7 +524,7 @@ export default function CommandCenter({
             <span className="px-2.5 py-0.5 rounded-lg text-xs font-mono font-bold bg-[#d68a1f] text-[#0f0e0d]">
               AUTONOMOUS PRESENTATION MODE
             </span>
-            <span className="text-xs font-mono text-[#f5c074]">11 Synced Chapters • 2 Minutes</span>
+            <span className="text-xs font-mono text-[#f5c074]">11 Synced Chapters • ~3-4 Minutes</span>
           </div>
 
           <h3 className="text-base md:text-lg font-bold font-cinzel text-[#ece7de]">
