@@ -135,7 +135,7 @@ export default function LeftSidebar({
             
             {/* Section Header */}
             {!isCollapsed ? (
-              <div className="px-3 py-1 text-[10px] font-bold text-[#8a8478] uppercase tracking-wider font-mono">
+              <div className="px-3 py-1 text-[10px] font-bold text-[#b5aea1] uppercase tracking-wider font-mono">
                 {grp.group}
               </div>
             ) : (
@@ -155,24 +155,24 @@ export default function LeftSidebar({
                     title={isCollapsed ? item.label : undefined}
                     className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-xs font-semibold transition-all relative group ${
                       isActive
-                        ? 'bg-[#24211d] text-[#f5c074] border-l-2 border-l-[#d68a1f] border-r border-t border-b border-[#d68a1f]/30 font-bold shadow-md'
-                        : 'text-[#8a8478] hover:text-[#ece7de] hover:bg-[#1c1a17] border border-transparent'
+                        ? 'bg-[#24211d] text-[#f5c074] border-l-2 border-l-[#d68a1f] border-r border-t border-b border-[#d68a1f]/40 font-bold shadow-md'
+                        : 'text-[#c8c2b7] hover:text-[#ece7de] hover:bg-[#1c1a17] border border-transparent'
                     }`}
                   >
                     <Icon className={`w-4 h-4 shrink-0 transition-colors ${
-                      isActive ? 'text-[#d68a1f]' : 'text-[#8a8478] group-hover:text-[#ece7de]'
+                      isActive ? 'text-[#d68a1f]' : 'text-[#9e988c] group-hover:text-[#ece7de]'
                     }`} />
 
                     {!isCollapsed && (
                       <div className="flex-1 flex items-center justify-between overflow-hidden">
                         <span className="truncate text-left font-serif">{item.label}</span>
                         {item.badge && (
-                          <span className={`text-[9px] px-1.5 py-0.2 rounded font-mono font-bold shrink-0 ml-1.5 ${
+                          <span className={`text-[10px] px-2 py-0.5 rounded-md font-mono font-bold tracking-wide uppercase shrink-0 ml-1.5 border ${
                             isActive
-                              ? 'bg-[#0f0e0d] text-[#f5c074] border border-[#d68a1f]/40'
+                              ? 'bg-[#0f0e0d] text-[#f5c074] border-[#d68a1f]/50'
                               : item.id === 'priority_queue'
-                              ? 'bg-[#241a18] text-[#e27d75] border border-[#a5342a]/40'
-                              : 'bg-[#1c1a17] text-[#8a8478] border border-[#3a352d]'
+                              ? 'bg-[#241a18] text-[#e27d75] border-[#a5342a]/50'
+                              : 'bg-[#182226] text-[#94a9b3] border-[#4a6670]/40'
                           }`}>
                             {item.badge}
                           </span>

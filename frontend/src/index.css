@@ -91,61 +91,57 @@
   z-index: 0;
 }
 
-/* SIGNATURE ELEMENT 2: Custom Stamped Seal Badges */
+/* SIGNATURE ELEMENT 2: Standardized Stamped Seal Badges */
 .seal-badge-critical {
   background: rgba(165, 52, 42, 0.16);
   color: #e27d75;
-  border: 1px solid rgba(165, 52, 42, 0.5);
-  box-shadow: inset 0 0 0 1px rgba(165, 52, 42, 0.2);
+  border: 1px solid rgba(165, 52, 42, 0.55);
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   padding: 2px 8px;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
-.seal-badge-high {
+.seal-badge-high, .seal-badge-primary {
   background: rgba(214, 138, 31, 0.14);
   color: #f5c074;
   border: 1px solid rgba(214, 138, 31, 0.45);
-  box-shadow: inset 0 0 0 1px rgba(214, 138, 31, 0.15);
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   padding: 2px 8px;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
-.seal-badge-medium {
-  background: rgba(74, 102, 112, 0.18);
-  color: #8fa8b3;
+.seal-badge-medium, .seal-badge-info {
+  background: rgba(74, 102, 112, 0.2);
+  color: #94a9b3;
   border: 1px solid rgba(74, 102, 112, 0.45);
-  box-shadow: inset 0 0 0 1px rgba(74, 102, 112, 0.15);
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   padding: 2px 8px;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
-.seal-badge-low {
-  background: rgba(92, 122, 92, 0.18);
-  color: #8eb38e;
-  border: 1px solid rgba(92, 122, 92, 0.45);
-  box-shadow: inset 0 0 0 1px rgba(92, 122, 92, 0.15);
+.seal-badge-low, .seal-badge-neutral {
+  background: rgba(28, 26, 23, 0.7);
+  color: #b5aea1;
+  border: 1px solid #3a352d;
   font-family: 'IBM Plex Mono', monospace;
   font-size: 10px;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.8px;
   padding: 2px 8px;
-  border-radius: 3px;
+  border-radius: 4px;
 }
 
 /* SIGNATURE ELEMENT 3: Dossier Section Divider */

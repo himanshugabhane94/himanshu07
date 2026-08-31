@@ -36,9 +36,9 @@ export default function TopHeader({
             <Layers className="w-3.5 h-3.5 text-[#d68a1f] shrink-0" />
             <div className="text-left max-w-[200px] sm:max-w-[280px] truncate">
               <span className="font-mono text-[#f5c074] font-semibold">{selectedCase?.fir_number || 'All Cases'}</span>
-              <span className="hidden md:inline text-[#8a8478] text-[11px]"> — {selectedCase?.title}</span>
+              <span className="hidden md:inline text-[#c8c2b7] text-[11px]"> — {selectedCase?.title}</span>
             </div>
-            <ChevronDown className="w-3.5 h-3.5 text-[#8a8478] group-hover:text-[#ece7de] ml-0.5 shrink-0" />
+            <ChevronDown className="w-3.5 h-3.5 text-[#9e988c] group-hover:text-[#ece7de] ml-0.5 shrink-0" />
           </button>
 
           {showCaseMenu && (
@@ -56,12 +56,12 @@ export default function TopHeader({
                   <Flame className="w-3.5 h-3.5 text-[#e27d75] animate-pulse" />
                   <span>View Priority Triage Queue</span>
                 </span>
-                <span className="text-[9px] bg-[#0f0e0d] px-1.5 py-0.5 rounded border border-[#a5342a]/40">
+                <span className="text-[10px] bg-[#0f0e0d] px-2 py-0.5 rounded-md border border-[#a5342a]/50">
                   {criticalTriageCount} Urgent
                 </span>
               </button>
 
-              <div className="px-2 py-1 text-[10px] font-bold text-[#8a8478] uppercase tracking-wider font-mono">
+              <div className="px-2 py-1 text-[10px] font-bold text-[#b5aea1] uppercase tracking-wider font-mono">
                 Active Criminal Investigations ({cases.length})
               </div>
 
@@ -80,15 +80,15 @@ export default function TopHeader({
                     }`}
                   >
                     <div className="font-mono font-bold text-[#ece7de]">{c.fir_number}</div>
-                    <div className="text-[11px] text-[#8a8478] truncate font-serif">{c.title}</div>
+                    <div className="text-[11px] text-[#c8c2b7] truncate font-serif">{c.title}</div>
                     <div className="mt-1 flex items-center gap-1.5 font-mono text-[9px] flex-wrap">
                       <span className="px-1.5 py-0.2 bg-[#0f0e0d] text-[#d68a1f] rounded border border-[#3a352d]">
                         {c.crime_category || c.case_type || 'Crime'}
                       </span>
-                      <span className="px-1.5 py-0.2 bg-[#1c1a17] text-[#8a8478] rounded border border-[#3a352d]">
+                      <span className="px-1.5 py-0.2 bg-[#1c1a17] text-[#b5aea1] rounded border border-[#3a352d]">
                         {c.agency.split('/')[0]}
                       </span>
-                      <span className="text-[#8a8478]">
+                      <span className="text-[#b5aea1]">
                         {c.node_count || 10}+ Entities
                       </span>
                     </div>
@@ -101,7 +101,7 @@ export default function TopHeader({
 
         {/* Case Status Badge */}
         {selectedCase && (
-          <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-lg text-[10px] font-mono text-[#8a8478] bg-[#0f0e0d] border border-[#3a352d]">
+          <span className="hidden sm:inline-block px-2.5 py-0.5 rounded-md text-[10px] font-mono font-bold uppercase text-[#b5aea1] bg-[#0f0e0d] border border-[#3a352d]">
             {selectedCase.status || 'Active Investigation'}
           </span>
         )}
@@ -116,14 +116,14 @@ export default function TopHeader({
           onClick={onOpenIntegrityModal}
           className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border text-xs font-mono transition-all active:scale-95 ${
             blockchainValid
-              ? 'bg-[#152018] border-[#5c7a5c]/60 text-[#9fc49f] hover:border-[#5c7a5c]'
+              ? 'bg-[#182226] border-[#4a6670]/50 text-[#94a9b3] hover:border-[#4a6670]'
               : 'bg-[#241a18] border-[#a5342a]/60 text-[#e27d75] hover:border-[#a5342a]'
           }`}
           title="Section 65B Indian Evidence Act Blockchain Audit Trail"
         >
           {blockchainValid ? (
             <>
-              <ShieldCheck className="w-3.5 h-3.5 text-[#5c7a5c] shrink-0" />
+              <ShieldCheck className="w-3.5 h-3.5 text-[#94a9b3] shrink-0" />
               <span className="hidden lg:inline">Sec 65B:</span>
               <span className="font-bold">Chain Valid</span>
             </>
