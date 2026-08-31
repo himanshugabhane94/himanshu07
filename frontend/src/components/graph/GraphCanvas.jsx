@@ -55,6 +55,54 @@ export default function GraphCanvas({
   const animFrameRef = useRef(null);
   const nodeAnimMapRef = useRef(new Map());
 
+  // Fit Graph into Visible Viewport Function
+  const fitToView = useCallback((padding = 50) => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const simNodes = simNodesRef.current;
+    if (!simNodes || simNodes.length === 0) {
+      setTransform({ x: 0, y: 0, k: 1 });
+      return;
+    }
+
+    const width = canvas.clientWidth || 1000;
+    const height = canvas.clientHeight || 700;
+
+    let minX = Infinity, maxX = -Infinity;
+    let minY = Infinity, maxY = -Infinity;
+
+    simNodes.forEach(node => {
+      const r = (node.radius || 18) + 24;
+      if (node.x - r < minX) minX = node.x - r;
+      if (node.x + r > maxX) maxX = node.x + r;
+      if (node.y - r < minY) minY = node.y - r;
+      if (node.y + r > maxY) maxY = node.y + r;
+    });
+
+    if (minX === Infinity || maxX === -Infinity || minX === maxX) {
+      setTransform({ x: 0, y: 0, k: 1 });
+      return;
+    }
+
+    const graphWidth = Math.max(100, maxX - minX);
+    const graphHeight = Math.max(100, maxY - minY);
+
+    const availableWidth = Math.max(200, width - padding * 2);
+    const availableHeight = Math.max(200, height - padding * 2);
+
+    const scaleX = availableWidth / graphWidth;
+    const scaleY = availableHeight / graphHeight;
+    const newK = Math.max(0.25, Math.min(1.35, Math.min(scaleX, scaleY)));
+
+    const graphCenterX = (minX + maxX) / 2;
+    const graphCenterY = (minY + maxY) / 2;
+
+    const newX = (width / 2) - (graphCenterX * newK);
+    const newY = (height / 2) - (graphCenterY * newK);
+
+    setTransform({ x: newX, y: newY, k: newK });
+  }, []);
+
   // Initialize and Synchronize Nodes & Edges
   useEffect(() => {
     const width = canvasRef.current?.clientWidth || 1000;
@@ -110,7 +158,28 @@ export default function GraphCanvas({
 
     simNodesRef.current = newSimNodes;
     simEdgesRef.current = edges;
-  }, [nodes, edges, layoutMode, nodeSizingMetric]);
+
+    // Auto-fit on node updates & expansion
+    fitToView(60);
+    const timer = setTimeout(() => {
+      fitToView(60);
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [nodes, edges, layoutMode, nodeSizingMetric, fitToView]);
+
+  // Window/Container Resize Observer for Dynamic Auto-Fit
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const observer = new ResizeObserver(() => {
+      fitToView(60);
+    });
+    if (canvas.parentElement) {
+      observer.observe(canvas.parentElement);
+    }
+    return () => observer.disconnect();
+  }, [fitToView]);
 
   // Physics Simulation Step
   const tickPhysics = useCallback(() => {
@@ -562,11 +631,11 @@ export default function GraphCanvas({
     }
   };
 
-  // Zoom Helpers
+  // Zoom & Fit Helpers
   const handleZoomIn = () => setTransform(t => ({ ...t, k: Math.min(3.5, t.k * 1.25) }));
   const handleZoomOut = () => setTransform(t => ({ ...t, k: Math.max(0.2, t.k * 0.8) }));
   const handleRecenter = () => {
-    setTransform({ x: 0, y: 0, k: 1 });
+    fitToView(60);
   };
 
   const handleCaptureScreenshot = () => {
@@ -582,7 +651,7 @@ export default function GraphCanvas({
   const visibleEdgesCount = activeEdgeIds ? activeEdgeIds.length : edges.length;
 
   return (
-    <div className="relative w-full h-full min-h-[640px] bg-[#0f0e0d] overflow-hidden select-none">
+    <div className="relative w-full h-full min-h-0 flex-1 bg-[#0f0e0d] overflow-hidden select-none">
       
       {/* HTML5 Canvas */}
       <canvas

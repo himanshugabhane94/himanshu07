@@ -281,7 +281,7 @@ export default function App() {
               stats={graphData.stats}
             />
 
-            <div className="flex-1 relative min-h-[600px]">
+            <div className="flex-1 relative min-h-0 w-full overflow-hidden">
               {loadingGraph && (
                 <div className="absolute inset-0 z-30 flex items-center justify-center bg-[#141618]/70 backdrop-blur-sm text-[#e5c970] font-mono text-xs gap-3">
                   <div className="w-6 h-6 border-2 border-[#c9a227] border-t-transparent rounded-full animate-spin"></div>
