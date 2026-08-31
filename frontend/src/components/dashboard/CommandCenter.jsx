@@ -15,6 +15,7 @@ export default function CommandCenter({
   onOpenPriorityQueue,
   onOpenScenarios,
   onOpenReport,
+  onStartGuidedDemo,
   currentUser
 }) {
   const [priorityData, setPriorityData] = useState(null);
@@ -84,11 +85,20 @@ export default function CommandCenter({
         {/* Quick Top Actions */}
         <div className="flex items-center gap-2.5 z-10 flex-wrap">
           <button
+            onClick={onStartGuidedDemo}
+            className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#241a18] border border-[#a5342a]/60 hover:border-[#e27d75] text-[#e27d75] text-xs font-mono font-bold transition-all shadow-md active:scale-95"
+            title="Start Self-Playing Demo with Voice Narration"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-[#e27d75]" />
+            <span>🎬 Run Guided Demo (2 Min)</span>
+          </button>
+
+          <button
             onClick={onOpenScenarios}
             className="flex items-center gap-1.5 px-4 py-2 rounded-xl bg-[#24211d] border border-[#d68a1f]/60 hover:border-[#d68a1f] text-[#f5c074] text-xs font-mono font-bold transition-all shadow-md active:scale-95"
           >
             <Sparkles className="w-3.5 h-3.5 text-[#d68a1f]" />
-            <span>⭐ Launch Flagship Judge Demo</span>
+            <span>⭐ Flagship Scenarios</span>
           </button>
 
           <button
@@ -492,6 +502,36 @@ export default function CommandCenter({
             <Cpu className="w-5 h-5 text-[#d68a1f] group-hover:scale-110 transition-transform" />
             <div className="font-bold text-xs text-[#ece7de] font-serif">AI Analytics Lab</div>
             <div className="text-[10px] text-[#8a8478] font-mono">What-If & centrality</div>
+          </button>
+        </div>
+      </div>
+
+      {/* Hero Guided Demo Banner (Self-Playing Sequence) */}
+      <div className="p-6 rounded-3xl bg-gradient-to-r from-[#1c1a17] via-[#241a18] to-[#1c1a17] border border-[#d68a1f]/50 shadow-dossier flex flex-col md:flex-row items-center justify-between gap-5 relative overflow-hidden">
+        <div className="space-y-1.5 z-10 max-w-2xl">
+          <div className="flex items-center gap-2">
+            <span className="px-2.5 py-0.5 rounded-lg text-xs font-mono font-bold bg-[#d68a1f] text-[#0f0e0d]">
+              AUTONOMOUS PRESENTATION MODE
+            </span>
+            <span className="text-xs font-mono text-[#f5c074]">11 Synced Chapters • 2 Minutes</span>
+          </div>
+
+          <h3 className="text-base md:text-lg font-bold font-cinzel text-[#ece7de]">
+            Self-Playing Guided Demo with Voice Narration
+          </h3>
+
+          <p className="text-xs text-[#8a8478] font-serif leading-relaxed">
+            Sit back and watch SUTRA autonomously showcase raw evidence ingestion, multi-hop knowledge graphs, PageRank kingpin centrality, inter-state cross-case linking, serial offender MO matching, what-if disruption simulation, and Section 65B blockchain verification with synchronized voice narration.
+          </p>
+        </div>
+
+        <div className="z-10 shrink-0">
+          <button
+            onClick={onStartGuidedDemo}
+            className="px-6 py-3 rounded-2xl bg-[#d68a1f] hover:bg-[#e59b2d] text-[#0f0e0d] font-mono font-bold text-xs flex items-center gap-2 shadow-lg transition-all active:scale-95 group"
+          >
+            <Sparkles className="w-4 h-4 fill-current group-hover:rotate-12 transition-transform" />
+            <span>Launch Autonomous Demo</span>
           </button>
         </div>
       </div>

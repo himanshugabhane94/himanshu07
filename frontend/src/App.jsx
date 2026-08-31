@@ -18,6 +18,8 @@ import CaseHandoverModal from './components/dossier/CaseHandoverModal';
 import LoginView from './components/auth/LoginView';
 import GeoIntelligenceMap from './components/geo/GeoIntelligenceMap';
 import CasePriorityQueueModal from './components/triage/CasePriorityQueueModal';
+import { DEMO_STEPS, speechController } from './services/guidedDemoService';
+import GuidedDemoController from './components/demo/GuidedDemoController';
 import { api } from './services/api';
 
 export default function App() {
@@ -36,6 +38,12 @@ export default function App() {
     badge_number: "MHA-SP-8821",
     agency: "Ministry of Home Affairs — Special Cyber & Crime Cell"
   });
+
+  // Autonomous Guided Demo State
+  const [isDemoRunning, setIsDemoRunning] = useState(false);
+  const [demoStepIndex, setDemoStepIndex] = useState(0);
+  const [isDemoPaused, setIsDemoPaused] = useState(false);
+  const [isDemoMuted, setIsDemoMuted] = useState(false);
 
   // Cases State
   const [cases, setCases] = useState([]);
@@ -191,6 +199,69 @@ export default function App() {
     }
   };
 
+  // Autonomous Guided Demo Execution Handlers
+  const executeDemoStep = (stepIdx) => {
+    if (stepIdx < 0 || stepIdx >= DEMO_STEPS.length) {
+      stopGuidedDemo();
+      return;
+    }
+
+    setDemoStepIndex(stepIdx);
+    setIsDemoPaused(false);
+    const step = DEMO_STEPS[stepIdx];
+
+    if (step.caseId) {
+      setSelectedCaseId(step.caseId);
+    }
+    if (step.tab) {
+      setActiveTab(step.tab);
+    }
+    if (step.nodeId) {
+      setSelectedNodeId(step.nodeId);
+    } else {
+      setSelectedNodeId(null);
+    }
+
+    loadGraph();
+
+    // Speak narration and auto-advance on completion
+    speechController.speak(step.narration, () => {
+      if (stepIdx < DEMO_STEPS.length - 1) {
+        executeDemoStep(stepIdx + 1);
+      } else {
+        stopGuidedDemo();
+      }
+    });
+  };
+
+  const startGuidedDemo = () => {
+    setIsDemoRunning(true);
+    executeDemoStep(0);
+  };
+
+  const stopGuidedDemo = () => {
+    speechController.stop();
+    setIsDemoRunning(false);
+    setActiveTab('overview');
+    setSelectedNodeId(null);
+  };
+
+  const togglePauseDemo = () => {
+    if (isDemoPaused) {
+      speechController.resume();
+      setIsDemoPaused(false);
+    } else {
+      speechController.pause();
+      setIsDemoPaused(true);
+    }
+  };
+
+  const toggleMuteDemo = () => {
+    const nextMuted = !isDemoMuted;
+    setIsDemoMuted(nextMuted);
+    speechController.setMuted(nextMuted);
+  };
+
   // Render Login Screen if not authenticated
   if (!isAuthenticated) {
     return <LoginView onLogin={handleLogin} />;
@@ -259,6 +330,7 @@ export default function App() {
               onOpenPriorityQueue={() => setShowPriorityQueueModal(true)}
               onOpenScenarios={() => setShowScenarioModal(true)}
               onOpenReport={() => setShowReportModal(true)}
+              onStartGuidedDemo={startGuidedDemo}
               currentUser={currentUser}
             />
           )}
@@ -457,6 +529,22 @@ export default function App() {
           loadGraph();
         }}
       />
+
+      {/* Autonomous Guided Demo Floating HUD Overlay */}
+      {isDemoRunning && (
+        <GuidedDemoController
+          currentStep={demoStepIndex + 1}
+          totalSteps={DEMO_STEPS.length}
+          stepData={DEMO_STEPS[demoStepIndex]}
+          isPaused={isDemoPaused}
+          isMuted={isDemoMuted}
+          onPauseToggle={togglePauseDemo}
+          onMuteToggle={toggleMuteDemo}
+          onNext={() => executeDemoStep(demoStepIndex + 1)}
+          onPrev={() => executeDemoStep(demoStepIndex - 1)}
+          onExit={stopGuidedDemo}
+        />
+      )}
 
       </div>
     </div>
